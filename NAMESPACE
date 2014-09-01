@@ -1,0 +1,3 @@
+importFrom(utils, data)
+# Export all names
+exportPattern(".")
