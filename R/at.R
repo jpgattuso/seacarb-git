@@ -14,7 +14,7 @@
 function(S=35, T=25, C=0.1, d=1, pHTris=NULL, ETris=NULL, weight, E, volume){
 
 # S salinity    (constant)
-# T temperature (£C)  (vector or constant)
+# T temperature (Â°C)  (vector or constant)
 # C molarity of acid   (constant)
 # d density of acid    (constant)
 # pHTris, pH used for the calibration of the electrode  (constant)
