@@ -1,4 +1,4 @@
-# Copyright (C) 2010  H�loise Lavigne and Jean-Pierre Gattuso
+# Copyright (C) 2010  Héloïse Lavigne and Jean-Pierre Gattuso
 # with a most valuable contribution of Bernard Gentili <gentili@obs-vlfr.fr>
 # and valuable suggestions from Jean-Marie Epitalon <epitalon@lsce.saclay.cea.fr>
 #

@@ -65,7 +65,7 @@ function(S=35,T=25,P=0, ks="d"){
 	#       K_S  = [H+]free [SO4--] / [HSO4-]
 	#       pH-scale: free scale !!!
 	#        
-	#      correct for T range : 5 - 40°C
+	#      correct for T range : 5 - 40Â°C
 	#      correct for S range : 20 - 45
 
     I35 <- 0.7227
