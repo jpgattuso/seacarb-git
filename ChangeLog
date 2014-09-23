@@ -1,8 +1,12 @@
+version 3.0.2, 2014-09-23
+-----------------------------------
+- Added three new functions written by James Orr: vapress, x2pCO2 and p2xCO2.
+- James Orr also added pressure correction to K0, using Weiss (1974, equation 5)
+
 version 3.0.1, 2014-08-19
 -----------------------------------
 - Pt and Sit are set to 0 if NA (in all functions where these variables are used except carbex and carbm)
 - Improved citation information
-
 
 version 3.0, 2014-03-06
 -----------------------------------
