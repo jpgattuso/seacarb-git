@@ -4,13 +4,14 @@
 \title{Henry's constant mol/(kg/atm)}
 \description{Henry's constant mol/(kg/atm)}
 \usage{
-K0(S = 35, T = 25, P = 0)
+K0(S = 35, T = 25, P = 0, Patm = 1.0)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{S}{Salinity, default is 35}
   \item{T}{Temperature in degrees Celsius, default is 25oC}
   \item{P}{Hydrostatic pressure in bar (surface = 0), default is 0}
+  \item{Patm}{Surface atmospheric pressure in atm, default 1 atm}
 }
 
 \details{
@@ -31,7 +32,7 @@ Note that the arguments can be given as a unique number or as vectors. If the le
 \references{Weiss R. F., 1974 Carbon dioxide in water and seawater: the solubility of a non-ideal gas. \emph{Marine Chemistry} \bold{2}, 203-215.}
 
 \author{
-Jean-Marie Epitalon and Aurelien Proye and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Jean-Marie Epitalon, Aurelien Proye, and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
 }
 
 
