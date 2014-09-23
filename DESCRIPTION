@@ -1,24 +1,19 @@
 Package: seacarb
 Title: seawater carbonate chemistry with R
-Version: 3.0.1
-Date: 2014-09-01
+Version: 3.0.2
+Date: 2014-09-23
 LazyData: true
-Authors@R: c(person("Heloise", "Lavigne", role = "aut", email = "lavigne@obs-vlfr.fr"),
+Authors@R: c(person("Jean-Pierre", "Gattuso", role = c("aut", "cre", "cph"), email = "gattuso@obs-vlfr.fr"),
   person("Jean-Marie", "Epitalon", role = "aut", email = "Jean-Marie.Epitalon@cerfacs.fr"),
-  person("Jean-Pierre", "Gattuso", role = c("aut", "cre", "cph")),
-  person("James", "Orr", role = "ctr"),
-  person("Bernard", "Gentili", role = "ctr"),
-  person("Andreas", "Hofmann", role = "ctr"),
-  person("Aurélien", "Proye", role = "ctr"),
-  person("Karline", "Soetaert", role = "ctr"),
-  person("James", "Rae", role = "ctr")
+  person("Heloise", "Lavigne", role = "aut", email = "lavigne@obs-vlfr.fr"),
+  person("James", "Orr", role = "ctb"),
+  person("Bernard", "Gentili", role = "ctb"),
+  person("Andreas", "Hofmann", role = "ctb"),
+  person("Aurélien", "Proye", role = "ctb"),
+  person("Karline", "Soetaert", role = "ctb"),
+  person("James", "Rae", role = "ctb")
   )
-Author: Héloïse Lavigne, Jean-Marie Epitalon and Jean-Pierre Gattuso
 Description: Calculates parameters of the seawater carbonate system and assists the design of ocean acidification perturbation experiments.
-        Code and/or corrections were contributed by Andreas Andersson, 
-        Bernard Gentili, Andreas Hofmann, Jim Orr, 
-        Aurélien Proye and Karline Soetaert and James Rae
-Maintainer: Jean-Pierre Gattuso <gattuso@obs-vlfr.fr>
 Encoding: UTF-8
 URL: http://CRAN.R-project.org/package=seacarb
 License: GPL (>= 2)
