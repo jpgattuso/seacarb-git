@@ -4,7 +4,7 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Parameters of the seawater carbonate system, in case of artificial addition of boron}
 \description{Returns parameters of the seawater carbonate system, in case of artificial addition of boron in seawater.}
-\usage{carbm(flag, var1, var2, badd=0, S=35, T=25, P=0, Pt=0, Sit=0, 	              
+\usage{carbm(flag, var1, var2, badd=0, S=35, T=25, Patm=1.0, P=0, Pt=0, Sit=0, 	              
 k1k2="x", kf="x", ks="d", pHscale="T", b="l10")}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -55,6 +55,7 @@ flag = 25     pCO2 and DIC given
 	\item{badd}{Quantity of boron added in seawater in mol/kg, default is 0}
 	\item{S}{Salinity}
 	\item{T}{Temperature in degrees Celsius}
+        \item{Patm}{Surface atmospheric pressure in atm, default 1 atm}
   	\item{P}{Hydrostatic pressure in bar (surface = 0)}
   	\item{Pt}{Concentration of total phosphate in mol/kg; set to 0 if NA}
   	\item{Sit}{Concentration of total silicate in mol/kg; set to 0 if NA}
@@ -151,6 +152,12 @@ Perez F. F. and Fraga F., 1987 Association constant of fluoride and hydrogen ion
 Roy R. N., Roy L. N., Vogel K. M., Porter-Moore C., Pearson T., Good C. E., Millero F. J. and Campbell D. M., 1993. The dissociation constants of carbonic acid in seawater at salinities 5 to 45 and temperatures 0 to 45oC. \emph{Marine Chemistry} \bold{44}, 249-267.
 
 Uppstrom L.R., 1974 The boron/chlorinity ratio of the deep-sea water from the Pacific Ocean. \emph{Deep-Sea Research I} \bold{21} 161-162.
+
+Weiss, R. F., 1974. Carbon dioxide in water and seawater: the solubility of
+a non-ideal gas, \emph{Mar.  Chem.}, \bold{2}, 203–215.
+
+Weiss, R. F. and Price, B. A., 1980. Nitrous oxide solubility in water and
+seawater, \emph{Mar. Chem.}, \bold{8}, 347–359.
 
 Zeebe R. E. and Wolf-Gladrow D. A., 2001 \emph{CO2 in seawater: equilibrium, kinetics, isotopes}. Amsterdam: Elsevier, 346 pp.
 }

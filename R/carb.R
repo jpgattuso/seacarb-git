@@ -12,13 +12,14 @@
 #
 #
 carb<-
-function(flag, var1, var2, S=35, T=25, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="l10"){
+function(flag, var1, var2, S=35, T=25,	Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="l10"){
     n <- max(length(var1), length(var2), length(S), length(T), length(P), length(Pt), length(Sit), length(k1k2), length(kf), length(pHscale), length(ks), length(b))
     if(length(flag)!=n){ flag <- rep(flag[1],n)}
     if(length(var1)!=n){ var1 <- rep(var1[1],n)}
     if(length(var2)!=n){ var2 <- rep(var2[1],n)}
     if(length(S)!=n){ S <- rep(S[1],n)}
     if(length(T)!=n){ T <- rep(T[1],n)}
+    if(length(P)!=n){ Patm <- rep(Patm[1],n)}
     if(length(P)!=n){ P <- rep(P[1],n)}
     if(length(Pt)!=n){ Pt <- rep(Pt[1],n)}
     if(length(Sit)!=n){ Sit <- rep(Sit[1],n)}
@@ -72,7 +73,7 @@ function(flag, var1, var2, S=35, T=25, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d
     K1 <- K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0)   
     K2 <- K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0)
     Kw <- Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
-    K0 <- K0(S=S, T=T, P=P)
+    K0 <- K0(S=S, T=T, Patm=Patm, P=P)
     Kb <- Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0)
     K1p <- K1p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
     K2p <- K2p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
@@ -641,21 +642,21 @@ function(flag, var1, var2, S=35, T=25, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d
     H[i_flag_15] <- h
 
     # ------------ calculation of pCO2 for cases 1 to 15 
-    # here P = Patm = 1 bar
+    # compute partial pressure at total pressure = Patm + Phydro (atm)
     # Indices of flag elements where 1 <= flag <= 15
     i_flag <- which (flag >= 1 & flag <= 15)
-    tk <- TK[i_flag]     
-    B  <- (-1636.75+12.0408*tk-0.0327957*(tk*tk)+0.0000316528*(tk*tk*tk))*1e-6;
-    pCO2[i_flag] <- fCO2[i_flag] * exp(-(1*100000)*(B+2*(57.7-0.118*tk)*1e-6)/(8.314*tk))
+    tk <- TK[i_flag]
+    B  <- -1636.75+12.0408*tk-0.0327957*(tk*tk)+0.0000316528*(tk*tk*tk);
+    pCO2[i_flag] <- fCO2[i_flag] / exp((Patm[i_flag]+P[i_flag]/1.01325)*(B + 2*(1-fCO2[i_flag])*(57.7-0.118*tk))/(82.057*tk))
 
     # ------------ calculation of fCO2 for cases 21 to 25
-    # here P = Patm = 1 bar
+    # compute fugacity at total pressure = Patm + Phydro (atm)
     # Indices of flag elements where 21 <= flag <= 25
     i_flag <- which (flag >= 21 & flag <= 25)
     pCO2[i_flag] <- var1[i_flag] * 1e-6
     tk <- TK[i_flag]     
-    B <- (-1636.75+12.0408*tk-0.0327957*(tk*tk)+0.0000316528*(tk*tk*tk))*1e-6;
-    fCO2[i_flag] <- pCO2[i_flag] * exp((1*100000)*(B+2*(57.7-0.118*tk)*1e-6)/(8.314*tk))
+    B  <- -1636.75+12.0408*tk-0.0327957*(tk*tk)+0.0000316528*(tk*tk*tk);
+    fCO2[i_flag] <- pCO2[i_flag] * exp((Patm[i_flag]+P[i_flag]/1.01325)*(B + 2*(1-pCO2[i_flag])*(57.7-0.118*tk))/(82.057*tk))
 
     # ------------ case 21.) PH and pCO2 given
     # Indices of flag elements where flag = 21
