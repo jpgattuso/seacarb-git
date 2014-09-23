@@ -5,7 +5,11 @@ Date: 2014-09-23
 LazyData: true
 Authors@R: c(person("Jean-Pierre", "Gattuso", role = c("aut", "cre", "cph"), email = "gattuso@obs-vlfr.fr"),
   person("Jean-Marie", "Epitalon", role = "aut", email = "Jean-Marie.Epitalon@cerfacs.fr"),
+<<<<<<< HEAD
   person("Heloise", "Lavigne", role = "aut", email = "lavigne@obs-vlfr.fr"),
+=======
+  person("Jean-Pierre", "Gattuso", role = c("aut", "cre", "cph"), email = "gattuso@obs-vlfr.fr"),
+>>>>>>> FETCH_HEAD
   person("James", "Orr", role = "ctb"),
   person("Bernard", "Gentili", role = "ctb"),
   person("Andreas", "Hofmann", role = "ctb"),
@@ -13,6 +17,11 @@ Authors@R: c(person("Jean-Pierre", "Gattuso", role = c("aut", "cre", "cph"), ema
   person("Karline", "Soetaert", role = "ctb"),
   person("James", "Rae", role = "ctb")
   )
+<<<<<<< HEAD
+=======
+Author: Héloïse Lavigne, Jean-Marie Epitalon and Jean-Pierre Gattuso
+Maintainer: Jean-Pierre Gattuso <gattuso@obs-vlfr.fr>
+>>>>>>> FETCH_HEAD
 Description: Calculates parameters of the seawater carbonate system and assists the design of ocean acidification perturbation experiments.
 Encoding: UTF-8
 URL: http://CRAN.R-project.org/package=seacarb

@@ -54,9 +54,15 @@ ALK <- 2300e-6
 T <- seq(0,30,5)
 xCO2 <- 400
 pCO2 <- x2pCO2(S=35, T=T, Patm=1, xCO2=400)
+<<<<<<< HEAD
 results <- carb(flag=24, var1=pCO2, var2=ALK, S=S, T=T, P=0, Pt=0, Sit=0, 
   pHscale="T", kf="pf", k1k2="l", ks="d", b="l10")
 print(results)
+=======
+results <- carb(flag=24, var1=pCO2, var2=ALK, S=S, T=T, P=0, Pt=0, Sit=0, pHscale="T", kf="pf", k1k2="l", ks="d", b="l10")
+print(results)
+
+>>>>>>> FETCH_HEAD
 }
 
 \keyword{utilities}
