@@ -587,12 +587,12 @@ rho <- rho(S=S,T=T,P=P)
 	pCO2 <- pCO2*1e6
 	fCO2 <- fCO2*1e6	
 
-	res <- data.frame(flag,S,T,P,PH,CO2,pCO2,fCO2,HCO3,CO3,DIC,ALK,Oa,Oc)
+	res <- data.frame(flag,S,T,Patm,P,PH,CO2,pCO2,fCO2,HCO3,CO3,DIC,ALK,Oa,Oc)
 	
 	}
 	RES<- rbind(RES, res)
 	}
-	names(RES) <- c("flag", "S", "T", "P", "pH", "CO2", "pCO2", "fCO2", "HCO3", "CO3", "DIC", "ALK", "OmegaAragonite", "OmegaCalcite")
+	names(RES) <- c("flag", "S", "T", "Patm", "P", "pH", "CO2", "pCO2", "fCO2", "HCO3", "CO3", "DIC", "ALK", "OmegaAragonite", "OmegaCalcite")
 	return(RES)
 }
 

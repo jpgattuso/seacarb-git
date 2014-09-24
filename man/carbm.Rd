@@ -114,7 +114,8 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 
   \item{S}{Salinity}
   \item{T}{Temperature in degrees Celsius}
-  \item{P}{Pressure in bar}
+  \item{Patm}{Surface atmospheric pressure in atm}
+  \item{P}{Hydrostatic pressure in bar}
   \item{pH}{pH}
   \item{CO2}{CO2 concentration (mol/kg)}
   \item{pCO2}{pCO2, CO2 partial pressure (\eqn{\mu}atm)}
