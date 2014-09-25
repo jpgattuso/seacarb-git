@@ -56,6 +56,7 @@ flag = 25     pCO2 and DIC given
 	\item{var2}{enter value of the second  variable in mol/kg, except for pH}
 	\item{S}{Salinity}
 	\item{T}{Temperature in degrees Celsius}
+        \item{Patm}{Surface atmospheric pressure in atm}
   	\item{P}{Hydrostatic pressure in bar (surface = 0)}
   	\item{Pt}{Concentration of total phosphate in mol/kg; set to 0 if NA}
   	\item{Sit}{Concentration of total silicate in mol/kg; set to 0 if NA}
@@ -111,7 +112,7 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 
 \value{The function returns a data frame containing the following columns:
 
-\item{PhiD}{PhiD, chemical buffer factor (dpH/d[DIC]); input/output of dissolved CO2 (unit pH per mol/kg)}
+  \item{PhiD}{PhiD, chemical buffer factor (dpH/d[DIC]); input/output of dissolved CO2 (unit pH per mol/kg)}
   \item{BetaD}{BetaD, homogeneous or Revelle buffer factor (dln(pCO2)/dln[DIC]); input/output of dissolved CO2}
   \item{PiD}{PiD, chemical buffer factor (dpCO2/d[DIC]); input/output of dissolved CO2 (\eqn{\mu atm} per mol/kg)}
   \item{PhiB}{PhiB, chemical buffer factor (dpH/d[DIC]); from input/output of bicarbonate (unit pH per mol/kg)}
