@@ -647,7 +647,7 @@ function(flag, var1, var2, S=35, T=25,	Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     i_flag <- which (flag >= 1 & flag <= 15)
     tk <- TK[i_flag]
     B  <- -1636.75+12.0408*tk-0.0327957*(tk*tk)+0.0000316528*(tk*tk*tk);
-    pCO2[i_flag] <- fCO2[i_flag] / exp((Patm[i_flag]+P[i_flag]/1.01325)*(B + 2*(1-fCO2[i_flag])*(57.7-0.118*tk))/(82.057*tk))
+    pCO2[i_flag] <- fCO2[i_flag] / exp((Patm[i_flag]+P[i_flag]/1.01325)*(B + 2*((1-fCO2[i_flag])^2)*(57.7-0.118*tk))/(82.057*tk))
 
     # ------------ calculation of fCO2 for cases 21 to 25
     # compute fugacity at total pressure = Patm + Phydro (atm)
@@ -656,7 +656,7 @@ function(flag, var1, var2, S=35, T=25,	Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     pCO2[i_flag] <- var1[i_flag] * 1e-6
     tk <- TK[i_flag]     
     B  <- -1636.75+12.0408*tk-0.0327957*(tk*tk)+0.0000316528*(tk*tk*tk);
-    fCO2[i_flag] <- pCO2[i_flag] * exp((Patm[i_flag]+P[i_flag]/1.01325)*(B + 2*(1-pCO2[i_flag])*(57.7-0.118*tk))/(82.057*tk))
+    fCO2[i_flag] <- pCO2[i_flag] * exp((Patm[i_flag]+P[i_flag]/1.01325)*(B + 2*((1-pCO2[i_flag])^2)*(57.7-0.118*tk))/(82.057*tk))
 
     # ------------ case 21.) PH and pCO2 given
     # Indices of flag elements where flag = 21
