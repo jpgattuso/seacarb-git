@@ -10,22 +10,22 @@
 #
 #
 "K0" <-
-function(S=35,T=25,P=0){
+function(S=35,T=25,P=0,Patm=1){
 
-    nK <- max(length(S), length(T), length(P))
+    nK <- max(length(S), length(T), length(P), length(Patm))
 
     ##-------- Creation de vecteur pour toutes les entrees (si vectorielles)
 
     if(length(S)!=nK){S <- rep(S[1], nK)}
     if(length(T)!=nK){T <- rep(T[1], nK)}
     if(length(P)!=nK){P <- rep(P[1], nK)}
+    if(length(Patm)!=nK){Patm <- rep(Patm[1], nK)}
 
     #-------Constantes----------------
 
     #---- issues de equic----
     tk = 273.15;           # [K] (for conversion [deg C] <-> [K])
-    TC = T + tk;           # TC [C]; T[K]
-
+    TK = T + tk;           # T[K] (absolute temperature)
 
     #---------------------------------------------------------------------
     #---------------------- K0 (K Henry) ---------------------------------
@@ -37,15 +37,23 @@ function(S=35,T=25,P=0){
     #
     #                             
 
-    tmp = 9345.17 / TC - 60.2409 + 23.3585 * log(TC/100);
-    nK0we74 = tmp + S*(0.023517-0.00023656*TC+0.0047036e-4*TC*TC);
+    tmp = 9345.17 / TK - 60.2409 + 23.3585 * log(TK/100);
+    nK0we74 = tmp + S*(0.023517-0.00023656*TK+0.0047036e-4*TK*TK);
 
     ##------------Warnings
 
     if (any (T>45 | S>45 | T<(-1)) ) {warning("S and/or T is outside the range of validity of the formulation available for K0 in seacarb.")}
 
-
     K0= exp(nK0we74);
+
+    #---------------------------------------------------------------------
+    #---------------------- Pressure correction ----------------------------
+    Phydro_atm = P / 1.01325  # convert hydrostatic pressure from bar to atm (1.01325 bar / atm)
+    Ptot = Patm + Phydro_atm  # total pressure (in atm) = atmospheric pressure + hydrostatic pressure
+    R = 82.05736              # (cm3 * atm) / (mol * K)  CODATA (2006)
+    vbarCO2 = 32.3            # partial molal volume (cm3 / mol) from Weiss (1974, Appendix, paragraph 3)
+    K0 = K0 * exp( ((1-Ptot)*vbarCO2)/(R*TK) )   # Weiss (1974, equation 5), TK is absolute temperature (K)
+
     attr(K0,"unit") = "mol/kg"	
     return(K0)
 }

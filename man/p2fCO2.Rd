@@ -4,24 +4,32 @@
 \title{Converts pCO2 (partial pressure in CO2) into fCO2 (fugacity of CO2)}
 \description{Converts pCO2 (partial pressure in CO2) into fCO2 (fugacity of CO2)}
 \usage{
-p2fCO2(T = 25, pCO2)
+p2fCO2(T = 25, Patm=1.0, P=0, pCO2)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{T}{Temperature in degrees Celsius, default is 25oC}
-  \item{pCO2}{Partial pressure in CO2, the unit given here define the unit of fugacity in output}
+  \item{Patm}{Surface atmospheric pressure in atm, default 1 atm}
+  \item{P}{Hydrostatic pressure in bar, default is 0 bar (surface)}
+  \item{pCO2}{Partial pressure in CO2 in \eqn{\mu}atm, the same units as that for the fugacity output}
   }
 
 \value{
-  \item{fCO2}{Fugacity of CO2, given in the same unit than pCO2, entered in argument.}
+  \item{fCO2}{Fugacity of CO2 in \eqn{\mu}atm, the same units as that for the pCO2 input.}
 }
 
 \references{
 Dickson A. G., Sabine C. L. and Christian J. R., 2007 Guide to best practices for ocean CO2 measurements. \emph{PICES Special Publication} \bold{3}, 1-191.
+
+Weiss, R. F., 1974. Carbon dioxide in water and seawater: the solubility of
+a non-ideal gas, \emph{Mar.  Chem.}, \bold{2}, 203–215.
+
+Weiss, R. F. and Price, B. A., 1980. Nitrous oxide solubility in water and
+seawater, \emph{Mar. Chem.}, \bold{8}, 347–359.
 }
              
 \author{
-Heloise Lavigne and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Heloise Lavigne, Jean-Pierre Gattuso, and James Orr \email{gattuso@obs-vlfr.fr}
 }
 
 \seealso{
@@ -29,7 +37,7 @@ Heloise Lavigne and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
 }
 
 \examples{
-p2fCO2(T=25, pCO2=380)  
+p2fCO2(T=25, Patm=0.97, P=0, pCO2=380)  
 }
 
 \keyword{utilities}

@@ -5,7 +5,7 @@
 \title{Buffer capacities of the seawater carbonate system as defined by Egleston et al. (2010)}
 \description{Returns the six buffer factors of the seawater carbonate system as defined by Egleston, Sabine and Morel (2010), denoted here as ESM. Also returns the classic Revelle factor (relative change in pCO2 over that for DIC). In ESM, there are errors in the equations in Table 1 for \eqn{S}, \eqn{\Omega_{DIC}}, and \eqn{\Omega_{Alk}}. These errors have been corrected here.  The results of this routine have been validated: they produce results that are identical to those shown in ESM's Fig. 2. This routine was inspired and adapted from seacarb's ``buffer'' function. Its input arguments are indentical to those in the ``buffer'' and ``carb'' functions of seacarb.}
 \usage{
-buffesm(flag, var1, var2, S=35, T=25, P=0, Pt=0, Sit=0, k1k2="x", 
+buffesm(flag, var1, var2, S=35, T=25, Patm=1.0, P=0, Pt=0, Sit=0, k1k2="x", 
 	kf="x", ks="d", pHscale="T", b="l10")
 }
 %- maybe also 'usage' for other objects documented here.
@@ -56,6 +56,7 @@ flag = 25     pCO2 and DIC given
 	\item{var2}{enter value of the second  variable in mol/kg, except for pH}
 	\item{S}{Salinity}
 	\item{T}{Temperature in degrees Celsius}
+        \item{Patm}{Surface atmospheric pressure in atm, default 1 atm}
   	\item{P}{Hydrostatic pressure in bar (surface = 0)}
   	\item{Pt}{Concentration of total phosphate in mol/kg; set to 0 if NA}
   	\item{Sit}{Concentration of total silicate in mol/kg; set to 0 if NA}

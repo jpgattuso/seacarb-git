@@ -13,7 +13,7 @@
 #
 #
 carbex<-
-function(flag, var1, var2, S=35, T=25, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="l10"){
+function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="l10"){
 RES <- data.frame()
 n <- max(length(var1), length(var2), length(S), length(T), length(P), length(Pt), length(Sit), length(k1k2), length(kf), length(pHscale), length(ks), length(b))
 if(length(flag)!=n){ flag <- rep(flag[1],n)}
@@ -21,6 +21,7 @@ if(length(var1)!=n){ var1 <- rep(var1[1],n)}
 if(length(var2)!=n){ var2 <- rep(var2[1],n)}
 if(length(S)!=n){ S <- rep(S[1],n)}
 if(length(T)!=n){ T <- rep(T[1],n)}
+if(length(P)!=n){ Patm <- rep(Patm[1],n)}
 if(length(P)!=n){ P <- rep(P[1],n)}
 if(length(Pt)!=n){ Pt <- rep(Pt[1],n)}
 if(length(Sit)!=n){ Sit <- rep(Sit[1],n)}
@@ -30,7 +31,7 @@ if(length(ks)!=n){ ks <- rep(ks[1],n)}
 if(length(pHscale)!=n){pHscale <- rep(pHscale[1],n)}
 if(length(b)!=n){ b <- rep(b[1],n)}
 
-df <- data.frame(flag, var1, var2, S, T, P, Pt, Sit, pHscale, b)
+df <- data.frame(flag, var1, var2, S, T, Patm, P, Pt, Sit, pHscale, b)
 
 
 ##BOUCLE
@@ -77,7 +78,7 @@ K2 <- K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2[i])
 Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf[i])
 Ks <- Ks(S=S, T=T, P=P, ks=ks[i])
 Kw <- Kw(S=S, T=T, P=P, pHscale=pHscale)
-K0 <- K0(S=S, T=T, P=P)
+K0 <- K0(S=S, T=T, Patm=Patm, P=P)
 Kb <- Kb(S=S, T=T, P=P, pHscale=pHscale)
 K1p <- K1p(S=S, T=T, P=P, pHscale=pHscale)
 K2p <- K2p(S=S, T=T, P=P, pHscale=pHscale)
@@ -449,8 +450,8 @@ rho <- rho(S=S,T=T,P=P)
 	# here P = Patm = 1 bar
 	if ((flag>=1)&(flag<=15))
 	{
-	B=(-1636.75+12.0408*TK-0.0327957*(TK*TK)+0.0000316528*(TK*TK*TK))*1e-6;
-	pCO2= fCO2*(1/exp((1*100000)*(B+2*(57.7-0.118*TK)*1e-6)/(8.314*TK)))
+        B  = -1636.75+12.0408*TK-0.0327957*(TK*TK)+0.0000316528*(TK*TK*TK);
+        pCO2 = fCO2 / exp((Patm+P/1.01325)*(B + 2*(1-fCO2)*(57.7-0.118*TK))/(82.057*TK))
 	}
 
 	# ------------ calculation of fCO2 for cases 21 to 25
@@ -459,8 +460,8 @@ rho <- rho(S=S,T=T,P=P)
 	if ((flag>=21)&(flag<=25))
 	{
 	pCO2 <- var1*1e-6
-	B=(-1636.75+12.0408*TK-0.0327957*(TK*TK)+0.0000316528*(TK*TK*TK))*1e-6;
-	fCO2= pCO2*(exp((1*100000)*(B+2*(57.7-0.118*TK)*1e-6)/(8.314*TK)))
+        B  = -1636.75+12.0408*TK-0.0327957*(TK*TK)+0.0000316528*(TK*TK*TK);
+        fCO2 = pCO2 * exp((Patm+P/1.01325)*(B + 2*(1-pCO2)*(57.7-0.118*TK))/(82.057*TK))
 	}
 
 	# ------------ case 21.) PH and pCO2 given
@@ -586,12 +587,12 @@ rho <- rho(S=S,T=T,P=P)
 	pCO2 <- pCO2*1e6
 	fCO2 <- fCO2*1e6	
 
-	res <- data.frame(flag,S,T,P,PH,CO2,pCO2,fCO2,HCO3,CO3,DIC,ALK,Oa,Oc)
+	res <- data.frame(flag,S,T,Patm,P,PH,CO2,pCO2,fCO2,HCO3,CO3,DIC,ALK,Oa,Oc)
 	
 	}
 	RES<- rbind(RES, res)
 	}
-	names(RES) <- c("flag", "S", "T", "P", "pH", "CO2", "pCO2", "fCO2", "HCO3", "CO3", "DIC", "ALK", "OmegaAragonite", "OmegaCalcite")
+	names(RES) <- c("flag", "S", "T", "Patm", "P", "pH", "CO2", "pCO2", "fCO2", "HCO3", "CO3", "DIC", "ALK", "OmegaAragonite", "OmegaCalcite")
 	return(RES)
 }
 
