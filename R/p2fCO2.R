@@ -13,9 +13,10 @@
 #
 #
 p2fCO2 <- function(T=25, Patm=1, P=0, pCO2){
-
 tk <- 273.15;           # [K] (for conversion [deg C] <-> [K])
 TK <- T + tk;           # TK [K]; T[C]
+Phydro_atm = P / 1.01325  # convert hydrostatic pressure from bar to atm (1.01325 bar / atm)
+Ptot = Patm + Phydro_atm  # total pressure (in atm) = atmospheric pressure + hydrostatic pressure
 
 # Original "seacarb" f2pCO2 calculation:
 # B <- (-1636.75+12.0408*TK-0.0327957*(TK*TK)+0.0000316528*(TK*TK*TK))*1e-6

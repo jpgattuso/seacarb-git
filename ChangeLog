@@ -1,8 +1,11 @@
-version 3.0.2, 2014-09-23
+version 3.0.2, 2014-11-17
 -----------------------------------
+- Functions carb and buffer now have an extra setting: Patm, the atmospheric pressure in atm
 - Added three new functions written by James Orr: vapress, x2pCO2 and p2xCO2.
 - James Orr also added pressure correction to K0, using Weiss (1974, equation 5)
 - James Orr corrected an error in the fugacity coefficient
+- Removed function carbex
+- Removed function carbm which will be rewritten on par with carb IF it is useful to someone
 
 version 3.0.1, 2014-08-19
 -----------------------------------

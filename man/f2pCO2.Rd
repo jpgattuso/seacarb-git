@@ -24,13 +24,13 @@ practices for ocean CO2 measurements. \emph{PICES Special Publication}
 \bold{3}, 1-191.
 
 Weiss, R. F. and Price, B. A., 1980. Nitrous oxide solubility in water and
-seawater, \emph{Mar. Chem.}, \bold{8}, 347–359, 1980.
+seawater, \emph{Mar. Chem.}, \bold{8}, 347-359, 1980.
 
 Weiss, R. F., 1974. Carbon dioxide in water and seawater: the solubility of
-a non-ideal gas, \emph{Mar.  Chem.}, \bold{2}, 203–215.
+a non-ideal gas, \emph{Mar.  Chem.}, \bold{2}, 203-215.
 
 Weiss, R. F. and Price, B. A., 1980. Nitrous oxide solubility in water and
-seawater, \emph{Mar. Chem.}, \bold{8}, 347–359.
+seawater, \emph{Mar. Chem.}, \bold{8}, 347-359.
 }
              
 \author{
