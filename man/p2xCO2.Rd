@@ -4,7 +4,7 @@
 \title{Converts partial pressure of CO2 to mole fraction of CO2}
 \description{Converts pCO2 (partial pressure of CO2) into xCO2 (mole fraction of CO2)}
 \usage{
-p2xCO2(S=35, T=25, Patm=1.0, pCO2)
+p2xCO2(S=35, T=25, Patm=1, pCO2)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,10 +22,14 @@ p2xCO2(S=35, T=25, Patm=1.0, pCO2)
 The xCO2 (ppm) is computed from pCO2 (\eqn{\mu}atm) using the
 following equation: \eqn{ xCO2 = pCO2 / (Patm - pH2O)}, where pH20 is the vapor pressure of seawater computed following best practices (Dickson et al., 2007). That computed pH20 is identical, when rounded to the 4th decimal place, with that computed by the equation from Weiss and Price (1980).}
 
+\note{\bold{Warning:} pCO2 estimates below 100 m are subject to considerable uncertainty. See Weiss (1974) and Orr et al. (2014)}
+
 \references{
 Dickson A. G., Sabine C. L. and Christian J. R. (2007) Guide to best
 practices for ocean CO2 measurements. \emph{PICES Special Publication}
 \bold{3}, 1-191.
+
+Orr J. C., Epitalon J.-M. and Gattuso J.-P., 2014. Comparison of seven packages that compute ocean carbonate chemistry. \emph{Biogeosciences Discussions} \bold{11}, 5327-5397.
 
 Weiss, R. F. (1974) Carbon dioxide in water and seawater: the
 solubility of a non-ideal gas, Mar. Chem., \bold{2}, 203-215.

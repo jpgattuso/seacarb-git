@@ -5,7 +5,7 @@
 \title{Buffer capacities of the seawater carbonate system as defined by Egleston et al. (2010)}
 \description{Returns the six buffer factors of the seawater carbonate system as defined by Egleston, Sabine and Morel (2010), denoted here as ESM. Also returns the classic Revelle factor (relative change in pCO2 over that for DIC). In ESM, there are errors in the equations in Table 1 for \eqn{S}, \eqn{\Omega_{DIC}}, and \eqn{\Omega_{Alk}}. These errors have been corrected here.  The results of this routine have been validated: they produce results that are identical to those shown in ESM's Fig. 2. This routine was inspired and adapted from seacarb's ``buffer'' function. Its input arguments are indentical to those in the ``buffer'' and ``carb'' functions of seacarb.}
 \usage{
-buffesm(flag, var1, var2, S=35, T=25, Patm=1.0, P=0, Pt=0, Sit=0, k1k2="x", 
+buffesm(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2="x", 
 	kf="x", ks="d", pHscale="T", b="l10")
 }
 %- maybe also 'usage' for other objects documented here.
@@ -100,6 +100,8 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 \emph{Pressure corrections and pH scale:}
 
 \itemize{
+\item For K0, the pressure correction term of Weiss (1974) is used.
+
 \item For K1, K2, pK1, pK2, pK3, Kw, Kb, Khs and Ksi, the pressure correction was applied on the seawater scale. Hence, if needed, values were first transformed from the total scale to the seawater scale, the pressure correction applied as described by Millero (1995), and the value was transformed back to the required scale (T, F or SWS).
 
 \item For Kf, the pressure correction was applied on the free scale. The formulation of Dickson and Riley (1979 in Dickson and Goyet, 1994) provides Kf on the free scale but that of Perez and Fraga (1987) provides it on the total scale. Hence, in that case, Kf was first transformed from the total scale to the free scale. With both formulations, the pressure correction was applied as described by Millero (1995), and the value was transformed back to the required scale (T, F or SWS). 

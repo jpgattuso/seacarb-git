@@ -4,7 +4,7 @@
 \title{Conversion of pH}
 \description{Converts pH from one scale to another one chosen between the total scale, the free scale and the seawater scale}
 \usage{
-pHconv(flag=1,pH=8.10,S=35,T=25, P=0, ks="d")
+pHconv(flag=1, pH=8.10, S=35, T=25, P=0, ks="d")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

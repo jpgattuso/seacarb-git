@@ -54,7 +54,7 @@ flag = 25     pCO2 and DIC given
 	\item{var2}{Value of the second  variable in mol/kg, except for pH}
 	\item{S}{Salinity}
 	\item{T}{Temperature in degrees Celsius}
-  \item{Patm}{Surface atmospheric pressure in atm, default 1 atm}
+  \item{Patm}{Surface atmospheric pressure in atm, default is 1 atm}
   \item{P}{Hydrostatic pressure in bar (surface = 0)}
   \item{Pt}{Concentration of total phosphate in mol/kg; set to 0 if NA}
   \item{Sit}{Concentration of total silicate in mol/kg; set to 0 if NA}
@@ -64,7 +64,6 @@ flag = 25     pCO2 and DIC given
 	\item{pHscale}{"T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
 	\item{b}{"l10" for computing boron total from the Lee et al. (2010) formulation or "u74" for using the Uppstrom (1974) formulation, default is "l10" }
 }
-
 
 \details{The Lueker et al. (2000) constants for K1 and K2, the Perez and Fraga (1987) constant for Kf and the Dickson (1990) constant for Ks are recommended by Dickson et al. (2007). It is, however, critical to consider that each formulation is only valid for specific ranges of temperature and salinity:
 
@@ -98,6 +97,8 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 \emph{Pressure corrections and pH scale:}
 
 \itemize{
+\item For K0, the pressure correction term of Weiss (1974) is used.
+
 \item For K1, K2, pK1, pK2, pK3, Kw, Kb, Khs and Ksi, the pressure correction was applied on the seawater scale. Hence, if needed, values were first transformed from the total scale to the seawater scale, the pressure correction applied as described by Millero (1995), and the value was transformed back to the required scale (T, F or SWS).
 
 \item For Kf, the pressure correction was applied on the free scale. The formulation of Dickson and Riley (1979 in Dickson and Goyet, 1994) provides Kf on the free scale but that of Perez and Fraga (1987) provides it on the total scale. Hence, in that case, Kf was first transformed from the total scale to the free scale. With both formulations, the pressure correction was applied as described by Millero (1995), and the value was transformed back to the required scale (T, F or SWS). 
@@ -108,9 +109,7 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 }
 }
 
-
 \value{The function returns a data frame containing the following columns:
-
   \item{S}{Salinity}
   \item{T}{Temperature in degrees Celsius}
   \item{Patm}{Surface atmospheric pressure in atm}
@@ -127,6 +126,7 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
   \item{OmegaCalcite}{Omega calcite, calcite saturation state}
 }
 
+\note{\bold{Warning:} pCO2 estimates below 100 m are subject to considerable uncertainty. See Weiss (1974) and Orr et al. (2014)}
 
 \references{
 Dickson A. G. and Riley J. P., 1979 The estimation of acid dissociation constants in seawater media from potentiometric titrations with strong base. I. The ionic product of water. \emph{Marine Chemistry} \bold{7}, 89-99.
@@ -147,6 +147,8 @@ Millero F. J., 2010. Carbonate constant for estuarine waters. \emph{Marine and F
 
 Millero F. J., Graham T. B., Huang F., Bustos-Serrano H. and Pierrot D., 2006. Dissociation constants of carbonic acid in seawater as a function of salinity and temperature.  \emph{Marine Chemistry} \bold{100}, 80-84.
 
+Orr J. C., Epitalon J.-M. and Gattuso J.-P., 2014. Comparison of seven packages that compute ocean carbonate chemistry. \emph{Biogeosciences Discussions} \bold{11}, 5327-5397.
+
 Perez F. F. and Fraga F., 1987 Association constant of fluoride and hydrogen ions in seawater. \emph{Marine Chemistry} \bold{21}, 161-168.
 
 Roy R. N., Roy L. N., Vogel K. M., Porter-Moore C., Pearson T., Good C. E., Millero F. J. and Campbell D. M., 1993. The dissociation constants of carbonic acid in seawater at salinities 5 to 45 and temperatures 0 to 45oC. \emph{Marine Chemistry} \bold{44}, 249-267.
@@ -163,7 +165,7 @@ Zeebe R. E. and Wolf-Gladrow D. A., 2001 \emph{CO2 in seawater: equilibrium, kin
 }
 
 \author{
-Heloise Lavigne and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Heloise Lavigne, James Orr and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
 }
 
 \examples{

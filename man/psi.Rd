@@ -5,7 +5,7 @@
 \title{Molar ratio of CO2 released vs CaCO3 precipitated}
 \description{Returns the molar ratio of CO2 released vs CaCO3 precipitated described by Frankignoulle et al. (1994).}
 \usage{
-psi(flag, var1, var2, S=35, T=20, P=0, Pt=0, Sit=0, pHscale="T", 
+psi(flag, var1, var2, S=35, T=20, Patm, P=0, Pt=0, Sit=0, pHscale="T", 
 	kf="x", k1k2="x", ks="d")
 }
 %- maybe also 'usage' for other objects documented here.
@@ -56,12 +56,13 @@ flag = 25     pCO2 and DIC given
 	\item{var2}{enter value of the second  variable in mol/kg, except for pH}
 	\item{S}{Salinity}
 	\item{T}{Temperature in degrees Celsius}
-  	\item{P}{Hydrostatic pressure in bar (surface = 0)}
-  	\item{Pt}{Concentration of total phosphate in mol/kg; set to 0 if NA}
-  	\item{Sit}{Concentration of total silicate in mol/kg; set to 0 if NA}
+  \item{Patm}{Surface atmospheric pressure in atm, default is 1 atm}
+  \item{P}{Hydrostatic pressure in bar (surface = 0)}
+  \item{Pt}{Concentration of total phosphate in mol/kg; set to 0 if NA}
+  \item{Sit}{Concentration of total silicate in mol/kg; set to 0 if NA}
 	\item{pHscale}{choice of pH scale: "T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
 	\item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "m06" from Millero et al. (2006), "m10" from Millero (2010) and "r" from Roy et al. (1993). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "m10".}
-  	\item{kf}{"pf" for using Kf from Perez and Fraga (1987) and "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994). "x" is the default flag; the default value is then "pf", except if T is outside the range 9 to 33oC and/or S is outside the range 10 to 40. In these cases, the default is "dg".}
+  \item{kf}{"pf" for using Kf from Perez and Fraga (1987) and "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994). "x" is the default flag; the default value is then "pf", except if T is outside the range 9 to 33oC and/or S is outside the range 10 to 40. In these cases, the default is "dg".}
 	\item{ks}{"d" for using Ks from Dickon (1990), "k" for using Ks from Khoo et al. (1977), default is "d"} 
 }
 
@@ -97,6 +98,8 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 \emph{Pressure corrections and pH scale:}
 
 \itemize{
+\item For K0, the pressure correction term of Weiss (1974) is used.
+
 \item For K1, K2, pK1, pK2, pK3, Kw, Kb, Khs and Ksi, the pressure correction was applied on the seawater scale. Hence, if needed, values were first transformed from the total scale to the seawater scale, the pressure correction applied as described by Millero (1995), and the value was transformed back to the required scale (T, F or SWS).
 
 \item For Kf, the pressure correction was applied on the free scale. The formulation of Dickson and Riley (1979 in Dickson and Goyet, 1994) provides Kf on the free scale but that of Perez and Fraga (1987) provides it on the total scale. Hence, in that case, Kf was first transformed from the total scale to the free scale. With both formulations, the pressure correction was applied as described by Millero (1995), and the value was transformed back to the required scale (T, F or SWS). 
