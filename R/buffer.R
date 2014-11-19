@@ -15,20 +15,20 @@
 buffer <- 
   function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="l10"){
     n <- max(length(flag), length(var1), length(var2), length(S), length(T), length(P), length(Pt), length(Sit), length(k1k2), length(kf), length(pHscale), length(ks), length(b))
-    if(length(flag)!=n){ flag <- rep(flag[1],n)}
-    if(length(var1)!=n){ var1 <- rep(var1[1],n)}
-    if(length(var2)!=n){ var2 <- rep(var2[1],n)}
-    if(length(S)!=n){ S <- rep(S[1],n)}
-    if(length(T)!=n){ T <- rep(T[1],n)}
-    if(length(Patm)!=n){ P <- rep(Patm[1],n)}
-    if(length(P)!=n){ P <- rep(P[1],n)}
-    if(length(Pt)!=n){ Pt <- rep(Pt[1],n)}
-    if(length(Sit)!=n){ Sit <- rep(Sit[1],n)}
-    if(length(k1k2)!=n){ k1k2 <- rep(k1k2[1],n)}
-    if(length(kf)!=n){ kf <- rep(kf[1],n)}
-    if(length(ks)!=n){ ks <- rep(ks[1],n)}
+    if(length(flag)!=n){flag <- rep(flag[1],n)}
+    if(length(var1)!=n){var1 <- rep(var1[1],n)}
+    if(length(var2)!=n){var2 <- rep(var2[1],n)}
+    if(length(S)!=n){S <- rep(S[1],n)}
+    if(length(T)!=n){T <- rep(T[1],n)}
+    if(length(Patm)!=n){Patm <- rep(Patm[1],n)}
+    if(length(P)!=n){P <- rep(P[1],n)}
+    if(length(Pt)!=n){Pt <- rep(Pt[1],n)}
+    if(length(Sit)!=n){Sit <- rep(Sit[1],n)}
+    if(length(k1k2)!=n){k1k2 <- rep(k1k2[1],n)}
+    if(length(kf)!=n){kf <- rep(kf[1],n)}
+    if(length(ks)!=n){ks <- rep(ks[1],n)}
     if(length(pHscale)!=n){pHscale <- rep(pHscale[1],n)}
-    if(length(b)!=n){ b <- rep(b[1],n)}
+    if(length(b)!=n){b <- rep(b[1],n)}
 
     # if the concentrations of total silicate and total phosphate are NA
     # they are set at 0
