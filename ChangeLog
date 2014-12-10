@@ -1,8 +1,9 @@
-version 3.0.3, 2014-11-18
+version 3.0.3, 2014-12-10
 -----------------------------------
+- Changed the formulation for the concentration of boron from Lee et al. (2000) to Upstrom (1974), as recommended by Orr and Epitalon (2014)
 - Corrected a bug introduced in the carb function of v3.0.2
 - The changes below clarify the changes described for v3.0.2
-- Fugacity coefficient (for fCO2 <-> pCO2 conversion) modified: (1) changed the gas constant R to use the correct units (as in Weiss (1974); (2) included the "x2" term in Weiss (1974); (3) accounted for total pressure (Ptot = atmospheric + hydrostatic) as in Weiss (1974) instead of assuming Ptot = 1 atm.
+- Fugacity coefficient (for fCO2 <-> pCO2 conversion) modified: (1) changed the gas constant R to use the correct units (as in Weiss (1974); (2) included the "x2" term in Weiss (1974); (3) accounted for total pressure (Ptot = atmospheric + hydrostatic) as in Weiss (1974) instead of assuming Ptot = 1 atm
 - K0 modified: added the pressure correction term in Weiss (1974).
 
 version 3.0.2, 2014-11-17

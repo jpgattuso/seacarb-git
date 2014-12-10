@@ -13,7 +13,7 @@
 #
 #
 oa <-
-function(flag, var1, var2, pCO2f, pCO2s=1e6, S=35, T=25, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", plot=FALSE,  b="l10"){
+function(flag, var1, var2, pCO2f, pCO2s=1e6, S=35, T=25, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", plot=FALSE,  b="u74"){
 
 n <- max(length(var1), length(var2), length(pCO2f), length(pCO2s), length(S), length(T), length(P), length(Pt), length(Sit), length(k1k2), length(kf), length(pHscale), length(ks))
 if(length(flag)!=n){ flag <- rep(flag[1],n)}

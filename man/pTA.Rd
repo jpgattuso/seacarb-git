@@ -6,7 +6,7 @@
 \description{Calculates the carbonate chemistry following addition of \eqn{CO_3^{2-}} or \eqn{HCO_3^-}}
 \usage{
 pTA(flag, sys=0, var1, var2, pCO2a, co3, hco3, S=35, T=20, P=0, 
-	Pt=0, Sit=0, k1k2="x", kf="x", ks="d", pHscale="T", b="l10")
+	Pt=0, Sit=0, k1k2="x", kf="x", ks="d", pHscale="T", b="u74")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -67,7 +67,7 @@ flag = 25     pCO2 and DIC given
   	\item{kf}{"pf" for using Kf from Perez and Fraga (1987) and "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994). "x" is the default flag; the default value is then "pf", except if T is outside the range 9 to 33oC and/or S is outside the range 10 to 40. In these cases, the default is "dg".}
 	\item{ks}{"d" for using Ks from Dickon (1990), "k" for using Ks from Khoo et al. (1977), default is "d"} 
 	\item{pHscale}{"T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
-	\item{b}{"l10" for computing boron total from the Lee et al. (2010) formulation or "u74" for using the Uppstrom (1974) formulation, default is "l10" }
+	\item{b}{"l10" for computing boron total from the Lee et al. (2010) formulation or "u74" for using the Uppstrom (1974) formulation, default is "u74" }
 
 }
 
@@ -169,10 +169,10 @@ Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
 
 \examples{
 pTA(flag=24, sys=0, var1=384, var2=2302e-6, pCO2a=384, co3=260e-6, 
-	hco3=1000e-6, S=34.3, T=16, P=0, pHscale="T", kf="pf", k1k2="l", ks="d", b="l10")
+	hco3=1000e-6, S=34.3, T=16, P=0, pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
 
 pTA(flag=24, sys=1, var1=384, var2=2302e-6, pCO2a=384, co3=260e-6, 
-	hco3=1000e-6, S=34.3, T=16, P=0, pHscale="T", kf="pf", k1k2="l", ks="d", b="l10")
+	hco3=1000e-6, S=34.3, T=16, P=0, pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
 }
 
 \keyword{utilities}

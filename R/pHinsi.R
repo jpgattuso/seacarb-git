@@ -9,7 +9,7 @@
 # You should have received a copy of the GNU General Public License along with seacarb; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 #
-"pHinsi" <- function(pH=8.2, ALK=2.4e-3, Tinsi=20, Tlab=25, S=35, Pt = 0, Sit = 0, k1k2='x', kf='x', ks="d", pHscale="T", b="l10") {
+"pHinsi" <- function(pH=8.2, ALK=2.4e-3, Tinsi=20, Tlab=25, S=35, Pt = 0, Sit = 0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74") {
   # if the concentrations of total silicate and total phosphate are NA
   # they are set at 0
   Sit[is.na(Sit)] <- 0

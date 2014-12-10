@@ -4,7 +4,7 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Carbonate saturation state for magnesian calcites}
 \description{Calculates the calcium carbonate saturation state for magnesian calcite}
-\usage{Om(x, flag, var1, var2, k1k2='x', kf='x', ks="d", pHscale="T", b="l10")}
+\usage{Om(x, flag, var1, var2, k1k2='x', kf='x', ks="d", pHscale="T", b="u74")}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 	\item{x}{mole fraction of magnesium ions, note that the function is only valid for x ranging between 0 and 0.25}
@@ -56,7 +56,7 @@ flag = 25     pCO2 and DIC given
 	\item{kf}{"pf" for using Kf from Perez and Fraga (1987) and "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994). "x" is the default flag; the default value is then "pf", except if T is outside the range 9 to 33oC and/or S is outside the range 10 to 40. In these cases, the default is "dg".}
 	\item{ks}{"d" for using Ks from Dickon (1990) and "k" for using Ks from Khoo et al. (1977), default is "d"} 
 	\item{pHscale}{"T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
-	\item{b}{"l10" for computing boron total from the Lee et al. (2010) formulation or "u74" for using the Uppstrom (1974) formulation, default is "l10" }
+	\item{b}{"l10" for computing boron total from the Lee et al. (2010) formulation or "u74" for using the Uppstrom (1974) formulation, default is "u74" }
 }
 
 
@@ -150,6 +150,6 @@ Heloise Lavigne, Andreas J. Andersson and Jean-Pierre Gattuso \email{gattuso@obs
 
 \examples{
 Om(x=seq(0.01, 0.252, 0.01), flag=8, var1=8.2, var2=0.00234, 
-  k1k2='x', kf='x', ks="d", pHscale="T", b="l10")
+  k1k2='x', kf='x', ks="d", pHscale="T", b="u74")
 }
 \keyword{utilities}

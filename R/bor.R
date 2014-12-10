@@ -10,7 +10,7 @@
 #
 #
 "bor" <-
-function(S=35, b="l10"){  #two formulations possible Lee et al., (2010) : "l10" or Uppstrom (1974) : "u74"
+function(S=35, b="u74"){  #two formulations possible Lee et al., (2010) : "l10" or Uppstrom (1974) : "u74"
 
 n <- max(c(length(S), length(b)))
 if(length(S)!=n){ S <- rep(S[1],n)}
