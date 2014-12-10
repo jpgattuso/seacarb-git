@@ -10,7 +10,7 @@ bor(S, b)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{S}{Salinity, default is 35}
-  \item{b}{"l10" for using the Lee et al. (2010) formulation or "u74" for using the Uppstrom (1974) formulation, default is "l10" }
+  \item{b}{"l10" for using the Lee et al. (2010) formulation or "u74" for using the Uppstrom (1974) formulation, default is "u74" }
   }
 
 
