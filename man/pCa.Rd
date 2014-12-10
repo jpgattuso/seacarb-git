@@ -6,7 +6,7 @@
 \description{Calculates the changes in the saturation states of aragonite and calcite resulting from the manipulation of the calcium concentration}
 \usage{
 pCa(flag, var1, var2, Ca, S=35, T=20, P=0, Pt=0, Sit=0, k1k2="x", 
-	kf="x", ks="d", pHscale="T", b="l10")
+	kf="x", ks="d", pHscale="T", b="u74")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -64,7 +64,7 @@ flag = 25     pCO2 and DIC given
   	\item{kf}{"pf" for using Kf from Perez and Fraga (1987) and "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994). "x" is the default flag; the default value is then "pf", except if T is outside the range 9 to 33oC and/or S is outside the range 10 to 40. In these cases, the default is "dg".}
 	\item{ks}{"d" for using Ks from Dickon (1990), "k" for using Ks from Khoo et al. (1977), default is "d"} 
 	\item{pHscale}{choice of pH scale: "T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
-	\item{b}{"l10" for computing boron total from the Lee et al. (2010) formulation or "u74" for using the Uppstrom (1974) formulation, default is "l10" }
+	\item{b}{"l10" for computing boron total from the Lee et al. (2010) formulation or "u74" for using the Uppstrom (1974) formulation, default is "u74" }
 }
 
 \details{The Lueker et al. (2000) constants for K1 and K2, the Perez and Fraga (1987) constant for Kf and the Dickson (1990) constant for Ks are recommended by Dickson et al. (2007). It is, however, critical to consider that each formulation is only valid for specific ranges of temperature and salinity:
@@ -160,9 +160,9 @@ Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
 
 \examples{
 pCa(flag=15, var1=2302e-6, var2=2050e-6, Ca=0.01028, S=35, T=20, P=0, 
-	Pt=0, Sit=0, pHscale="T", kf="pf", k1k2="l", ks="d", b="l10") # with normal Ca concentration
+	Pt=0, Sit=0, pHscale="T", kf="pf", k1k2="l", ks="d", b="u74") # with normal Ca concentration
 pCa(flag=15, var1=2302e-6, var2=2050e-6, Ca=0.01028/2, S=35, T=20, P=0, 
-	Pt=0, Sit=0, pHscale="T", kf="pf", k1k2="l", ks="d", b="l10") # with 0.5 * Ca concentration
+	Pt=0, Sit=0, pHscale="T", kf="pf", k1k2="l", ks="d", b="u74") # with 0.5 * Ca concentration
 }
 
 \keyword{utilities}
