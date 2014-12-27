@@ -42,7 +42,6 @@ function(flag, var1, var2, S=35, T=25,	Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     #---- issues de equic----
     Cl = S / 1.80655;      # Cl = chlorinity; S = salinity (per mille)
     cl3 = Cl^(1/3);
-    iom0 = 19.924*S/(1000-1.005*S);                      # ionic strength
     ST = 0.14/96.062/1.80655*S;   # (mol/kg soln) total sulfate
     BOR = bor(S=S , b=b);   # (mol/kg), DOE94 boron total
     FLUO = (7*(S/35))*1e-5        # (mol/kg), DOE94 fluoride total
@@ -667,6 +666,7 @@ function(flag, var1, var2, S=35, T=25,	Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     i_flag <- which (flag >= 21 & flag <= 25)
     if(gas=="insitu")
     {
+      print(gas)
       # In situ pCO2 - compute with potential T & surface P (atm)  
       pCO2[i_flag] <- var1[i_flag] * 1e-6
       tk <- TK[i_flag]     
@@ -682,6 +682,7 @@ function(flag, var1, var2, S=35, T=25,	Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     }
     else if(gas=="potential")
     {
+      print(gas)
       # Potential pCO2 - compute with potential T & surface P  
       pCO2pot[i_flag] <- var1[i_flag] * 1e-6
       tkp   <- swTheta(S[i_flag], T[i_flag], P[i_flag]*10) + 273.15       #Potential temperature in Kelvin (compute w/ swTheta from 'oce' package)
