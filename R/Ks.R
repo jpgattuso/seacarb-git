@@ -28,7 +28,6 @@ function(S=35,T=25,P=0, ks="d"){
     TK = T + tk;           # T [C]; TK [K]
     Cl = S / 1.80655;      # Cl = chlorinity; S = salinity (per mille)
     cl3 = Cl^(1/3);   
-    ION = 0.00147 + 0.03592 * Cl + 0.000068 * Cl * Cl;   # ionic strength
     iom0 = 19.924*S/(1000-1.005*S);
     ST = 0.14/96.062/1.80655*S;   # (mol/kg soln) total sulfate
 
