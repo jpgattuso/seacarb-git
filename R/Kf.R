@@ -47,7 +47,6 @@ function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0=0,Ks_p=0){
     TK = T + tk;           # TC [C]; T[K]
     Cl = S / 1.80655;      # Cl = chlorinity; S = salinity (per mille)
     cl3 = Cl^(1/3);   
-    ION = 0.00147 + 0.03592 * Cl + 0.000068 * Cl * Cl;   # ionic strength
     iom0 = 19.924*S/(1000-1.005*S);
     ST = 0.14/96.062/1.80655*S;   # (mol/kg soln) total sulfate
     FT = 7e-5*(S/35)    
@@ -92,7 +91,7 @@ function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0=0,Ks_p=0){
     #   1994, Chapter 5, p. 14)
     #   pH-scale: 'free' (require to convert in total scale after pressure corrections 
 
-    lnKfdg = 1590.2/TK - 12.641 + 1.525*sqrt(ION) + log(1-0.001005*S);
+    lnKfdg = 1590.2/TK - 12.641 + 1.525*sqrt(iom0) + log(1-0.001005*S);
 
     Kfdg <- exp(lnKfdg)
 
