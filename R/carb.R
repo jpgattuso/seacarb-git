@@ -40,12 +40,11 @@ function(flag, var1, var2, S=35, T=25,	Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     TK = T + tk;           # TK [K]; T[C]
     
     #---- issues de equic----
-    Cl = S / 1.80655;      # Cl = chlorinity; S = salinity (per mille)
-    cl3 = Cl^(1/3);
-    ST = 0.14/96.062/1.80655*S;   # (mol/kg soln) total sulfate
-    BOR = bor(S=S , b=b);   # (mol/kg), DOE94 boron total
-    FLUO = (7*(S/35))*1e-5        # (mol/kg), DOE94 fluoride total
-    
+    Cl = S / 1.80655;             # Cl = chlorinity; S = salinity (per mille)
+    ST = 0.14 * Cl/96.062         # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
+    FLUO = 6.7e-5 * Cl/18.9984    # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
+    BOR = bor(S=S , b=b);         # (mol/kg) total boron
+
     #---------------------------------------------------------------------
     #--------------------- calcul des K ----------------------------------
     #---------------------------------------------------------------------
@@ -55,13 +54,14 @@ function(flag, var1, var2, S=35, T=25,	Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     Ks    <- Ks(S=S, T=T, P=P, ks=ks)
     
     # Kf on free pH scale
+    Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks)
     Kff <- Kf(S=S, T=T, P=P, pHscale="F", kf=kf, Ks_P0, Ks)
     # Kf on given pH scale
     Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks)
     
     # Conversion factor from total to SWS pH scale at zero pressure
-    ktotal2SWS_P0 <- kconv(S=S,T=T,P=0,kf=kf,Ks=Ks,Kff=Kff)$ktotal2SWS
-    
+    ktotal2SWS_P0 <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0)$ktotal2SWS
+
     # Conversion factor from SWS to chosen pH scale
     conv <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks,Kff=Kff)
     kSWS2chosen <- rep(1.,n)
@@ -83,7 +83,7 @@ function(flag, var1, var2, S=35, T=25,	Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     rho <- rho(S=S,T=T,P=P)
 
     # Compute potential K0 with S, potential temperature, and atmospheric pressure (usually 1 atm)
-    K0pot <- K0(S=S, T=swTheta(salinity=S,temperature=T, pressure=P*10), Patm=Patm, P=0)
+    K0pot <- K0(S=S, T=theta(S=S, T=T, P=P, Pref=0), Patm=Patm, P=0)
  
     #------------------------------------------------------------------#
     #------------------------------------------------------------------#
@@ -646,54 +646,52 @@ function(flag, var1, var2, S=35, T=25,	Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     fCO2pot <- fCO2
     pCO2pot <- pCO2
 
-    # ------------ calculation of pCO2 for cases 1 to 15 
-    # compute partial pressure at total pressure = Patm + Phydro (atm)
+    # ------------ compute pCO2 for cases 1 to 15 (neither pCO2 nor pCO2pot is an input variable) 
     # Indices of flag elements where 1 <= flag <= 15
     i_flag <- which (flag >= 1 & flag <= 15)
     # In-situ pCO2: compute from in situ T and total P (Patm + Phydrostatic)
-    tk    <- TK[i_flag]
-    B  <- -1636.75 + 12.0408*tk  - 0.0327957*(tk*tk)   + 0.0000316529*(tk*tk*tk);
-    pCO2[i_flag]    <- fCO2[i_flag]    / exp((Patm[i_flag] + P[i_flag]/1.01325)*(B + 2*((1-fCO2[i_flag])^2)*(57.7-0.118*tk))/(82.057*tk))
+    tk <- TK[i_flag]
+    B  <- -1636.75 + 12.0408*tk  - 0.0327957*(tk*tk)   + 0.0000316528*(tk*tk*tk);
+    fugfac <- exp((Patm[i_flag] + P[i_flag]/1.01325)*(B + 2*((1-fCO2[i_flag])^2)*(57.7-0.118*tk))/(82.05736*tk))
+    pCO2[i_flag]    <- fCO2[i_flag] / fugfac
     # Potential pCO2: compute from potential T & surface P (Patm only)  
-    tkp   <- swTheta(S[i_flag], T[i_flag], P[i_flag]*10) + 273.15       #Potential temperature in Kelvin (compute w/ swTheta from 'oce' package)
-    B  <- -1636.75 + 12.0408*tkp - 0.0327957*(tkp*tkp) + 0.0000316529*(tkp*tkp*tkp);
+    tkp <- theta(S=S[i_flag], T=T[i_flag], P=P[i_flag], Pref=0) + 273.15       #Potential temperature in Kelvin 
+    B   <- -1636.75 + 12.0408*tkp - 0.0327957*(tkp*tkp) + 0.0000316528*(tkp*tkp*tkp);
     fCO2pot[i_flag] <- fCO2[i_flag] * K0[i_flag] / K0pot[i_flag]
-    pCO2pot[i_flag] <- fCO2pot[i_flag] / exp((Patm[i_flag])*(B + 2*((1-fCO2pot[i_flag])^2)*(57.7-0.118*tkp))/(82.057*tkp))
+    fugfacpot <- exp((Patm[i_flag])*(B + 2*((1-fCO2pot[i_flag])^2)*(57.7-0.118*tkp))/(82.05736*tkp))
+    pCO2pot[i_flag] <- fCO2pot[i_flag] / fugfacpot
 
-    # ------------ calculation of fCO2 for cases 21 to 25
-    # compute fugacity at total pressure = Patm + Phydro (atm)
+    # ------------ compute fCO2 for cases 21 to 25 (pCO2 or pCO2pot is an input variable)
     # Indices of flag elements where 21 <= flag <= 25
     i_flag <- which (flag >= 21 & flag <= 25)
     if(gas=="insitu")
     {
-      print(gas)
       # In situ pCO2 - compute with potential T & surface P (atm)  
       pCO2[i_flag] <- var1[i_flag] * 1e-6
       tk <- TK[i_flag]     
       B  <- -1636.75 + 12.0408*tk  - 0.0327957*(tk*tk)   + 0.0000316528*(tk*tk*tk);
-      fugfac <- exp((Patm[i_flag]+P[i_flag]/2.01325)*(B + 2*((1-pCO2[i_flag])^2)*(57.7-0.118*tk))/(82.057*tk))
+      fugfac <- exp((Patm[i_flag]+P[i_flag]/1.01325)*(B + 2*((1-pCO2[i_flag])^2)*(57.7-0.118*tk))/(82.05736*tk))
       fCO2[i_flag] <- pCO2[i_flag] * fugfac
       fCO2pot[i_flag] <- fCO2[i_flag] * K0[i_flag] / K0pot[i_flag]
       # Compute corresponding pCO2pot
-      tkp   <- swTheta(S[i_flag], T[i_flag], P[i_flag]*10) + 273.15       #Potential temperature in Kelvin (compute w/ swTheta from 'oce' package)
+      tkp   <- theta(S=S[i_flag], T=T[i_flag], P=P[i_flag], Pref=0) + 273.15       #Potential temperature in Kelvin
       Bpot  <- -1636.75 + 12.0408*tkp - 0.0327957*(tkp*tkp) + 0.0000316528*(tkp*tkp*tkp);
-      fugfacpot <- exp((Patm[i_flag])*(Bpot + 2*((1-pCO2[i_flag])^2)*(57.7-0.118*tkp))/(82.057*tkp))
+      fugfacpot <- exp((Patm[i_flag])*(Bpot + 2*((1-pCO2[i_flag])^2)*(57.7-0.118*tkp))/(82.05736*tkp))
       pCO2pot[i_flag] = fCO2pot[i_flag] / fugfacpot
     }
     else if(gas=="potential")
     {
-      print(gas)
       # Potential pCO2 - compute with potential T & surface P  
       pCO2pot[i_flag] <- var1[i_flag] * 1e-6
-      tkp   <- swTheta(S[i_flag], T[i_flag], P[i_flag]*10) + 273.15       #Potential temperature in Kelvin (compute w/ swTheta from 'oce' package)
+      tkp   <- theta(S=S[i_flag], T=T[i_flag], P=P[i_flag], Pref=0) + 273.15       #Potential temperature in Kelvin
       Bpot  <- -1636.75 + 12.0408*tkp - 0.0327957*(tkp*tkp) + 0.0000316528*(tkp*tkp*tkp);
-      fugfacpot <- exp((Patm[i_flag])*(Bpot + 2*((1-pCO2pot[i_flag])^2)*(57.7-0.118*tkp))/(82.057*tkp))
+      fugfacpot <- exp((Patm[i_flag])*(Bpot + 2*((1-pCO2pot[i_flag])^2)*(57.7-0.118*tkp))/(82.05736*tkp))
       fCO2pot[i_flag] <- pCO2pot[i_flag] * fugfacpot
       fCO2[i_flag] <- fCO2pot[i_flag] * K0pot[i_flag] / K0[i_flag]
       # Compute corresponding pCO2
       tk <- TK[i_flag]     
-      B  <- -1636.75 + 12.0408*tk  - 0.0327957*(tk*tk)   + 0.0000316528*(tk*tk*tk);
-      fugfac <- exp((Patm[i_flag]+P[i_flag]/2.01325)*(B + 2*((1-fCO2[i_flag])^2)*(57.7-0.118*tk))/(82.057*tk))
+      B  <- -1636.75 + 12.0408*tk - 0.0327957*(tk*tk) + 0.0000316528*(tk*tk*tk);
+      fugfac <- exp((Patm[i_flag]+P[i_flag]/1.01325)*(B + 2*((1-fCO2[i_flag])^2)*(57.7-0.118*tk))/(82.05736*tk))
       pCO2[i_flag] = fCO2[i_flag] / fugfac
     }
 
@@ -873,9 +871,10 @@ function(flag, var1, var2, S=35, T=25,	Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     # CALCULATION OF ARAGONITE AND CALCITE SATURATION STATE  #
     ##########################################################
 
-    Oa  <- ((0.01028*(S/35))*CO3)/Kspa
-    Oc  <- ((0.01028*(S/35))*CO3)/Kspc
-    
+    Ca = (0.02128/40.078) * S/1.80655  #Improved formula from Dickson et al. (2007) as discussed in Orr & Epitalon (2014, revised)
+    Oa  <- (Ca*CO3)/Kspa
+    Oc  <- (Ca*CO3)/Kspc
+
     #PCO2 and fCO2 - convert from atm to microatm
     pCO2 <- pCO2*1e6
     fCO2 <- fCO2*1e6    
