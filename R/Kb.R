@@ -15,18 +15,18 @@ function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0){
 
     nK <- max(length(S), length(T), length(P), length(pHscale), length(kSWS2scale) ,length(ktotal2SWS_P0))
 
-    ##-------- Creation de vecteur pour toutes les entrees (si vectorielles)
+    ##-------- Create vectors for all input (if vectorial)
 
     if(length(S)!=nK){S <- rep(S[1], nK)}
     if(length(T)!=nK){T <- rep(T[1], nK)}
     if(length(P)!=nK){P <- rep(P[1], nK)}
     if(length(pHscale)!=nK){pHscale <- rep(pHscale[1], nK)}
             
-    #-------Constantes----------------
+    #-------Constants----------------
 
-    #---- issues de equic----
-    tk = 273.15;           # [K] (for conversion [deg C] <-> [K])
-    TK = T + tk;           # T [C]; TK [K]
+    #---- issues of equic----
+    tk <- 273.15;           # [K] (for conversion [deg C] <-> [K])
+    TK <- T + tk;           # T [C]; TK [K]
 
             
     #---------------------------------------------------------------------
@@ -57,7 +57,7 @@ function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0){
         if(length(ktotal2SWS_P0)!=nK) ktotal2SWS_P0 <- rep(ktotal2SWS_P0[1], nK)
     Kb <- Kb * ktotal2SWS_P0
 
-    # -------------------Correction of Pression effect, if needed ---------------------------
+    # -------------------Correct for Pressure effect, if needed ---------------------------
     if (any (P != 0))
         Kb <- Pcorrect(Kvalue=Kb, Ktype="Kb", T=T, S=S, P=P, pHscale="SWS", 1., 1.)
 
@@ -75,10 +75,8 @@ function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0){
         {
             # Compute it
             kSWS2scale <- rep(1.0,nK)
-            if (any(is_total))
-                kSWS2scale[is_total] <- kconv(S=S[is_total], T=T[is_total], P=P[is_total])$kSWS2total
-            if (any(is_free))
-                kSWS2scale[is_free]  <- kconv(S=S[is_free], T=T[is_free], P=P[is_free])$kSWS2free
+            if (any(is_total)) {kSWS2scale[is_total] <- kconv(S=S[is_total], T=T[is_total], P=P[is_total])$kSWS2total}
+            if (any(is_free))  {kSWS2scale[is_free]  <- kconv(S=S[is_free], T=T[is_free], P=P[is_free])$kSWS2free}
         }
         else
             # Check its length
