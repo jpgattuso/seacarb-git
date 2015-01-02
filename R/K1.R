@@ -14,7 +14,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
 
     nK <- max(length(S), length(T), length(P), length(k1k2), length(pHscale), length(kSWS2scale) ,length(ktotal2SWS_P0))
 
-    ##-------- Creation de vecteur pour toutes les entrees (si vectorielles)
+    ##-------- Create vectors for all input (if vectorial)
 
     if(length(S)!=nK){S <- rep(S[1], nK)}
     if(length(T)!=nK){T <- rep(T[1], nK)}
@@ -22,7 +22,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
     if(length(k1k2)!=nK){k1k2 <- rep(k1k2[1], nK)}
     if(length(pHscale)!=nK){pHscale <- rep(pHscale[1], nK)}
 
-    ##---------- pHsc : this vector note the actual pHscale because it can change during processing
+    ##---------- pHsc : this vector is not the actual pHscale because it can change during processing
     pHsc <- rep(NA,nK)
     pHlabel <- rep(NA,nK)
     K1 <- rep(NA, nK)
@@ -33,9 +33,9 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
     k1k2[is_x] <- 'l'  ## luecker by default
     k1k2[is_x & is_outrange] <- "m10"  # Millero 2010 if outrange
 
-    #-------Constantes----------------
+    #-------Constants----------------
 
-    #---- issues de equic----
+    #---- issues of equic----
     tk <- 273.15;           # [K] (for conversion [deg C] <-> [K])
     TK <- T + tk;           # TC [C]; T[K]
     
@@ -136,7 +136,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
         if (missing(ktotal2SWS_P0))
         {
             # Compute it
-            kSWS2scale <- rep(1.0,nK)
+            ktotal2SWS_P0  <- rep(1.0,nK)
             ktotal2SWS_P0 <- kconv(S=S[convert], T=T[convert], P=0)$ktotal2SWS
         }
         else
@@ -155,13 +155,16 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
         # --> No need to determine conversion factor from free to SWS scale
     }
 
-    # ------------------- Pression effect --------------------------------
+    # ------------------- Pressure effect --------------------------------
     i_press <- which (P > 0)
     if (length(i_press) > 0)
     {
         # Call Pcorrect() on SWS scale
+	# issue (Orr): Why are the last 2 argupments set to one here?
         K1[i_press] <- Pcorrect(Kvalue=K1[i_press], Ktype="K1", T=T[i_press], 
-            S=S[i_press], P=P[i_press], pHscale=pHsc[i_press], 1., 1.)
+             S=S[i_press], P=P[i_press], pHscale=pHsc[i_press], 1., 1.)
+        #K1[i_press] <- Pcorrect(Kvalue=K1[i_press], Ktype="K1", T=T[i_press], 
+        #    S=S[i_press], P=P[i_press], pHscale=pHsc[i_press])
     }
 
 
@@ -181,8 +184,8 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
         {
             # Compute it
             kSWS2scale <- rep(1.0,nK)
-            kSWS2scale[is_total] <- kconv(S=S[is_total], T=T[is_total], P=P[is_total])$kSWS2total
-            kSWS2scale[is_free]  <- kconv(S=S[is_free], T=T[is_free], P=P[is_free])$kSWS2free
+	    if (any(is_total)){ kSWS2scale[is_total] <- kconv(S=S[is_total], T=T[is_total], P=P[is_total])$kSWS2total }
+            if (any(is_free)){  kSWS2scale[is_free]  <- kconv(S=S[is_free],  T=T[is_free],  P=P[is_free])$kSWS2free }
         }
         else
             # Check its length
