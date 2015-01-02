@@ -28,6 +28,19 @@
 "kconv" <- function (S=35,T=25,P=0,kf='x',Ks=0,Kff=0)
 
 {
+    #nK <- max(length(S), length(T), length(P), length(kf), length(Ks), length(Kff))
+    #if(length(S)!=nK){S <- rep(S[1], nK)}
+    #if(length(T)!=nK){T <- rep(T[1], nK)}
+    #if(length(P)!=nK){P <- rep(P[1], nK)}
+    #if(length(kf)!=nK){kf <- rep(kf[1], nK)}
+    #if(length(Ks)!=nK){Ks <- rep(Ks[1], nK)}
+    #if(length(Kff)!=nK){Kff <- rep(Kff[1], nK)}
+    
+    if ( missing(kf) && exists("kfg",envir=parent.frame()) )
+       {
+	 kf <- get("kfg", envir = parent.frame())
+       }
+
 	#--------------------------------------------------------------
     # CONVERT equilibrium constants to free scale:
 	#--------------------------------------------------------------
@@ -47,7 +60,8 @@
 	{
 	    Ks = Ks(S=S, T=T, P=P)                 # on free pH scale
 	}
-	ST  = 0.14/96.062/1.80655*S    # (mol/kg soln) total sulfate
+        Cl = S / 1.80655              # Cl = chlorinity; S = salinity (per mille)
+        ST = 0.14 * Cl/96.062         # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
 	total2free  = 1/(1+ST/Ks)      # Kfree = Ktotal*total2free
 	total2free <- as.numeric(total2free)	
 
@@ -70,7 +84,8 @@
 	#
 	#       convert from pH_sws ('seawater scale`) to pH ('free`):
 	#       pH_sws = pH_free - log(1+S_T/K_S(S,T)+F_T/K_F(S,T))
-	FT = 7e-5*(S/35)                  # (mol/kg soln) total fluoride
+        Cl = S / 1.80655            # Cl = chlorinity; S = salinity (per mille)
+        FT = 6.7e-5 * Cl/18.9984    # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
 	free2SWS  = 1+ST/Ks+FT/Kff         # Kfree = Ksws*sws2free
 	free2SWS <- as.numeric(free2SWS)
 	total2SWS = total2free * free2SWS # KSWS = Ktotal*total2SWS

@@ -63,10 +63,11 @@ TA<-f$coefficients[1]*C/m0[1]
 E0 <- z$E/1000-(R*z$Tk/F)*log((-m0*TA+m*C)/(m0+m))
 Hprime <- exp((z$E/1000-E0)/(R*z$Tk/F))
 
-St <- (0.14/96.062)*(S/1.80655)
+Cl <- S / 1.80655;             # Cl = chlorinity; S = salinity (per mille)
+St <- 0.14 * Cl/96.062         # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
 Ks <- Ks(S,T[1], 0)
 Z <- 1+ St/Ks
-Ft <- (0.000067/18.998)*(S/1.80655)
+Ft <- 6.7e-5 * Cl/18.9984      # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
 Kf <- exp(874/z$Tk-9.68+0.111*S**(1/2))
 y <- (m/m0)
 regr <- nls(y ~ ((At + (St/(1 + Ks*Z/(f*Hprime)))+(Ft/ (1+Kf/(f*Hprime)))+(f*Hprime/Z))/(C-f*Hprime/Z)),start=list(At=TA, f=1))

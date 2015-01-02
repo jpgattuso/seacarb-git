@@ -52,11 +52,10 @@ tk = 273.15;           # [K] (for conversion [deg C] <-> [K])
 TK = T + tk;           # TK [K]; T[C]  
 
 #---- issues de equic---- 
-Cl = S / 1.80655;      # Cl = chlorinity; S = salinity (per mille) 
-cl3 = Cl^(1/3); 
-ST = 0.14/96.062/1.80655*S;   # (mol/kg soln) total sulfate bor = bor(S=S, b=b[i]);   # (mol/kg), boron total 
-fluo = (7*(S/35))*1e-5        # (mol/kg), DOE94 fluoride total  
-bor = bor(S=S, b=b[i]);   # (mol/kg), DOE94 boron total
+Cl = S / 1.80655;            # Cl = chlorinity; S = salinity (per mille)
+ST = 0.14 * Cl/96.062        # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
+fluo = 6.7e-5 * Cl/18.9984   # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
+bor = bor(S=S , b=b);        # (mol/kg) total boron
 
 #--------------------------------------------------------------------- 
 #--------------------- calcul des K ---------------------------------- #---------------------------------------------------------------------  

@@ -43,7 +43,7 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
     ## loading table with coefficients
    # if(!exists("Pcoeffs", where = .GlobalEnv)) data(Pcoeffs)
 
-    # ------------------- Pression effect --------------------------------
+    # ------------------- Pressure effect --------------------------------
     
 	## 
 	##  here, pHscale given in argument is the pH scale of Kvalue also given in argument
@@ -192,8 +192,9 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
                     i_from_T_full <- i_Kf_to_free[i_from_T]                
                   
                     # compute conversion factor from Total pH scale to Free pH scale at zero pressure
-                    ST <- 0.14/96.062/1.80655*S[i_from_T_full]
-                    FT <- 7e-5*(S[i_from_T_full]/35)
+                    Cl = S[i_from_T_full] / 1.80655;  # Cl = chlorinity; S = salinity (per mille)
+                    ST = 0.14 * Cl/96.062         # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
+                    FT = 6.7e-5 * Cl/18.9984    # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
                     conv[i_from_T] <- 1./(1+ST/Ks(S=S[i_from_T_full], T=T[i_from_T_full], P=0))
                 }
               
@@ -206,8 +207,9 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
                     i_from_SWS_full <- i_Kf_to_free[i_from_SWS]                
                   
                     # compute conversion factor from SW pH scale to Free pH scale at zero pressure
-                    ST <- 0.14/96.062/1.80655*S[i_from_SWS_full]
-                    FT <- 7e-5*(S[i_from_SWS_full]/35)
+                    Cl = S[i_from_SWS_full] / 1.80655;  # Cl = chlorinity; S = salinity (per mille)
+                    ST = 0.14 * Cl/96.062         # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
+                    FT = 6.7e-5 * Cl/18.9984    # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
                     conv[i_from_SWS] <- 1. / (1 + ST/Ks(S=S[i_from_SWS_full], T=T[i_from_SWS_full], P=0)
                                       + FT/Kf(T=T[i_from_SWS_full], P=0, S=S[i_from_SWS_full], pHscale="F"))
                 }
