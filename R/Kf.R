@@ -25,15 +25,15 @@ function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0=0,Ks_p=0){
     
 ##----------Make kf a global variable to facilitate pH scale changes in multiple routines
 
-#kfg <- NULL; rm(kfg); # just to avoid a "note" during the compilation of the package
     if (missing(kf)) {
-#    kfg <<- "x"
-        assign("kfg", "x", envir = parent.frame())
-    } else {
-#    kfg <<- kf
-        assign("kfg", kf, envir = parent.frame())
-    }
-    
+        if (exists("kfg",envir=parent.frame()) )
+           {kf <- get("kfg", envir = parent.frame()) }
+	else    
+           {assign("kfg", "x", envir = parent.frame()) }
+	}
+    else
+        {assign("kfg", kf, envir = parent.frame()) } 
+
     ##----------Check the validity of the method regarding the T/S range
     is_x <- kf=='x'
     is_outrange <- T>33 | T<10 | S<10 | S>40
@@ -46,10 +46,9 @@ function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0=0,Ks_p=0){
     tk = 273.15;           # [K] (for conversion [deg C] <-> [K])
     TK = T + tk;           # TC [C]; T[K]
     Cl = S / 1.80655;      # Cl = chlorinity; S = salinity (per mille)
-    cl3 = Cl^(1/3);   
     iom0 = 19.924*S/(1000-1.005*S);
-    ST = 0.14/96.062/1.80655*S;   # (mol/kg soln) total sulfate
-    FT = 7e-5*(S/35)    
+    ST = 0.14 * Cl/96.062         # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
+    FT = 6.7e-5 * Cl/18.9984    # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
 
     #---------------------------------------------------------------------
     #---------------------- Kf Perez and Fraga ---------------------------
@@ -75,7 +74,8 @@ function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0=0,Ks_p=0){
     	if (length(Ks)!=nK) Ks <- rep(Ks[1], nK)
     }
     
-    ST  = 0.14/96.062/1.80655*S    # (mol/kg soln) total sulfate
+    Cl = S / 1.80655;             # Cl = chlorinity; S = salinity (per mille)
+    ST = 0.14 * Cl/96.062         # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
     total2free  = 1/(1+ST/Ks)      # Kfree = Ktotal*total2free
     total2free <- as.numeric(total2free)	
 
@@ -102,7 +102,7 @@ function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0=0,Ks_p=0){
     Kf[!is_pf] <- Kfdg[!is_pf]
 
 
-    # ------------------- Pression effect --------------------------------
+    # ------------------- Pressure effect --------------------------------
     if (any (P != 0)) Kf <- Pcorrect(Kvalue=Kf, Ktype="Kf", T=T, S=S, P=P, pHscale="F") 
     # All the Kf constants are on free scale, whatever the method or the pressure
 
