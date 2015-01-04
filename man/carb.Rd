@@ -5,7 +5,7 @@
 \title{Parameters of the seawater carbonate system}
 \description{Returns parameters of the seawater carbonate system.}
 \usage{carb(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
-        k1k2="x", kf="x", ks="d", pHscale="T", b="u74")}
+        k1k2="x", kf="x", ks="d", pHscale="T", b="u74", gas="potential")}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 	\item{flag}{select the couple of variables available. The flags which can be used are: 
@@ -63,6 +63,7 @@ flag = 25     pCO2 and DIC given
 	\item{ks}{"d" for using Ks from Dickon (1990) and "k" for using Ks from Khoo et al. (1977), default is "d"} 
 	\item{pHscale}{"T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
 	\item{b}{"l10" for computing boron total from the Lee et al. (2010) formulation or "u74" for using the Uppstrom (1974) formulation, default is "u74" }
+  \item{gas}{"insitu" to calculate pCO2 and fCO2 at total in situ pressure and in situ temperature or "potential" to calculate pCO2 and fCO2 at 1 atm pressure and potential temperature, default is "potential"}
 }
 
 \details{The Lueker et al. (2000) constants for K1 and K2, the Perez and Fraga (1987) constant for Kf and the Dickson (1990) constant for Ks are recommended by Dickson et al. (2007). It is, however, critical to consider that each formulation is only valid for specific ranges of temperature and salinity:

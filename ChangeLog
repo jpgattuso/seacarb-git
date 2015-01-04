@@ -1,3 +1,19 @@
+version 3.0.4, 2015-01-04
+-----------------------------------
+- Function carb: added potential fCO2 and pCO2 (fCO2pot, pCO2pot) in the output
+- Function carb: added a new option "gas" as an input argument as recommended by Orr & Epitalon (2015). It can be either 'insitu' or 'potential' (the default). This new option describes whether in situ or potential fCO2 and pCO2 should be computed. In situ values are calculated after making pressure corrections to K0 and the fugacity coefficient following Weiss (1974) using total in situ pressure and in situ temperature. Potential values are calculated at 1 atm pressure while using potential instead of in situ temperature.
+- Function carb: as a result of the change above, the carb function now uses the swTheta function of the oce package which therefore needs to be installed.
+- Functions carb, buffer, buffesm and Ks: removed unused variables ION and iom0
+- Function Kf: fixed erroneous equation using wrong ionic strength ION
+- Changed data set Pcoeffs.txt: changed 'a0' for Kspa from -46.00 to -45.96, consitent with literature
+- New function: tetha to compute potential temperature (corresponding help file added too)
+- Function rho: convert input T (ITS 90) to T (IPTS 68) & then compute density, as intended
+- Functions Ks, Pcorrect, at, buffer, buffesm, kconv, pHconv: more accurate Ft equation and clearer St equation (best practices)
+- Function Kb: refined pH scale conversion
+- Changed K1, K2, carb: corrected errors in pH scale conversion
+- Corrected English
+- Function carb: corrected errors in pH scale conversion & fCO2 -> pCO2 conversion
+
 version 3.0.3, 2014-12-10
 -----------------------------------
 - Changed the formulation for the concentration of boron from Lee et al. (2000) to Upstrom (1974), as recommended by Orr and Epitalon (2014)
