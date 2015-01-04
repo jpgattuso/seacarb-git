@@ -55,14 +55,11 @@ buffer <-
     TK = T + tk;           # TK [K]; T[C]
     
     #---- issues de equic----
-    Cl = S / 1.80655;      # Cl = chlorinity; S = salinity (per mille)
-    cl3 = Cl^(1/3);
-    ION = 0.00147 + 0.03592 * Cl + 0.000068 * Cl * Cl;   # ionic strength
-    iom0 = 19.924*S/(1000-1.005*S);
-    ST = 0.14/96.062/1.80655*S;   # (mol/kg soln) total sulfate
-    BOR = bor(S=S , b=b);   # (mol/kg), DOE94 boron total
-    FLUO = (7*(S/35))*1e-5        # (mol/kg), DOE94 fluoride total
-    
+    Cl = S / 1.80655;            # Cl = chlorinity; S = salinity (per mille)
+    ST = 0.14 * Cl/96.062        # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
+    FLUO = 6.7e-5 * Cl/18.9984   # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
+    BOR = bor(S=S , b=b);        # (mol/kg) total boron
+
     #---------------------------------------------------------------------
     #--------------------- calcul des K ----------------------------------
     #---------------------------------------------------------------------

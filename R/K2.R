@@ -13,10 +13,10 @@
 function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
 {
 
-nK <- max(length(S), length(T), length(P), length(k1k2), length(pHscale), length(kSWS2scale) ,length(ktotal2SWS_P0))
+    nK <- max(length(S), length(T), length(P), length(k1k2), length(pHscale), length(kSWS2scale) ,length(ktotal2SWS_P0))
 
-    ##-------- Creation de vecteur pour toutes les entrees (si vectorielles)
-    
+    ##-------- Create vectors for all input (if vectorial)
+
     if(length(S)!=nK){S <- rep(S[1], nK)}
     if(length(T)!=nK){T <- rep(T[1], nK)}
     if(length(P)!=nK){P <- rep(P[1], nK)}
@@ -35,12 +35,11 @@ nK <- max(length(S), length(T), length(P), length(k1k2), length(pHscale), length
     k1k2[is_x] <- 'l'  ## luecker by default
     k1k2 [is_x & is_outrange] <- "m10"  # Millero 2010 if outrange
 
+    #-------Constants----------------
 
-    #-------Constantes----------------
-    
-    #---- issues de equic----
-    tk = 273.15;           # [K] (for conversion [deg C] <-> [K])
-    TK = T + tk;           # TC [C]; T[K]
+    #---- issues of equic----
+    tk <- 273.15;           # [K] (for conversion [deg C] <-> [K])
+    TK <- T + tk;           # T [C]; T [K]
     
     # --------------------- K2 lueker et al. 2000 ------------------------------
     #
@@ -135,7 +134,7 @@ nK <- max(length(S), length(T), length(P), length(k1k2), length(pHscale), length
     ##----------------- Conversion from total to SWS scale
     ##                  if pressure correction needed
     ##                  or pH scale conversion required anyway
-    ##                     (in which case SWS may be an intermediate stage of conversion)
+    ##                 (in which case SWS may be an intermediate stage of conversion)
     convert <- (pHsc == "T") & ((P > 0) | (pHscale != pHsc))
     if (any (convert))
     {
@@ -144,7 +143,7 @@ nK <- max(length(S), length(T), length(P), length(k1k2), length(pHscale), length
         if (missing(ktotal2SWS_P0))
         {
             # Compute it
-            kSWS2scale <- rep(1.0,nK)
+            ktotal2SWS_P0  <- rep(1.0,nK)
             ktotal2SWS_P0 <- kconv(S=S[convert], T=T[convert], P=0)$ktotal2SWS
         }
         else
@@ -163,7 +162,7 @@ nK <- max(length(S), length(T), length(P), length(k1k2), length(pHscale), length
         # --> No need to determine conversion factor from free to SWS scale
     }
 
-    # ------------------- Pression effect --------------------------------
+    # ------------------- Pressure effect --------------------------------
     i_press <- which (P > 0)
     if (length(i_press) > 0)
     {
@@ -188,8 +187,8 @@ nK <- max(length(S), length(T), length(P), length(k1k2), length(pHscale), length
         {
             # Compute it
             kSWS2scale <- rep(1.0,nK)
-            kSWS2scale[is_total] <- kconv(S=S[is_total], T=T[is_total], P=P[is_total])$kSWS2total
-            kSWS2scale[is_free]  <- kconv(S=S[is_free], T=T[is_free], P=P[is_free])$kSWS2free
+            if (any(is_total)){ kSWS2scale[is_total] <- kconv(S=S[is_total], T=T[is_total], P=P[is_total])$kSWS2total }
+            if (any(is_free)){  kSWS2scale[is_free]  <- kconv(S=S[is_free],  T=T[is_free],  P=P[is_free])$kSWS2free }
         }
         else
             # Check its length
@@ -225,7 +224,3 @@ nK <- max(length(S), length(T), length(P), length(k1k2), length(pHscale), length
     attr(K2,"method") = method
     return(K2)
 }
-
-
-
-	

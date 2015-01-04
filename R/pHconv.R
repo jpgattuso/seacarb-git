@@ -28,9 +28,10 @@ conv <- rep(NA, n)
 for(i in (1:n)){  
 
 	Ks = Ks(S=S[i], T=T[i], P=P[i], ks=ks[i])[1]                 # on free pH scale
-	ST  = 0.14/96.062/1.80655*S[i]    # (mol/kg soln) total sulfate
+        Cl = S[i] / 1.80655;      # Cl = chlorinity; S = salinity (per mille)
+        ST = 0.14 * Cl/96.062         # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
 	Kf = Kf(S=S[i], T=T[i], P=P[i], pHscale="F")[1]  # on the free pH scale
-	FT = 7e-5*(S[i]/35)                  # (mol/kg soln) total fluoride
+        FT = 6.7e-5 * Cl/18.9984    # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
 
 # flag 1 : seawater to total
 if (flag[i]==1) {pHconv[i] <- pH[i] + log10(1 + ST/Ks + FT/Kf) - log10(1 + ST/Ks); conv[i] <- "seawater to total"} 

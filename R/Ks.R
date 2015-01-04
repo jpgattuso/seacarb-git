@@ -21,16 +21,14 @@ function(S=35,T=25,P=0, ks="d"){
     if(length(P)!=nK){P <- rep(P[1], nK)}
     if(length(ks)!=nK){ks <- rep(ks[1], nK)}
 
-    #-------Constantes----------------
+    #-------Constants----------------
 
     #---- issues de equic----
-    tk = 273.15;          # [K] (for conversion [deg C] <-> [K])
+    tk = 273.15;           # [K] (for conversion [deg C] <-> [K])
     TK = T + tk;           # T [C]; TK [K]
     Cl = S / 1.80655;      # Cl = chlorinity; S = salinity (per mille)
-    cl3 = Cl^(1/3);   
-    ION = 0.00147 + 0.03592 * Cl + 0.000068 * Cl * Cl;   # ionic strength
     iom0 = 19.924*S/(1000-1.005*S);
-    ST = 0.14/96.062/1.80655*S;   # (mol/kg soln) total sulfate
+    ST = 0.14 * Cl/96.062  # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
 
 
 	#--------------------------------------------------------------
@@ -69,7 +67,7 @@ function(S=35,T=25,P=0, ks="d"){
 	#      correct for S range : 20 - 45
 
     I35 <- 0.7227
-    I <- I35*(27.570*S)/(1000-1.0016*S)   #formal ionic strenght
+    I <- I35*(27.570*S)/(1000-1.0016*S)   #formal ionic strength
     logbeta <- 647.59/TK - 6.3451 + 0.019085*TK - 0.5208*I^(0.5)
     beta <- 10^(logbeta)
     Ks_k <- 1/beta
@@ -85,7 +83,7 @@ function(S=35,T=25,P=0, ks="d"){
     method[!is_k] <- "Dickson (1990)"
     method[ is_k] <- "Khoo et al. (1977)"
     
-    # ------------------- Pression effect --------------------------------
+    # ------------------- Pressure effect --------------------------------
 
     if (any(P != 0))
         Ks <- Pcorrect(Kvalue=Ks, Ktype="Ks", T=T, S=S, P=P, pHscale="F")
