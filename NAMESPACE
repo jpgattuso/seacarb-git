@@ -1,3 +1,4 @@
 importFrom(utils, data)
 # Export all names
 exportPattern(".")
+importFrom(oce, swTheta)

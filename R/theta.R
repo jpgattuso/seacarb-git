@@ -27,7 +27,6 @@ function (S=35, T=25, P=0, Pref=0)
     if(length(P)!=nK){Pref <- rep(Pref[1], nK)}
 
     #The 'oce' package's 'swTheta' routine is used to compute potential temperature
-    require(oce)
 
     #Convert pressure in bar (seacarb default) to decibar (oce swTheta default)
     pressure = 10*P
