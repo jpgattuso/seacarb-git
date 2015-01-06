@@ -37,16 +37,16 @@ buffer <-
     
     Carb <- carb(flag=flag, var1=var1, var2=var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)
 
-	PH   <- Carb[5]
-	h    <- 10^(-PH)
-	CO2  <- Carb[6]
+	pH   <- Carb[6]
+	h    <- 10^(-pH)
+	CO2  <- Carb[7]
 
-	HCO3 <- Carb[11]
-	CO3  <- Carb[12]
-	DIC  <- Carb[13]
-	ALK  <- Carb[14]
-	Oa   <- Carb[15]
-	Oc   <- Carb[16]
+	HCO3 <- Carb[12]
+	CO3  <- Carb[13]
+	DIC  <- Carb[14]
+	ALK  <- Carb[15]
+	Oa   <- Carb[16]
+	Oc   <- Carb[17]
     
     #-------Constants----------------
     
