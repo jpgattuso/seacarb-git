@@ -40,28 +40,26 @@ buffer <-
 	PH   <- Carb[5]
 	h    <- 10^(-PH)
 	CO2  <- Carb[6]
-	pCO2 <- Carb[7]
-	fCO2 <- Carb[8]
-	HCO3 <- Carb[9]
-	CO3  <- Carb[10]
-	DIC  <- Carb[11]
-	ALK  <- Carb[12]
-	Oa   <- Carb[13]
-	Oc   <- Carb[14]
+
+	HCO3 <- Carb[11]
+	CO3  <- Carb[12]
+	DIC  <- Carb[13]
+	ALK  <- Carb[14]
+	Oa   <- Carb[15]
+	Oc   <- Carb[16]
     
-    #-------Constantes----------------
+    #-------Constants----------------
     
     tk = 273.15;           # [K] (for conversion [deg C] <-> [K])
     TK = T + tk;           # TK [K]; T[C]
     
-    #---- issues de equic----
     Cl = S / 1.80655;            # Cl = chlorinity; S = salinity (per mille)
     ST = 0.14 * Cl/96.062        # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
     FLUO = 6.7e-5 * Cl/18.9984   # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
     BOR = bor(S=S , b=b);        # (mol/kg) total boron
 
     #---------------------------------------------------------------------
-    #--------------------- calcul des K ----------------------------------
+    #--------------------- compute K's ----------------------------------
     #---------------------------------------------------------------------
     
     # Ks (free pH scale) at zero pressure and given pressure
@@ -69,12 +67,14 @@ buffer <-
     Ks    <- Ks(S=S, T=T, P=P, ks=ks)
     
     # Kf on free pH scale
+    Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks)
     Kff <- Kf(S=S, T=T, P=P, pHscale="F", kf=kf, Ks_P0, Ks)
     # Kf on given pH scale
     Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks)
     
     # Conversion factor from total to SWS pH scale at zero pressure
-    ktotal2SWS_P0 <- kconv(S=S,T=T,P=0,kf=kf,Ks=Ks,Kff=Kff)$ktotal2SWS
+    ktotal2SWS_P0 <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0)$ktotal2SWS
+
     # Conversion factor from SWS to chosen pH scale
     conv <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks,Kff=Kff)
     kSWS2chosen <- rep(1.,n)
@@ -84,7 +84,7 @@ buffer <-
     K1 <- K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0)   
     K2 <- K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0)
     Kw <- Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
-    K0 <- K0(S=S, T=T, P=P)
+    K0 <- K0(S=S, T=T, Patm=Patm, P=P)
     Kb <- Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0)
     K1p <- K1p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
     K2p <- K2p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
@@ -94,6 +94,9 @@ buffer <-
     Kspc <- Kspc(S=S, T=T, P=P)
 
     rho <- rho(S=S,T=T,P=P)
+
+    # Compute potential K0 with S, potential temperature, and atmospheric pressure (usually 1 atm)
+    K0pot <- K0(S=S, T=theta(S=S, T=T, P=P, Pref=0), Patm=Patm, P=0)
     
     #---------------------------------------------------------------------
     #--------------------    buffer effects    ---------------------------
@@ -130,11 +133,19 @@ buffer <-
     PhiH=1/ (h*log(10)* (D +(-Kb*BOR/((h+Kb)*(h+Kb)))  + (-Kw/(h*h))-1))  ; 
     
     Pi=(h*K1*(h+2*K2)*DIC)  /  ((h*h+h*K1+K1*K2)*(h*h+h*K1+K1*K2));
-    PiH=((-h/K0)*log(10)*Pi)*PhiH;
-    PiB=CO2/(K0*DIC)*BetaB;
-    PiD=CO2/(K0*DIC)*BetaD;
-    PiC=CO2/(K0*DIC)*BetaC;
-    
+
+    # In situ values - use K0 computed with in situ T & in situ P (atm + hydrostatic)
+    # PiH=((-h/K0)*log(10)*Pi)*PhiH;
+    # PiB=CO2/(K0*DIC)*BetaB;
+    # PiD=CO2/(K0*DIC)*BetaD;
+    # PiC=CO2/(K0*DIC)*BetaC;
+
+    # Potential values - use K0 computed with potential T & surface atm P only
+    PiH=((-h/K0pot)*log(10)*Pi)*PhiH;
+    PiB=CO2/(K0pot*DIC)*BetaB;
+    PiD=CO2/(K0pot*DIC)*BetaD;
+    PiC=CO2/(K0pot*DIC)*BetaC;
+
     col <- c("PhiD", "BetaD", "PiD", "PhiB", "BetaB", "PiB", "PhiC", "BetaC", "PiC", "PhiH", "PiH")
     res <- data.frame(PhiD,BetaD,PiD,PhiB,BetaB,PiB,PhiC,BetaC,PiC,PhiH,PiH)
     names(res) <- col 
