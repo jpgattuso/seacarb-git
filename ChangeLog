@@ -1,3 +1,10 @@
+version 3.0.5, 2015-01-06
+-----------------------------------
+- Function buffer: K0 is computed with potential T and atm pressure only (K0pot);
+- Function buffer: the pH scale conversions are corrected as done previously (v3.0.4) in carb.R
+- Function buffer: indices for variables from carb have been corrected (they differ in new version of carb).
+
+
 version 3.0.4, 2015-01-05
 -----------------------------------
 - New function: tetha to compute potential temperature (corresponding help file added too)
