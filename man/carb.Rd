@@ -63,7 +63,7 @@ flag = 25     pCO2 and DIC given
 	\item{ks}{"d" for using Ks from Dickon (1990) and "k" for using Ks from Khoo et al. (1977), default is "d"} 
 	\item{pHscale}{"T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
 	\item{b}{"l10" for computing boron total from the Lee et al. (2010) formulation or "u74" for using the Uppstrom (1974) formulation, default is "u74" }
-  \item{gas}{"insitu" to calculate pCO2 and fCO2 at total in situ pressure and in situ temperature or "potential" to calculate pCO2 and fCO2 at 1 atm pressure and potential temperature, default is "potential"}
+  \item{gas}{used to indicate the convention for INPUT pCO2, i.e., when it is an input variable (flags 21 to 25): "insitu" indicates it is referenced to in situ pressure and in situ temperature; "potential" indicates it is referenced to 1 atm pressure and potential temperature; and "standard" indicates it is referenced to 1 atm pressure and in situ temperature. All three options should give identical results at surface pressure. This option is not used with pCO2 is not an input variable (flags 1 to 15) The default is "potential"}
 }
 
 \details{The Lueker et al. (2000) constants for K1 and K2, the Perez and Fraga (1987) constant for Kf and the Dickson (1990) constant for Ks are recommended by Dickson et al. (2007). It is, however, critical to consider that each formulation is only valid for specific ranges of temperature and salinity:
@@ -117,8 +117,12 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
   \item{P}{Hydrostatic pressure in bar}
   \item{pH}{pH}
   \item{CO2}{CO2 concentration (mol/kg)}
-  \item{pCO2}{pCO2, CO2 partial pressure (\eqn{\mu}atm)}
-  \item{fCO2}{fCO2, CO2 fugacity (\eqn{\mu}atm)}
+  \item{pCO2}{"standard" pCO2, CO2 partial pressure computed at in situ temperature and atmospheric pressure (\eqn{\mu}atm)}
+  \item{fCO2}{"standard" fCO2, CO2 fugacity computed at in situ temperature and atmospheric pressure (\eqn{\mu}atm)}
+  \item{pCO2pot}{"potential" pCO2, CO2 partial pressure computed at potential temperature and atmospheric pressure (\eqn{\mu}atm)}
+  \item{fCO2pot}{"potential" fCO2, CO2 fugacity computed at potential temperature and atmospheric pressure (\eqn{\mu}atm)}
+  \item{pCO2insitu}{"in situ" pCO2, CO2 partial pressure computed at in situ temperature and total pressure (atm + hydrostatic) (\eqn{\mu}atm)}
+  \item{fCO2insitu}{"in situ" fCO2, CO2 fugacity computed at in situ temperature and total pressure (atm + hydrostatic) (\eqn{\mu}atm)}
   \item{HCO3}{HCO3 concentration (mol/kg)}
   \item{CO3}{CO3 concentration (mol/kg)}
   \item{DIC}{DIC concentration (mol/kg)}
@@ -172,7 +176,7 @@ Heloise Lavigne, James Orr and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
 \examples{
 
 ## With a couple of variables
-carb(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Pt=0, Sit=0,
+carb(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,
 	pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
 
 ## Using vectors as arguments
