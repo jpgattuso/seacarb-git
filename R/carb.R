@@ -81,7 +81,7 @@ function(flag, var1, var2, S=35, T=25,	Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     
     rho <- rho(S=S,T=T,P=P)
 
-    # Compute "standard" K0 with S, in situ T, and total pressure (atmospheric + hydrostatic)
+    # Compute "standard" K0 with S, in situ T, and atmospheric pressure
     K0 <- K0(S=S, T=T, Patm=Patm, P=0)                         
     # Compute potential K0 with S, potential temperature, and atmospheric pressure (usually 1 atm)
     K0pot <- K0(S=S, T=theta(S=S, T=T, P=P, Pref=0), Patm=Patm, P=0)
