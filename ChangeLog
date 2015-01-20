@@ -1,6 +1,7 @@
 version 3.0.6, 2015-01-18
 -----------------------------------
 - Function carb: added "standard" as 3rd "gas" option for pCO2 input at in situ temperature and atmospheric pressure
+- Function buffer: minor revision to accommodate the change in carb mentioned above.
 
 version 3.0.5, 2015-01-06
 -----------------------------------
