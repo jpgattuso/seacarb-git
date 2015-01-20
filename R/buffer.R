@@ -36,17 +36,16 @@ buffer <-
     Pt[is.na(Pt)] <- 0
     
     Carb <- carb(flag=flag, var1=var1, var2=var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)
-
-	pH   <- Carb[6]
+    
+	pH   <- Carb$pH
 	h    <- 10^(-pH)
-	CO2  <- Carb[7]
-
-	HCO3 <- Carb[12]
-	CO3  <- Carb[13]
-	DIC  <- Carb[14]
-	ALK  <- Carb[15]
-	Oa   <- Carb[16]
-	Oc   <- Carb[17]
+	CO2  <- Carb$CO2
+	HCO3 <- Carb$HCO3
+	CO3  <- Carb$CO3
+	DIC  <- Carb$DIC
+	ALK  <- Carb$ALK
+	Oa   <- Carb$OmegaAragonite
+	Oc   <- Carb$OmegaCalcite
     
     #-------Constants----------------
     
