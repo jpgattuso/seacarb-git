@@ -36,16 +36,6 @@ buffer <-
     Pt[is.na(Pt)] <- 0
     
     Carb <- carb(flag=flag, var1=var1, var2=var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)
-
-#pH   <- Carb[6]
-#h    <- 10^(-pH)
-#CO2  <- Carb[7]
-#HCO3 <- Carb[14]
-#CO3  <- Carb[15]
-#DIC  <- Carb[16]
-#ALK  <- Carb[17]
-#Oa   <- Carb[18]
-#Oc   <- Carb[19]
     
 	pH   <- Carb$pH
 	h    <- 10^(-pH)
