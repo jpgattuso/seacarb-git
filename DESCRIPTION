@@ -1,7 +1,7 @@
 Package: seacarb
-Title: seawater carbonate chemistry with R
-Version: 3.0.4
-Date: 2015-01-04
+Title: Seawater Carbonate Chemistry
+Version: 3.0.6
+Date: 2015-01-18
 LazyData: true
 Authors@R: c(person("Jean-Pierre", "Gattuso", role = c("aut", "cre", "cph"), email = "gattuso@obs-vlfr.fr"),
   person("Jean-Marie", "Epitalon", role = "aut", email = "Jean-Marie.Epitalon@cerfacs.fr"),
@@ -19,5 +19,3 @@ Encoding: UTF-8
 URL: http://CRAN.R-project.org/package=seacarb
 License: GPL (>= 2)
 Repository: CRAN
-Date/Publication: 
-Packaged: 2014-08-19 12:43:57 UTC; gattuso_mba
