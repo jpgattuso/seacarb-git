@@ -1,4 +1,8 @@
-version 3.0.6, 2015-01-18
+version 3.0.7, 2015-05-06
+-----------------------------------
+- New function carbb: added an option to indicate the amount of boron added. THIS IS AN EXPERIMENTAL FUNCTION; USE AT YOUR OWN RISK!
+
+version 3.0.6, 2015-02-03
 -----------------------------------
 - Function carb: added "standard" as 3rd "gas" option for pCO2 input at in situ temperature and atmospheric pressure
 - Function buffer: minor revision to accommodate the change in carb mentioned above.
