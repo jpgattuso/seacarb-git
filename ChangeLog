@@ -1,3 +1,7 @@
+version 3.0.8, 2015-07-23
+-----------------------------------
+- Fixed function buffesm: James Orr fixed carb var indices, made consistent with seacarb 3.0+. 
+
 version 3.0.7, 2015-05-06
 -----------------------------------
 - New function carbb: added an option to indicate the amount of boron added. THIS IS AN EXPERIMENTAL FUNCTION; USE AT YOUR OWN RISK!
