@@ -1,6 +1,7 @@
 version 3.0.8, 2015-07-23
 -----------------------------------
 - Fixed function buffesm: James Orr fixed carb var indices, made consistent with seacarb 3.0+. 
+- Removed carbm.Rd. carbm was removed in version 3.0.2 but the Rd file crept in again
 
 version 3.0.7, 2015-05-06
 -----------------------------------
