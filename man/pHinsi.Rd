@@ -82,7 +82,7 @@ Millero F. J., Graham T. B., Huang F., Bustos-Serrano H. and Pierrot D., 2006. D
 
 Uppstrom L.R., 1974 The boron/chlorinity ratio of the deep-sea water from the Pacific Ocean. \emph{Deep-Sea Research I} \bold{21} 161-162.
 
-Waters, J., Millero, F. J., and Woosley, R. J., 2014. Corrigendum to “The free proton concentration scale for seawater pH”, [MARCHE: 149 (2013) 8–22], Mar. Chem. 165, 66-67.
+Waters, J., Millero, F. J., and Woosley, R. J., 2014. Corrigendum to ``The free proton concentration scale for seawater pH'', [MARCHE: 149 (2013) 8-22], Mar. Chem. 165, 66-67.
 }
              
 \author{

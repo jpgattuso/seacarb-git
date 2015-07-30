@@ -160,7 +160,7 @@ Roy R. N., Roy L. N., Vogel K. M., Porter-Moore C., Pearson T., Good C. E., Mill
 
 Uppstrom L.R., 1974 The boron/chlorinity ratio of the deep-sea water from the Pacific Ocean. \emph{Deep-Sea Research I} \bold{21} 161-162.
 
-Waters, J., Millero, F. J., and Woosley, R. J., 2014. Corrigendum to “The free proton concentration scale for seawater pH”, [MARCHE: 149 (2013) 8–22], Mar. Chem. 165, 66-67.
+Waters, J., Millero, F. J., and Woosley, R. J., 2014. Corrigendum to ``The free proton concentration scale for seawater pH'', [MARCHE: 149 (2013) 8-22], Mar. Chem. 165, 66-67.
 
 Weiss, R. F., 1974. Carbon dioxide in water and seawater: the solubility of
 a non-ideal gas, \emph{Mar.  Chem.}, \bold{2}, 203-215.

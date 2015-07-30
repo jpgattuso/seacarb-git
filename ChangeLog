@@ -1,3 +1,8 @@
+version 3.0.9, 2015-07-30
+-----------------------------------
+- Function K1 and K2: added the option to use the formaulation of Waters et al. (2014)
+- Man files changed accordingly: K1.Rd, K2.Rd, Om.Rd, buffer.Rd, buffesm.Rd, carb.Rd, oa.Rd, pCa.Rd, pHinsi.Rd, pTA.Rd, pgas.Rd, pmix.Rd, ppH.Rd, psi.Rd
+
 version 3.0.8, 2015-07-23
 -----------------------------------
 - Fixed function buffesm: James Orr fixed carb var indices, made consistent with seacarb 3.0+. 

@@ -148,7 +148,7 @@ Millero F. J., Graham T. B., Huang F., Bustos-Serrano H. and Pierrot D., 2006 Di
 
 Orr J. C., Epitalon J.-M. and Gattuso J.-P., 2014. Comparison of seven packages that compute ocean carbonate chemistry. \emph{Biogeosciences Discussions} \bold{11}, 5327-5397.
 
-Waters, J., Millero, F. J., and Woosley, R. J., 2014. Corrigendum to “The free proton concentration scale for seawater pH”, [MARCHE: 149 (2013) 8–22], Mar. Chem. 165, 66-67.
+Waters, J., Millero, F. J., and Woosley, R. J., 2014. Corrigendum to ``The free proton concentration scale for seawater pH'', [MARCHE: 149 (2013) 8-22], Mar. Chem. 165, 66-67.
 }
 
 \author{
