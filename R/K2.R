@@ -131,6 +131,42 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
     K2[is_m10_F] <- 10^(-pK2)
     pHsc[is_m10_F] <- "F"
 
+    # --------------------- K2 ---------------------------------------
+    #   first acidity constant:
+    #   [H^+] [CO_3^--] / [HCO_3^-] = K_2
+    #
+    #   Waters, Millero, Woosley (Mar. Chem., 165, 66-67, 2014)
+    
+    is_w14 <- k1k2=="w14"
+    pK2o <- 5143.692/TK[is_w14] + 14.613358*log(TK[is_w14]) -90.18333
+    
+    #   pH-scale: 'SWS scale'. mol/kg-soln
+    is_w14_SWS <- is_w14 & (pHscale=="SWS" | P>0)
+    A2 <- 21.225890*S[is_w14_SWS]^(0.5) + 0.12450870*S[is_w14_SWS] - (3.7243e-4)*S[is_w14_SWS]^2
+    B2 <- -779.3444*S[is_w14_SWS]^(0.5) - 19.91739*S[is_w14_SWS]
+    C2 <- -3.3534679*S[is_w14_SWS]^(0.5)
+    pK2 <- pK2o + A2 + B2/TK[is_w14_SWS] + C2*log(TK[is_w14_SWS])
+    K2[is_w14_SWS] <- 10^(-pK2)
+    pHsc[is_w14_SWS] <- "SWS"
+    
+    #   pH-scale: 'Total scale'. mol/kg-soln
+    is_w14_T <- is_w14 & (pHscale=="T" & P==0)
+    A2 <- 21.389248*S[is_w14_T]^(0.5) + 0.12452358*S[is_w14_T] - (3.7447e-4)*S[is_w14_T]^2
+    B2 <- -787.3736*S[is_w14_T]^(0.5) - 19.84233*S[is_w14_T]
+    C2 <- -3.3773006*S[is_w14_T]^(0.5)
+    pK2 <- pK2o + A2 + B2/TK[is_w14_T] + C2*log(TK[is_w14_T])
+    K2[is_w14_T] <- 10^(-pK2)
+    pHsc[is_w14_T] <- "T"
+    
+    #   pH-scale: 'Free scale'. mol/kg-soln
+    is_w14_F <- is_w14 & (pHscale=="F" & P==0)
+    A2 <- 13.396949*S[is_w14_F]^(0.5) + 0.12193009*S[is_w14_F] - (3.8362e-4)*S[is_w14_F]^2
+    B2 <- -472.8633*S[is_w14_F]^(0.5) - 19.03634*S[is_w14_F]
+    C2 <- -2.1563270*S[is_w14_F]^(0.5)
+    pK2 <- pK2o + A2 + B2/TK[is_w14_F] + C2*log(TK[is_w14_F])
+    K2[is_w14_F] <- 10^(-pK2)
+    pHsc[is_w14_F] <- "F"
+
     ##----------------- Conversion from total to SWS scale
     ##                  if pressure correction needed
     ##                  or pH scale conversion required anyway
@@ -216,8 +252,9 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
     method <- rep(NA, nK)
     method[is_m06] <- "Millero et al. (2006)"
     method[is_m10] <- "Millero (2010)"
+    method[is_w14] <- "Waters et al. (2014)"
     method[is_r]   <- "Roy et al. (1993)"
-    method[! (is_m06 | is_m10 | is_r) ] <- "Luecker et al. (2000)"
+    method[! (is_m06 | is_m10 | is_w14 | is_r) ] <- "Luecker et al. (2000)"
     
     attr(K2,"unit")     = "mol/kg-soln"
     attr(K2,"pH scale") = pHlabel

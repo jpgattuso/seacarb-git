@@ -11,9 +11,9 @@ K1(S = 35, T = 25, P = 0, k1k2="x", pHscale="T", kSWS2scale=0, ktotal2SWS_P0=0)
   \item{S}{Salinity, default is 35}
   \item{T}{Temperature in degrees Celsius, default is 25oC}
   \item{P}{Hydrostatic pressure in bar (surface = 0), default is 0}
-  \item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "m06" from Millero et al. (2006), "m10" from Millero (2010) and "r" from Roy et al. (1993). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "m10".}
+  \item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "m06" from Millero et al. (2006), "m10" from Millero (2010), "w14" from Waters et al. (2014), and "r" from Roy et al. (1993). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "m10".}
   \item{pHscale}{choice of pH scale: "T" for using the total scale, "F" for using the free scale and "SWS" for using the seawater scale, default is total scale}
-  \item{kSWS2scale}{Conversion factor from the seawater scale (SWS) to the pH scale selected at the hydrostatic pressure value indicated. It is not required when k1k2 is "m10" and the hydrostatic pressure is 0. If it is required and not given, it is computed, which slows down computations.}
+  \item{kSWS2scale}{Conversion factor from the seawater scale (SWS) to the pH scale selected at the hydrostatic pressure value indicated. It is not required when k1k2 is "m10" or "w14" and the hydrostatic pressure is 0. If it is required and not given, it is computed, which slows down computations.}
   \item{ktotal2SWS_P0}{Conversion factor from the total scale to the SWS at an hydrostatic pressure of 0. It is only required when k1k2 is "l" or "r". If it is required and not given, it is computed, which slows down computations.}
 }
 
@@ -27,6 +27,8 @@ K1(S = 35, T = 25, P = 0, k1k2="x", pHscale="T", kSWS2scale=0, ktotal2SWS_P0=0)
 \item Millero et al. (2006): S ranging between 0.1 and 50 and T ranging between 1 and 50oC.
 
 \item Millero (2010): S ranging between 1 and 50 and T ranging between 0 and 50oC. Millero (2010) provides a K1 and K2 formulation for the seawater, total and free pH scales. Therefore, when this method is used and if P=0, K1 and K2 are computed with the formulation corresponding to the pH scale given in the flag "pHscale". 
+ 
+\item Waters et al.(2014): S ranging between 1 and 50 and T ranging between 0 and 50oC. Millero (2010) provides a K1 and K2 formulation for the seawater, total and free pH scales. Therefore, when this method is used and if P=0, K1 and K2 are computed with the formulation corresponding to the pH scale given in the flag "pHscale". 
 }
 
 The arguments can be given as a unique number or as vectors. If the lengths of the vectors are different, the longer vector is retained and only the first value of the other vectors is used. It can therefore be critical to use vectors of the same length. 
@@ -51,6 +53,8 @@ Millero F. J., Graham T. B., Huang F., Bustos-Serrano H., and Pierrot D., 2006 D
 Millero F. J., 2010 Carbonate constant for estuarine waters. \emph{Marine and Freshwater Research} \bold{61}: 139-142.
 
 Roy R. N., Roy L. N., Vogel K. M., Porter-Moore C., Pearson T., Good C. E., Millero F. J. and Campbell D. M., 1993. The dissociation constants of carbonic acid in seawater at salinities 5 to 45 and temperatures 0 to 45oC. \emph{Marine Chemistry} \bold{44}, 249-267.
+
+Waters, J., Millero, F. J., and Woosley, R. J., 2014. Corrigendum to “The free proton concentration scale for seawater pH”, [MARCHE: 149 (2013) 8–22], Mar. Chem. 165, 66-67.
 }
              
 \author{
