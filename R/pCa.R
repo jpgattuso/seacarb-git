@@ -28,5 +28,5 @@
 	out <- rbind(ci, cf)
 	out <- cbind(co, out)
 	names(out)[1] <- "comment"
-	return(out[,1:15])
+	return(out[,1:20])
 }

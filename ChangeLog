@@ -1,3 +1,7 @@
+version 3.0.10, 2015-08-17
+-----------------------------------
+- Function pCa: fixed the output which was incorrect (thanks to Steeve Comeau to let me know!)
+
 version 3.0.9, 2015-07-30
 -----------------------------------
 - Function K1 and K2: added the option to use the formaulation of Waters et al. (2014)
