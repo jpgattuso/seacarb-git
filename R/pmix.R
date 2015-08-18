@@ -28,7 +28,7 @@ function(flag, var1, var2, pCO2s, wf, S=35, T=20, P=0, Pt=0, Sit=0, k1k2='x', kf
 		out <- rbind(ci, cf)
 		out <- cbind(co, out)
 		names(out)[1] <- "comment"
-		return(out[,1:15])
+		return(out)
 	}
 	else { # sys=1 is useless as the final (after equilibration) carbonate chemistry is identical to the initial one
 		return("invalid parameter(s)")
