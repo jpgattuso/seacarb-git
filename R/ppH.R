@@ -44,5 +44,5 @@ function(flag, sys, var1, var2, pCO2a, vol, N, S=35, T=20, P=0, Pt=0, Sit=0, pHs
 	out <- rbind(ci, cf)
 	out <- cbind(co, out)
 	names(out)[1] <- "comment"
-	return(out[,1:15])
+	return(out)
 }
