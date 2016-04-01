@@ -13,3 +13,9 @@ vignettes/*.pdf
 .RData
 .gitignore
 .Rproj.user
+
+*.pper
+
+.Rhistory
+
+.RData
