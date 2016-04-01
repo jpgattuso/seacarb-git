@@ -1,3 +1,12 @@
+version 3.0.13, 2016-04-01
+-----------------------------------
+- Internal change: directory /data-raw deleted in response to the rejection of version 3.0.12.
+
+version 3.0.12, 2016-04-01
+-----------------------------------
+- Pcoeffs, the coefficients used for pressure-correcting the equilibrium constants: internal location changed to suit the needs of a user. It should not affect anyone.
+- This version was rejected by CRAN because the files used to store Pcoeffs in R/sysdata.rda were left in data-raw/
+
 version 3.0.11, 2015-08-18
 -----------------------------------
 - Function ppH, pmix, pTA: fixed the output which was incorrect
