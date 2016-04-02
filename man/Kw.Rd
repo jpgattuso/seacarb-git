@@ -22,6 +22,8 @@ This formulation is only valid for specific ranges of temperature and salinity:
 \item S ranging between 0 and 45 and T ranging between 0 and 45oC.
 }
 
+The pressure correction was applied on the seawater scale. Hence, if needed, values were first transformed from the total scale to the seawater scale, the pressure correction applied as described by Millero (1995), and the value was transformed back to the required scale (T, F or SWS).
+
 Note that the arguments can be given as a unique number or as vectors. If the lengths of the vectors are different, the longer vector is retained and only the first value of the other vectors is used. It can therefore be critical to use vectors of the same length.
 } 
 

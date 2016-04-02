@@ -22,6 +22,8 @@ This formulation is only valid for specific ranges of temperature and salinity:
 }
 
 Note that the arguments can be given as a unique number or as vectors. If the lengths of the vectors are different, the longer vector is retained and only the first value of the other vectors is used. It can therefore be critical to use vectors of the same length.
+
+For pressure corrections: the pressure correction term of Weiss (1974) is used.
 } 
 
 \value{

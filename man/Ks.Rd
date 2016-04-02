@@ -24,7 +24,8 @@ Ks(S = 35, T = 25, P = 0, ks="d")
 
 Note that the arguments can be given as a unique number or as vectors. If the lengths of the vectors are different, the longer vector is retained and only the first value of the other vectors is used. It can therefore be critical to use vectors of the same length. 
 
-The pressure correction is applied on the free scale.} 
+The pressure correction is applied on the free scale as described by Millero (1995), and the value transformed back to the required scale (T, F or SWS).
+} 
 
 \value{
   \item{Ks}{Stability constant of hydrogen sulfate (mol/kg), pHscale = free scale}
