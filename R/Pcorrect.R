@@ -12,7 +12,7 @@
 "Pcorrect" <-
 function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Scale=0)
 {
-  Pcoeffs <- get("Pcoeffs", envir  = environment()) # added to silence the CRAN note "Pcorrect: no visible binding for global variable ‘Pcoeffs’"
+  #Pcoeffs <- get("Pcoeffs", envir  = environment()) # added to silence the CRAN note "Pcorrect: no visible binding for global variable ‘Pcoeffs’"
   nK <- max(length(Kvalue), length(Ktype), length(P), length(T), length(pHscale), length(S), length(kconv2ScaleP0), length(kconv2Scale))
 
     ##-------- Creation de vecteur pour toutes les entrees (si vectorielles)
