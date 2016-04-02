@@ -21,6 +21,8 @@ This formulation is only valid for specific ranges of temperature and salinity:
 \item S ranging between 5 and 44 and T ranging between 5 and 40oC.
 }
 
+Pressure coorection was performed as described by Millero (1995).
+
 Note that the arguments can be given as a unique number or as vectors. If the lengths of the vectors are different, the longer vector is retained and only the first value of the other vectors is used. It can therefore be critical to use vectors of the same length.
 } 
 
@@ -28,7 +30,11 @@ Note that the arguments can be given as a unique number or as vectors. If the le
   \item{Kspa}{Solubility product of aragonite (mol2/kg)}
   
 }
-\references{Mucci A., 1983 The solubility of calcite and aragonite in seawater at various salinities, temperature, and one atmosphere total pressure. \emph{American Journal of Science} \bold{283}: 780-799.}
+\references{
+Millero F. J., 1995 Thermodynamics of the carbon dioxide system in the oceans. \emph{Geochimica et Cosmochimica Acta} \bold{59} 661-677.
+
+Mucci A., 1983 The solubility of calcite and aragonite in seawater at various salinities, temperature, and one atmosphere total pressure. \emph{American Journal of Science} \bold{283}: 780-799.
+}
 
 \author{
 Aurelien Proye and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}

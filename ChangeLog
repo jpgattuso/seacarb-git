@@ -1,6 +1,7 @@
-version 3.0.13, 2016-04-01
+version 3.0.13, 2016-04-02
 -----------------------------------
 - Internal change: directory /data-raw deleted in response to the rejection of version 3.0.12.
+- Updated the help file of some constants which did not indicate how pressure correction is performed.
 
 version 3.0.12, 2016-04-01
 -----------------------------------
