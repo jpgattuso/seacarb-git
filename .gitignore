@@ -4,7 +4,8 @@
 # Example code in package build process
 *-Ex.R
 # RStudio files
-.Rproj.user/**
+.Rproj.user/
+#.Rproj.user/**
 *.pper
 # produced vignettes
 vignettes/*.html
@@ -13,9 +14,7 @@ vignettes/*.pdf
 .RData
 .gitignore
 .Rproj.user
-
 *.pper
-
 .Rhistory
-
 .RData
+
