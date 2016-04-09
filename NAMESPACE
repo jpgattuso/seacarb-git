@@ -1,7 +1,0 @@
-importFrom(utils, data)
-# Export all names
-exportPattern(".")
-importFrom("graphics", "arrows", "contour", "matlines", "matplot",
-             "mtext", "par")
-importFrom("stats", "lm", "nls", "uniroot")
-importFrom(oce, swTheta)
