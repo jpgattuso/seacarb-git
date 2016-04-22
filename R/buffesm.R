@@ -5,6 +5,9 @@
 # # Seacarb is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. 
 # # You should have received a copy of the GNU General Public License along with seacarb; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA # #  
 
+# New version of buffesm accounts for effects of nutrient (Si and P) concentrations
+# ---------------------------------------------------------------------------------
+
 buffesm <-  
   function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74"){
     n <- max(length(flag), length(var1), length(var2), length(S), length(T), length(P), length(Pt), length(Sit), length(k1k2), length(kf), length(pHscale), length(ks), length(b))
@@ -80,10 +83,10 @@ buffesm <-
     Kw <- Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
    #K0 <- K0(S=S, T=T, Patm=Patm, P=P)
     Kb <- Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0)
-   #K1p <- K1p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
-   #K2p <- K2p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
-   #K3p <- K3p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
-   #Ksi <- Ksi(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
+   K1p <- K1p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
+   K2p <- K2p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
+   K3p <- K3p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
+   Ksi <- Ksi(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
    #Kspa <- Kspa(S=S, T=T, P=P)
    #Kspc <- Kspc(S=S, T=T, P=P)
 
@@ -103,15 +106,40 @@ buffesm <-
    # could also use equivalent formulation of Borate = bor * Kb / (Kb + h) 	
    oh = Kw / h
 
+   # Phosphorus inorganic species
+   # [h2po4-] = K1p * [h3po4] / [H+]
+   # [hpo4--] = K1p * K2p * [h3po4] / [H+]²
+   # [po4---] = K1p * K2p * K3p * [h3po4] / [H+]³
+   # Pt       = [h3po4] * (1 + K1p/[H+] + K1p*K2p/[H+]² + K1p*K2p*K3p/[H+]³)
+   h3po4 = Pt / (1 + K1p/h + K1p*K2p/h^2 + K1p*K2p*K3p/h^3)
+   h2po4 = K1p * h3po4 / h
+   hpo4  = K2p * h2po4 / h
+   po4   = K3p * hpo4  / h
+   
+   # Silicon inorganic species
+   # [SiO(OH)3-] = Ksi * [Si(OH)4] / [H+]
+   # Sit = [Si(OH)4] * (1 + Ksi / [H+])
+   sioh4 = Sit /(1 + Ksi/h)
+   # sioh3 = Ksi * sioh4/h
+   sioh3 = Ksi * Sit/(h+Ksi)
+      
    # Special definitions needed for buffer-factor calculations 
    #  - originally from Table 1 of Egleston et al;  
    #  - later modified to comply w/ formulas in Excel sheet of Chris Sabine (23 Aug 2010) 	
    # ------------------------------------------------------------------------------------
    # BAD formula in Table 1 (Egleston et al., 2010) - last sign is inversed
    # Segle   = (HCO3 + 4*CO3 + (h*Borate/(Kb + h)) + h - oh)  
-   # GOOD formula with last sign inverted
-   Segle   = (HCO3 + 4*CO3 + (h*Borate/(Kb + h)) + h + oh)  
-
+   # GOOD formula with last sign above inverted (1st line of code just below),
+   # ...  also added are effects from phosphoric and silicic acid systems (code lines 2-6 just below)
+   #      The addition of these 2 acid systems from J.-M. Epitalon, 2016 (expanded equation from Egleston)
+   Segle  = ( HCO3 + 4*CO3 + (h*Borate/(Kb + h)) + h + oh
+              + (- h3po4 * (-h2po4 - 2*hpo4 - 3*po4)
+                 + hpo4  * (2*h3po4 + h2po4 - po4)
+                 + 2*po4 * (3*h3po4 + 2*h2po4 + hpo4)
+                ) / Pt
+              + h * sioh3/(Ksi + h)
+            )
+              
    # GOOD formula from Sabine (Excel sheet, 23 Aug 2010)
    Pegle  = (2*CO2 + HCO3)                                  
 
@@ -141,7 +169,8 @@ buffesm <-
    omegaALK = ( Alkc - DIC*Qegle/Pegle )                    
 
    # Revelle Factor (agrees exactly with that computed in seacarb's "buffer" function (BetaD, from Frankignoulle, 1994)  
-   # but both neglect contributions of total dissolved inorganic phosphorus & silica (Orr and Epitalon, 2015; Orr et al., 2015)
+   # when total dissolved inorganic phosphorus & silica concentrations are zero (Orr and Epitalon, 2015; Orr et al., 2015)
+   # Now in this new version of 'buffesm', R accounts for these 2 acid systems.
    R = (DIC/gammaDIC)  	
 
    col <- c("gammaDIC", "betaDIC", "omegaDIC", "gammaALK", "betaALK", "omegaALK", "R") 	
