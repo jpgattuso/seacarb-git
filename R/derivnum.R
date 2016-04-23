@@ -27,8 +27,8 @@
 #
 # Returns one set of partial derivatives
 derivnum <- 
-function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='l', kf='x', ks="d", 
-         pHscale="T", b="l10", gas="potential")
+function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
+         k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential")
 {
     # Input conditionning
     # -------------------

@@ -61,8 +61,10 @@
 #     than does the input pair pH and Alkalinity (flag=8).
 #
 errors <- 
-function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0,
-         epK=NULL, method = "ga", runs=10000, k1k2='l', kf='x', ks="d", pHscale="T", b="u74", gas="potential")
+function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
+         evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=NULL, 
+         method="ga", runs=10000, 
+         k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential")
 {
     # Input checking
     # --------------
@@ -200,7 +202,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 
 errors_ga <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0,
-         epK=NULL, k1k2='l', kf='x', ks="d", pHscale="T", b="u74", gas="potential")
+         epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential")
 {
     # names of dissociation constants
     Knames <- c ('K0','K1','K2','Kb','Kw','Kspa', 'Kspc')
@@ -590,7 +592,7 @@ gen_delta_Kx <- function (epK, S, T, P, Patm, pHscale, k1k2, kf, ks, runs)
 #
 errors_mc <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0,
-         epK=NULL, k1k2='l', kf='x', ks="d", pHscale="T", b="u74", gas="potential", runs=10000)
+         epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", runs=10000)
 {
     # Constant table :  names of input pair variables sorted by flag number
     varnames  = rbind (
