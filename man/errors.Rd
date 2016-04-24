@@ -8,8 +8,10 @@
   * temperature and salinity, as well as
 the errors in the key dissociation constants pK0, pK1, pK2, pKb, pKw, pKspa and pKspc
 }
-\usage{errors(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0,
-         epK=NULL, method = "ga", runs=10000, k1k2='l', kf='x', ks="d", pHscale="T", b="u74", gas="potential")}
+\usage{errors(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
+              evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=NULL, 
+              method = "ga", runs=10000,
+              k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential")}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{flag}{select the pair of carbonate system input variables. The flags to be used are as follows:
@@ -195,8 +197,8 @@ Jean-Marie Epitalon, James Orr, and Jean-Pierre Gattuso\email{gattuso@obs-vlfr.f
 ## compute resulting uncertainty from given uncertainty on ALK and DIC (5 micromol/kg)
 ## and default uncertainty in dissociation constants
 ## using the default method (Gaussian)
-errors(flag=15, var1=2300e-6, var2=2000e-6, S=35, T=25, P=0, Patm=1.0, 
-       Pt=0, Sit=0, evar1=5e-6, evar2=5e-6, eS=0, eT=0, ePt=0, eSit=0, 
+errors(flag=15, var1=2300e-6, var2=2000e-6, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0, 
+       evar1=5e-6, evar2=5e-6, eS=0, eT=0, ePt=0, eSit=0, 
        pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
 Typical output:
 H	pH	CO2	fCO2	pCO2	HCO3	CO3	OmegaAragonite	OmegaCalcite
@@ -208,9 +210,9 @@ H	pH	CO2	fCO2	pCO2	HCO3	CO3	OmegaAragonite	OmegaCalcite
 ## errors in total dissolved inorganic phosphorus (0.1 micromol/kg) and
 ## total dissolved inorganic silicon (2 micromol/kg) concentrations, while
 ## assuming no uncertainty in dissociation constants, using the Gaussian method:
-errors(flag=8, var1=8.25, var2=2300e-6,  S=35, T=25, P=0, Patm=1.0, 
-       Pt=0, Sit=0, evar1=0.005, evar2=5e-6, eS=0, eT=0, ePt=0.1, eSit=2, 
-       epK=0, method="gaussian", pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
+errors(flag=8, var1=8.25, var2=2300e-6,  S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0, 
+       evar1=0.005, evar2=5e-6, eS=0, eT=0, ePt=0.1, eSit=2, epK=0, 
+       method="ga", pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
 
 ## 3) Use vectors as arguments and compute errors on all output variables
 ## using Monte Carlo method taking into account input errors on pH, ALK, DIC
