@@ -200,9 +200,9 @@ Jean-Marie Epitalon, James Orr, and Jean-Pierre Gattuso\email{gattuso@obs-vlfr.f
 errors(flag=15, var1=2300e-6, var2=2000e-6, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0, 
        evar1=5e-6, evar2=5e-6, eS=0, eT=0, ePt=0, eSit=0, 
        pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
-Typical output:
-H	pH	CO2	fCO2	pCO2	HCO3	CO3	OmegaAragonite	OmegaCalcite
-3.721614e-10	0.01796767	5.441869e-07	19.25338	19.31504	9.170116e-06	5.55307e-06	0.1176914	0.1785544
+## Typical output:
+## H             pH          CO2           fCO2      pCO2      HCO3          ...
+## 3.721614e-10  0.01796767  5.441869e-07  19.25338  19.31504  9.170116e-06  ...
 
 ## 2) For the input pair pH and ALK (var1 and var2 when flag=8)
 ## compute standard errors in output variables from errors in input variables, i.e., 
@@ -235,7 +235,7 @@ pHscale <- "T"
 b <- "u74"
 errors(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P, Pt=Pt, Sit=Sit, 
        evar1=evar1, evar2=evar2, eS=0, eT=0, ePt=0, eSit=0, epK=epKx, 
-       method=method, runs=100000, kf=kf, k1k2=k1k2, pHscale=pHscale, b=b)
+       method=method, runs=10000, kf=kf, k1k2=k1k2, pHscale=pHscale, b=b)
 }
 
 \keyword{utilities}
