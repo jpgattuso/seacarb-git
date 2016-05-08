@@ -69,7 +69,6 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     # Input checking
     # --------------
     
-    method <-toupper(method)
     if (! method %in% c("ga", "mc"))
         stop ("Invalid input parameter: ", method)
 
@@ -132,19 +131,19 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         else
         {
             # Check sign of given epK
-            neg_ePk <- ePk < 0
-            epK[neg_ePk] <- -epK[neg_ePk] 
+            neg_epK <- epK < 0
+            epK[neg_epK] <- -epK[neg_epK] 
         }
     }
     
     if (method == "ga")
     {
-        errs <- errors_ga (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, eS, eT, ePt, eSit,
+        errs <- .errors_ga (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, eS, eT, ePt, eSit,
                 epK, k1k2, kf, ks, pHscale, b, gas)
     }
     else if (method == "mc")
     {
-        errs <- errors_mc (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, eS, eT, ePt, eSit,
+        errs <- .errors_mc (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, eS, eT, ePt, eSit,
                 epK, k1k2, kf, ks, pHscale, b, gas, runs)
     }
 
@@ -157,7 +156,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
 #                                                                                          #
 #===========================================================================================
 
-# errors_ga()
+# .errors_ga()
 #
 # This routine esiimates uncertainties in computed carbonate system variables 
 # by propagating errors (uncertainties) in the six input variables, including 
@@ -200,7 +199,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
 # - OmegaAragonite  total error of Omega aragonite (aragonite saturation state)
 # - OmegaCalcite    total error of Omega calcite   (calcite saturation state)
 
-errors_ga <- 
+.errors_ga <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0,
          epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential")
 {
@@ -389,6 +388,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
             # Compute sensitivities (partial derivatives)
             deriv <- derivnum (Knames[i], flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
                 pHscale=pHscale, b=b, gas=gas)
+cat ("deriv: ")
+print (deriv)
             err <- deriv * eKi
             sq_err <- sq_err + err * err
         }
@@ -409,7 +410,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 
 # Function that computes standard deviation 
 # on first dimension of a given 3D matrix "x"
-Sd_3D_1stD <- function(x)
+.Sd_3D_1stD <- function(x)
 {          
     first_dim <- dim(x)[1]
     # Compute mean over first dimension
@@ -454,7 +455,7 @@ Sd_3D_1stD <- function(x)
 #   each column contains deviate delta values of one dissociation constant
 #   column length is n * runs
 #
-gen_delta_Kx <- function (epK, S, T, P, Patm, pHscale, k1k2, kf, ks, runs)
+.gen_delta_Kx <- function (epK, S, T, P, Patm, pHscale, k1k2, kf, ks, runs)
 {
     n <- length(S)
     # names of dissociation constants
@@ -590,7 +591,7 @@ gen_delta_Kx <- function (epK, S, T, P, Patm, pHscale, k1k2, kf, ks, runs)
 #   Accuracy is strongly depending on number of runs. Default run number is 10,000, 
 #   You may want to choose a number of 100,000 runs or more, but beware that such calculations may take several seconds per data point.
 #
-errors_mc <- 
+.errors_mc <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0,
          epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", runs=10000)
 {
@@ -661,7 +662,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         
     # Generate deviate delta values for K0
     # Generate deviate values for other dissoc. constants Kx
-    spl_Kx <- gen_delta_Kx (epK, S, T, P, Patm, pHscale, k1k2, kf, ks, runs)
+    spl_Kx <- .gen_delta_Kx (epK, S, T, P, Patm, pHscale, k1k2, kf, ks, runs)
 
     # All other parameters and variables
     spl_flag <- rep (flag, each=runs)
@@ -708,7 +709,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     saved_env <- environment(carb)
     # Using environment(K0) will hide original seacarb::K0, seacarb::K1, ... functions
     environment(carb) <- environment(NULL)
-    # Note :  environment(NULL) is the environment created when this function errors_mc() is executed
+    # Note :  environment(NULL) is the environment created when this function .errors_mc() is executed
     #         It then contains all locally defined functions, like K0, K1, K2, ...
     #         Then, when carb() is executed and looks for a name (variable or function) that is not a local variable,
     #         it will look into evironment(NULL), which has been attached to it, 
@@ -751,7 +752,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         dim(seacarb_3D) <- c(runs, n, nvars)
 
         # Compute standard deviation on all simulated samples
-        std_dev <- Sd_3D_1stD (seacarb_3D)
+        std_dev <- .Sd_3D_1stD (seacarb_3D)
         # Convert to data frame
         std_dev <- data.frame (std_dev)
         colnames(std_dev) <- colnames(seacarb)
