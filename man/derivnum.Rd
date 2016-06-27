@@ -154,13 +154,11 @@ Roy R. N., Roy L. N., Vogel K. M., Porter-Moore C., Pearson T., Good C. E., Mill
 
 Uppstrom L.R., 1974 The boron/chlorinity ratio of the deep-sea water from the Pacific Ocean. \emph{Deep-Sea Research I} \bold{21} 161-162.
 
-Waters, J., Millero, F. J., and Woosley, R. J., 2014. Corrigendum to ``The free proton concentration scale for seawater pH'', [MARCHE: 149 (2013) 8-22], Mar. Chem. 165, 66-67.
+Waters, J., Millero, F. J., and Woosley, R. J., 2014. Corrigendum to ``The free proton concentration scale for seawater pH'', [MARCHE: 149 (2013) 8-22], \emph{Marine  Chemistry}, \bold{165}, 66-67.
 
-Weiss, R. F., 1974. Carbon dioxide in water and seawater: the solubility of
-a non-ideal gas, \emph{Mar.  Chem.}, \bold{2}, 203-215.
+Weiss, R. F., 1974. Carbon dioxide in water and seawater: the solubility of a non-ideal gas, \emph{Marine  Chemistry}, \bold{2}, 203-215.
 
-Weiss, R. F. and Price, B. A., 1980. Nitrous oxide solubility in water and
-seawater, \emph{Mar. Chem.}, \bold{8}, 347-359.
+Weiss, R. F. and Price, B. A., 1980. Nitrous oxide solubility in water and seawater, \emph{Marine  Chemistry}, \bold{8}, 347-359.
 
 Zeebe R. E. and Wolf-Gladrow D. A., 2001 \emph{CO2 in seawater: equilibrium, kinetics, isotopes}. Amsterdam: Elsevier, 346 pp.
 }
