@@ -126,7 +126,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     DIC  <- rep(NA, n)
     ALK  <- rep(NA, n)
 
-    # ------------ case 1.) PH and CO2 given
+    # ------------ case 1.) PH and CO2 given ----
     # Indices of flag elements where flag = 1
     i_flag_1 <- which (flag == 1)     
     PH[i_flag_1]   <- var1[i_flag_1]
@@ -138,7 +138,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     DIC[i_flag_1]  <- CO2[i_flag_1] + HCO3[i_flag_1] + CO3[i_flag_1]
     H[i_flag_1] <- h
     
-    # ------------ case 2.) CO2 and HCO3 given 
+    # ------------ case 2.) CO2 and HCO3 given ----
     # Indices of flag elements where flag = 2
     i_flag_2 <- which (flag == 2)     
     CO2[i_flag_2]  <- var1[i_flag_2]
@@ -150,7 +150,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_2]   <- -log10(h)
     H[i_flag_2] <- h
 
-    # ------------ case 3.) CO2 and CO3 given
+    # ------------ case 3.) CO2 and CO3 given ----
     # Indices of flag elements where flag = 3
     i_flag_3 <- which (flag == 3)     
     CO2[i_flag_3]  <- var1[i_flag_3]
@@ -163,12 +163,11 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_3]   <- -log10(h)
     H[i_flag_3] <- h
 
-    # ------------ case 4.) CO2 and ALK given
+    # ------------ case 4.) CO2 and ALK given ----
     # Indices of flag elements where flag = 4
     i_flag_4 <- which (flag == 4)     
     CO2[i_flag_4] <- var1[i_flag_4]
     ALK[i_flag_4] <- var2[i_flag_4]
-    
     fALK <- function(x)# K1=K1, K2=K2, CO2=CO2, BOR=BOR, Kb=Kb, Kw=Kw, Pt=Pt, K1p=K1p, K2p=K2p, K3p=K3p, Sit=Sit, Ksi=Ksi, ST=ST, Ks=Ks, FLUO=FLUO, Kf=Kf, ALK=ALK) 
     {
         # components for ALK
@@ -245,7 +244,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_4]   <- -log10(h)
     H[i_flag_4] <- h
 
-    # ------------ case 5.) CO2 and DIC given
+    # ------------ case 5.) CO2 and DIC given ----
     # Indices of flag elements where flag = 5
     i_flag_5 <- which (flag == 5)     
     CO2[i_flag_5]  <- var1[i_flag_5]
@@ -261,7 +260,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_5] <- -log10(h)
     H[i_flag_5] <- h
 
-    # ------------ case 6.) PH and HCO3 given
+    # ------------ case 6.) PH and HCO3 given ----
     # Indices of flag elements where flag = 6
     i_flag_6 <- which (flag == 6)     
     PH[i_flag_6] <- var1[i_flag_6]
@@ -273,7 +272,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     fCO2[i_flag_6] <- CO2[i_flag_6]/K0[i_flag_6]
     H[i_flag_6] <- h
 
-    # ------------ case 7.) PH and CO3 given    
+    # ------------ case 7.) PH and CO3 given ---- 
     # Indices of flag elements where flag = 7
     i_flag_7 <- which (flag == 7)     
     PH[i_flag_7] <- var1[i_flag_7]
@@ -285,10 +284,9 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     DIC[i_flag_7]  <- CO2[i_flag_7] + HCO3[i_flag_7] + CO3[i_flag_7]
     H[i_flag_7] <- h
 
-    # ------------ case 8.) PH and ALK given
-
+    # ------------ case 8.) PH and ALK given ----
     # Indices of flag elements where flag = 8
-    i_flag_8 <- which (flag == 8)     
+    i_flag_8 <- which(flag == 8)     
     PH[i_flag_8]  <- var1[i_flag_8]
     ALK[i_flag_8] <- var2[i_flag_8] 
     h <- 10^(-PH[i_flag_8])
@@ -346,7 +344,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     CO3[i_flag_8]  <- HCO3[i_flag_8]*K2[i_flag_8]/h
     fCO2[i_flag_8] <- CO2[i_flag_8]/K0[i_flag_8]
     
-    # ------------ case 9.) PH and DIC given
+    # ------------ case 9.) PH and DIC given ----
     # Indices of flag elements where flag = 9
     i_flag_9 <- which (flag == 9)     
     PH[i_flag_9]  <- var1[i_flag_9]
@@ -359,7 +357,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     CO2[i_flag_9]  <- h*HCO3[i_flag_9]/K1[i_flag_9]
     fCO2[i_flag_9] <- CO2[i_flag_9]/K0[i_flag_9]
     
-    # ------------ case 10.) HCO3 and CO3 given 
+    # ------------ case 10.) HCO3 and CO3 given ----
     # Indices of flag elements where flag = 10
     i_flag_10 <- which (flag == 10)     
     HCO3[i_flag_10] <- var1[i_flag_10]
@@ -371,12 +369,11 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_10] <- -log10(h)
     H[i_flag_10] <- h
 
-    # ------------ case 11.) HCO3 and ALK given
+    # ------------ case 11.) HCO3 and ALK given ----
     # Indices of flag elements where flag = 11
     i_flag_11 <- which (flag == 11)     
     HCO3[i_flag_11] <- var1[i_flag_11]
     ALK[i_flag_11]  <- var2[i_flag_11]
-    
     fALK <- function(x)# K1=K1, K2=K2, HCO3=HCO3, BOR=BOR, Kb=Kb, Kw=Kw, Pt=Pt, K1p=K1p, K2p=K2p, K3p=K3p, Sit=Sit, Ksi=Ksi, ST=ST, Ks=Ks, FLUO=FLUO, Kf=Kf, ALK=ALK) {
     {
         # components for ALK
@@ -467,12 +464,11 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_12] <- -log10(h)
     H[i_flag_12] <- h
 
-    # ------------ case 13.) CO3 and ALK given
+    # ------------ case 13.) CO3 and ALK given ----
     # Indices of flag elements where flag = 13
     i_flag_13 <- which (flag == 13)     
     CO3[i_flag_13] <- var1[i_flag_13]
     ALK[i_flag_13] <- var2[i_flag_13]
-    
     fALK <- function(x)# K1=K1, K2=K2, HCO3=HCO3, BOR=BOR, Kb=Kb, Kw=Kw, Pt=Pt, K1p=K1p, K2p=K2p, K3p=K3p, Sit=Sit, Ksi=Ksi, ST=ST, Ks=Ks, FLUO=FLUO, Kf=Kf, ALK=ALK) {
     {
         # composants for ALK
@@ -547,7 +543,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_13] <- -log10(h)
     H[i_flag_13] <- h
 
-    # ------------ case 14.) CO3 and DIC given
+    # ------------ case 14.) CO3 and DIC given ----
     # Indices of flag elements where flag = 14
     i_flag_14 <- which (flag == 14)     
     CO3[i_flag_14] <- var1[i_flag_14]
@@ -564,12 +560,11 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_14] <- -log10(h)
     H[i_flag_14] <- h
     
-    # ------------ case 15.) ALK and DIC given
+    # ------------ case 15.) ALK and DIC given ----
     # Indices of flag elements where flag = 15
-    i_flag_15 <- which (flag == 15)     
+    i_flag_15 <- which(flag == 15)     
     ALK[i_flag_15] <- var1[i_flag_15]
     DIC[i_flag_15] <- var2[i_flag_15]
-
     fALK <- function(x) # K1=K1, K2=K2, DIC=DIC, BOR=BOR, Kb=Kb, Kw=Kw, Pt=Pt, K1p=K1p, K2p=K2p, K3p=K3p, Sit=Sit, Ksi=Ksi, ST=ST, Ks=Ks, FLUO=FLUO, Kf=Kf, ALK=ALK) {
     {
         # composants for ALK
@@ -731,7 +726,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
       pCO2insitu[i_flag] <- fCO2insitu[i_flag] / fugfacinsitu
     }
 
-    # ------------ case 21.) PH and pCO2 given
+    # ------------ case 21.) PH and pCO2 given ----
     # Indices of flag elements where flag = 21
     i_flag_21 <- which (flag == 21)
     PH[i_flag_21] <- var2[i_flag_21]
@@ -742,7 +737,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     CO3[i_flag_21]  <- K2[i_flag_21]*HCO3[i_flag_21]/h
     DIC[i_flag_21]  <- CO2[i_flag_21] + HCO3[i_flag_21] + CO3[i_flag_21]
 
-    # ------------ case 22.) HCO3 and pCO2 given
+    # ------------ case 22.) HCO3 and pCO2 given ----
     # Indices of flag elements where flag = 22
     i_flag_22 <- which (flag == 22)
     HCO3[i_flag_22] <- var2[i_flag_22]
@@ -753,7 +748,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_22] <- -log10(h)
     H[i_flag_22] <- h
 
-    # ------------ case 23.) CO3 and pCO2 given
+    # ------------ case 23.) CO3 and pCO2 given ----
     # Indices of flag elements where flag = 23
     i_flag_23 <- which (flag == 23)
     CO3[i_flag_23] <- var2[i_flag_23]
@@ -764,12 +759,11 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_23] <- -log10(h)
     H[i_flag_23] <- h
 
-    # ------------ case 24.) ALK and pCO2 given
+    # ------------ case 24.) ALK and pCO2 given ----
     # Indices of flag elements where flag = 24
     i_flag_24 <- which (flag == 24)
     ALK[i_flag_24] <- var2[i_flag_24]
     CO2[i_flag_24] <- fCO2[i_flag_24]*K0[i_flag_24]
-
     # From this line on, this case is similar to case 4
     fALK <- function(x)# K1=K1, K2=K2, CO2=CO2, BOR=BOR, Kb=Kb, Kw=Kw, Pt=Pt, K1p=K1p, K2p=K2p, K3p=K3p, Sit=Sit, Ksi=Ksi, ST=ST, Ks=Ks, FLUO=FLUO, Kf=Kf, ALK=ALK) 
     {
@@ -844,7 +838,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     H[i_flag_24] <- h
     DIC[i_flag_24]  <- CO2[i_flag_24] + HCO3[i_flag_24] + CO3[i_flag_24]
 
-    # ------------ case 25.) DIC and pCO2 given
+    # ------------ case 25.) DIC and pCO2 given ----
     # Indices of flag elements where flag = 25
     i_flag_25 <- which (flag == 25)
     DIC[i_flag_25] <- var2[i_flag_25]
@@ -861,7 +855,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_25] <- -log10(h)
     H[i_flag_25] <- h
 
-    # ------------ CALCULATION OF ALK in cases 
+    # ------------ CALCULATION OF ALK in cases ----
     cases <- c(1, 2, 3, 5, 6, 7, 9, 10, 12, 14, 21, 22, 23, 25)
     # Indices of flag elements in these cases
     i_flag <- which (flag %in% cases)
