@@ -15,7 +15,7 @@ Authors@R: c(person("Jean-Pierre", "Gattuso", role = c("aut", "cre", "cph"), ema
   )
 Depends: R (>= 2.10), oce
 Description: Calculates parameters of the seawater carbonate system and assists
-    the design of ocean acidification perturbation experiments.
+    the design of ocean acidification perturbation experiments
 Encoding: UTF-8
 URL: http://CRAN.R-project.org/package=seacarb
 License: GPL (>= 2)
