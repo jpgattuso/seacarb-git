@@ -148,7 +148,7 @@ not returned.
 }
 
 \references{
-Dickson, A. G. and Riley, J. P., 1978 The effect of analytical error on the evaluation of the components of the aquatic carbon-dioxide system, Mar. Chem., 6, 77–85.
+Dickson, A. G. and Riley, J. P., 1978 The effect of analytical error on the evaluation of the components of the aquatic carbon-dioxide system, Mar. Chem., 6, 77-85.
 
 Dickson A. G. and Riley J. P., 1979 The estimation of acid dissociation constants in seawater media from potentiometric titrations with strong base. I. The ionic product of water. \emph{Marine Chemistry} \bold{7}, 89-99.
 

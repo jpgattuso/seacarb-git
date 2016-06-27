@@ -3,5 +3,5 @@ importFrom(utils, data)
 exportPattern(".")
 importFrom("graphics", "arrows", "contour", "matlines", "matplot",
              "mtext", "par")
-importFrom("stats", "lm", "nls", "uniroot")
+importFrom("stats", "lm", "nls", "uniroot", "rnorm")
 importFrom(oce, swTheta)
