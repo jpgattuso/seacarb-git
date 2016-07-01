@@ -8,6 +8,8 @@ New routines have been added to perform error propagation (errors.R) and to take
 
 - New: 'buffesm.R' function has been improved to account for effects of total dissolved inorganic phospphorus (Pt) and silicon (Sit) on buffer factors and the Revelle factor. This is an advance relative to the original equations from Egleston et al (2010) who did not acount for effects from these nutrients (Orr and Epitalon, 2015).
 
+- Fixed bug in carb: an error was returned when there were NA values for ALK with flags 13 and 15 (many thanks to Matthew A. Birk for reporting this bug and proposing a fix).
+
 version 3.0.14, 2016-04-09
 -----------------------------------
 - Corrected a bug in Pcoeffs.txt which prevented to perform pressure corrections properly.
