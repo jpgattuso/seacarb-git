@@ -65,7 +65,7 @@ errors <-
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
          evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=NULL, 
          method="ga", r=0, runs=10000, 
-         k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential")
+         k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y")
 {
     # Input checking
     # --------------
@@ -142,17 +142,17 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     {
         r0 <- r*0.0
         errs <- .errors_ga (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, r0, eS, eT, ePt, eSit,
-                epK, k1k2, kf, ks, pHscale, b, gas)
+                epK, k1k2, kf, ks, pHscale, b, gas, warn)
     }
     else if (method == "mo")
     {
         errs <- .errors_ga (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, r, eS, eT, ePt, eSit,
-                epK, k1k2, kf, ks, pHscale, b, gas)
+                epK, k1k2, kf, ks, pHscale, b, gas, warn)
     }
     else if (method == "mc")
     {
         errs <- .errors_mc (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, eS, eT, ePt, eSit,
-                epK, k1k2, kf, ks, pHscale, b, gas, runs)
+                epK, k1k2, kf, ks, pHscale, b, gas, runs, warn)
     }
 
     return (errs)
@@ -210,7 +210,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
 
 .errors_ga <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, r=0, eS=0.01, eT=0.01,
-         ePt=0, eSit=0, epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential")
+         ePt=0, eSit=0, epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y")
 {
     # names of dissociation constants
     Knames <- c ('K0','K1','K2','Kb','Kw','Kspa', 'Kspc')
@@ -280,7 +280,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     {
         # Compute sensitivities (partial derivatives)
         deriv1 <- derivnum ('1', flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
-            pHscale=pHscale, b=b, gas=gas)
+            pHscale=pHscale, b=b, gas=gas, warn=warn)
         err <- deriv1 * evar1
         sq_err <- sq_err + err * err
     }
@@ -290,7 +290,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     {
         # Compute sensitivities (partial derivatives)
         deriv2 <- derivnum ('2', flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
-            pHscale=pHscale, b=b, gas=gas)
+            pHscale=pHscale, b=b, gas=gas, warn=warn)
         err <- deriv2 * evar2
         sq_err <- sq_err + err * err
     }
@@ -319,13 +319,13 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
             deriv <- derivnum ('sil', flag[Sit_valid], var1[Sit_valid], var2[Sit_valid], S=S[Sit_valid], T=T[Sit_valid],
                                Patm=Patm[Sit_valid], P=P[Sit_valid], Pt=Pt[Sit_valid], Sit=Sit[Sit_valid], 
                                k1k2=k1k2[Sit_valid], kf=kf[Sit_valid], ks=ks[Sit_valid], 
-                               pHscale=pHscale[Sit_valid], b=b[Sit_valid], gas=gas)
+                               pHscale=pHscale[Sit_valid], b=b[Sit_valid], gas=gas, warn=warn)
             err <- deriv * eSit[Sit_valid]
             sq_err[Sit_valid] <- sq_err[Sit_valid] + err * err
         }
     }
 
-    # Contribution of Phosphorus (total dissoloved inorganic concentration) to squared standard error
+    # Contribution of Phosphorus (total dissolved inorganic concentration) to squared standard error
     #
     # Remark : does not compute error where Pt = 0 
     #          because computation of sensitivity to Pt fails in that case
@@ -339,7 +339,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
             deriv <- derivnum ('phos', flag[Pt_valid], var1[Pt_valid], var2[Pt_valid], S=S[Pt_valid], T=T[Pt_valid],
                                Patm=Patm[Pt_valid], P=P[Pt_valid], Pt=Pt[Pt_valid], Sit=Sit[Pt_valid], 
                                k1k2=k1k2[Pt_valid], kf=kf[Pt_valid], ks=ks[Pt_valid], 
-                               pHscale=pHscale[Pt_valid], b=b[Pt_valid], gas=gas)
+                               pHscale=pHscale[Pt_valid], b=b[Pt_valid], gas=gas, warn=warn)
             err <- deriv * ePt[Pt_valid]
             sq_err[Pt_valid] <- sq_err[Pt_valid] + err * err
         }
@@ -350,7 +350,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     {
         # Compute sensitivities (partial derivatives)
         deriv <- derivnum ('T', flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
-            pHscale=pHscale, b=b, gas=gas)
+            pHscale=pHscale, b=b, gas=gas, warn=warn)
         err <- deriv * eT
         sq_err <- sq_err + err * err
     }
@@ -360,7 +360,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     {
         # Compute sensitivities (partial derivatives)
         deriv <- derivnum ('S', flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
-            pHscale=pHscale, b=b, gas=gas)
+            pHscale=pHscale, b=b, gas=gas, warn=warn)
         err <- deriv * eS
         sq_err <- sq_err + err * err
     }
@@ -369,20 +369,20 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     if (any (epK != 0))
     {
         # Ks (free pH scale) at zero pressure and given pressure
-        Ks_P0 <- Ks(S=S, T=T, P=0, ks=ks)
-        Ks    <- Ks(S=S, T=T, P=P, ks=ks)
+        Ks_P0 <- Ks(S=S, T=T, P=0, ks=ks, warn=warn)
+        Ks    <- Ks(S=S, T=T, P=P, ks=ks, warn=warn)
 
         # Kf on free pH scale
-        Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks)
-        Kff <- Kf(S=S, T=T, P=P, pHscale="F", kf=kf, Ks_P0, Ks)
+        Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
+        Kff <- Kf(S=S, T=T, P=P, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
         # Kf on given pH scale
-        Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks)
+        Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks, warn=warn)
 
         # Conversion factor from total to SWS pH scale at zero pressure
-        ktotal2SWS_P0 <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0)$ktotal2SWS
+        ktotal2SWS_P0 <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0,warn=warn)$ktotal2SWS
 
         # Conversion factor from SWS to chosen pH scale
-        conv <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks,Kff=Kff)
+        conv <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks,Kff=Kff,warn=warn)
         kSWS2chosen <- rep(1.,n)
         kSWS2chosen [pHscale == "T"] <- conv$kSWS2total [pHscale == "T"]
         kSWS2chosen [pHscale == "F"] <- conv$kSWS2free [pHscale == "F"]  
@@ -396,19 +396,19 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         {
             # Compute Ki
             Ki <- switch (i,
-                          K0(S=S, T=T, Patm=Patm, P=0),
-                          K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0),
-                          K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0),
-                          Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0),
-                          Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen),
-                          Kspa(S=S, T=T, P=P),
-                          Kspc(S=S, T=T, P=P)
+                          K0(S=S, T=T, Patm=Patm, P=0, warn=warn),
+                          K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn),
+                          K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn),
+                          Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0, warn=warn),
+                          Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn),
+                          Kspa(S=S, T=T, P=P, warn=warn),
+                          Kspc(S=S, T=T, P=P, warn=warn)
                           )
             # compute error on Ki from that on pKi
             eKi <- - epK[i] * Ki * log(10)
             # Compute sensitivities (partial derivatives)
             deriv <- derivnum (Knames[i], flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
-                pHscale=pHscale, b=b, gas=gas)
+                pHscale=pHscale, b=b, gas=gas, warn=warn)
 cat ("deriv: ")
 print (deriv)
             err <- deriv * eKi
@@ -476,7 +476,7 @@ print (deriv)
 #   each column contains deviate delta values of one dissociation constant
 #   column length is n * runs
 #
-.gen_delta_Kx <- function (epK, S, T, P, Patm, pHscale, k1k2, kf, ks, runs)
+.gen_delta_Kx <- function (epK, S, T, P, Patm, pHscale, k1k2, kf, ks, runs, warn="y")
 {
     n <- length(S)
     # names of dissociation constants
@@ -507,20 +507,20 @@ print (deriv)
     # Preliminary calculations for dissociation constants
 
     # Ks (free pH scale) at zero pressure and given pressure
-    Ks_P0 <- Ks(S=S, T=T, P=0, ks=ks)
-    Ks    <- Ks(S=S, T=T, P=P, ks=ks)
+    Ks_P0 <- Ks(S=S, T=T, P=0, ks=ks, warn=warn)
+    Ks    <- Ks(S=S, T=T, P=P, ks=ks, warn=warn)
 
     # Kf on free pH scale
-    Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks)
-    Kff <- Kf(S=S, T=T, P=P, pHscale="F", kf=kf, Ks_P0, Ks)
+    Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
+    Kff <- Kf(S=S, T=T, P=P, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
     # Kf on given pH scale
-    Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks)
+    Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks, warn=warn)
 
     # Conversion factor from total to SWS pH scale at zero pressure
-    ktotal2SWS_P0 <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0)$ktotal2SWS
+    ktotal2SWS_P0 <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0,warn=warn)$ktotal2SWS
 
     # Conversion factor from SWS to chosen pH scale
-    conv <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks,Kff=Kff)
+    conv <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks,Kff=Kff, warn=warn)
     kSWS2chosen <- rep(1.,n)
     kSWS2chosen [pHscale == "T"] <- conv$kSWS2total [pHscale == "T"]
     kSWS2chosen [pHscale == "F"] <- conv$kSWS2free [pHscale == "F"]  
@@ -530,13 +530,13 @@ print (deriv)
     {
         # Compute Ki
         Ki <- switch (i,
-                      seacarb::K0(S=S, T=T, Patm=Patm, P=0),
-                      seacarb::K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0),
-                      seacarb::K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0),
-                      seacarb::Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0),
-                      seacarb::Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen),
-                      seacarb::Kspa(S=S, T=T, P=P),
-                      seacarb::Kspc(S=S, T=T, P=P)
+                      seacarb::K0(S=S, T=T, Patm=Patm, P=0, warn=warn),
+                      seacarb::K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn),
+                      seacarb::K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn),
+                      seacarb::Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0, warn=warn),
+                      seacarb::Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn),
+                      seacarb::Kspa(S=S, T=T, P=P, warn=warn),
+                      seacarb::Kspc(S=S, T=T, P=P, warn=warn)
                       )
         if (i == 1)
             center_value = 0.0    # special case for K0
@@ -614,7 +614,7 @@ print (deriv)
 #
 .errors_mc <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0,
-         epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", runs=10000)
+         epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", runs=10000, warn="y")
 {
     # Constant table :  names of input pair variables sorted by flag number
     varnames  = rbind (
@@ -683,7 +683,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         
     # Generate deviate delta values for K0
     # Generate deviate values for other dissoc. constants Kx
-    spl_Kx <- .gen_delta_Kx (epK, S, T, P, Patm, pHscale, k1k2, kf, ks, runs)
+    spl_Kx <- .gen_delta_Kx (epK, S, T, P, Patm, pHscale, k1k2, kf, ks, runs, warn=warn)
 
     # All other parameters and variables
     spl_flag <- rep (flag, each=runs)
@@ -702,22 +702,22 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     #
     # It computes original K0 values then add precalculated deltas to generate 
     # and return deviate values
-    K0 <- function(S=35,T=25,P=0,Patm=1)
+    K0 <- function(S=35,T=25,P=0,Patm=1, warn=warn)
     {
         # Call original K0 function
-        out <- seacarb::K0(S, T, P, Patm=Patm)
+        out <- seacarb::K0(S, T, P, Patm=Patm, warn=warn)
         # perturb value of K0 by adding deltas
         out = out + spl_Kx$K0
         return (out)
     }
     # General case : all other
     # The function return precalculated deviate values
-    K1 <- function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)  spl_Kx$K1
-    K2 <- function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)  spl_Kx$K2
-    Kw <- function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0)  spl_Kx$Kw
-    Kb <- function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)  spl_Kx$Kb
-    Kspa <- function(S=35,T=25,P=0)  spl_Kx$Kspa
-    Kspc <- function(S=35,T=25,P=0)  spl_Kx$Kspc
+    K1 <- function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0, warn="y")  spl_Kx$K1
+    K2 <- function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0, warn="y")  spl_Kx$K2
+    Kw <- function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0, warn="y")  spl_Kx$Kw
+    Kb <- function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0, warn="y")  spl_Kx$Kb
+    Kspa <- function(S=35,T=25,P=0, warn="y")  spl_Kx$Kspa
+    Kspc <- function(S=35,T=25,P=0, warn="y")  spl_Kx$Kspc
 
     # Note : in the general case (K1, K2,...) the function Kx is called once by the function carb()
     #        We can call the function in anticipation and substitute real values with deviate values
@@ -738,7 +738,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 
     # Compute output carbonate system variables
     seacarb = carb(spl_flag, spl_var1, spl_var2, S=spl_S, T=spl_T, Patm=spl_Patm, P=spl_P, Pt=spl_Pt, Sit=spl_Sit, 
-                spl_k1k2, spl_kf, spl_ks, spl_pHscale, spl_b)
+                spl_k1k2, spl_kf, spl_ks, spl_pHscale, spl_b, warn=warn)
 
     # Restore environment of carb()
     environment(carb) <- saved_env

@@ -4,7 +4,7 @@
 \title{Dissociation constant of hydrogen sulfide (mol/kg)}
 \description{Dissociation constant of hydrogen sulfide (mol/kg)}
 \usage{
-Khs(S=35, T=25, P=0, pHscale="T")
+Khs(S=35, T=25, P=0, pHscale="T", warn="y")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -12,6 +12,7 @@ Khs(S=35, T=25, P=0, pHscale="T")
   \item{T}{Temperature in degrees Celsius, default is 25oC}
   \item{P}{Hydrostatic pressure in bar (surface = 0), default is 0}
   \item{pHscale}{choice of pH scale: "T" for using the total scale, "F" for using the free scale and "SWS" for using the seawater scale, default is total scale}
+  \item{warn}{"y" to show warnings when T or S go beyond the valid range for Khs; "n" to supress warnings. The default is "y".}
 }
 
 \details{

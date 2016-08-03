@@ -5,13 +5,14 @@
 \title{Solubility product of aragonite (mol/kg)}
 \description{Solubility product of aragonite (mol/kg)}
 \usage{
-Kspa(S = 35, T = 25, P = 0)
+Kspa(S=35, T=25, P=0, warn="y")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{S}{Salinity, default is 35}
   \item{T}{Temperature in degrees Celsius, default is 25oC}
   \item{P}{Hydrostatic pressure in bar (surface = 0), default is 0}
+  \item{warn}{"y" to show warnings when T or S go beyond the valid range for Kspa; "n" to supress warnings. The default is "y".}
 }
 
 \details{

@@ -5,7 +5,7 @@
 \description{Computes the pressure correction of the equilibrium constants}
 \usage{
 Pcorrect(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", 
-  kconv2ScaleP0=0, kconv2Scale=0)
+  kconv2ScaleP0=0, kconv2Scale=, warn="y")
 }
 
 \arguments{
@@ -33,6 +33,7 @@ Pcorrect(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T",
   \item{pHscale}{pHscale of the constant given in Kvalue}
   \item{kconv2ScaleP0}{Conversion factor from the pH scale selected to the SWS (or free for Kf) scale at pressure zero. It is computed if it is not given, which significantly slows down the computation}
   \item{kconv2Scale}{Conversion factor from the pH scale selected to the SWS (or free for Kf) scale at the hydrostatic pressure value indicated. It is computed if it is not given, which significantly slows down the computation}
+  \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
 }    
 
 \details{

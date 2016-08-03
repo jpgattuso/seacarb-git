@@ -11,7 +11,7 @@
 #
 #
 "Kw" <-
-function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0)
+function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,warn="y")
 {
 
     nK <- max(length(S), length(T), length(P), length(pHscale), length(kSWS2scale))
@@ -63,7 +63,7 @@ function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0)
 
     # If needed, pressure correction
     if (any (P != 0))
-        Kw <- Pcorrect(Kvalue=Kw, Ktype="Kw", T=T, S=S, P=P, pHscale="SWS", 1., 1.)
+        Kw <- Pcorrect(Kvalue=Kw, Ktype="Kw", T=T, S=S, P=P, pHscale="SWS", 1., 1., warn=warn)
 
 	    
     ###----------------pH scale corrections
@@ -99,8 +99,9 @@ function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0)
 
 
     ##------------Warnings
-    if (any (T>45 | S>45 | T<0) ) {warning("S and/or T is outside the range of validity of the formulation available for Kw in seacarb.")}
+    is_w <- warn == "y"
 
+    if (any (is_w & (T>45 | S>45 | T<0)) ) {warning("S and/or T is outside the range of validity of the formulation available for Kw in seacarb.")}
 
     attr(Kw,"unit")     = "mol/kg-soln"
     attr(Kw,"pH scale") = pHsc

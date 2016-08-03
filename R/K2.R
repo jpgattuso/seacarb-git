@@ -10,7 +10,7 @@
 #
 #
 "K2" <-
-function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
+function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y")
 {
 
     nK <- max(length(S), length(T), length(P), length(k1k2), length(pHscale), length(kSWS2scale) ,length(ktotal2SWS_P0))
@@ -204,7 +204,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
     {
         # Call Pcorrect() on SWS scale
         K2[i_press] <- Pcorrect(Kvalue=K2[i_press], Ktype="K2", T=T[i_press], 
-            S=S[i_press], P=P[i_press], pHscale=pHsc[i_press], 1., 1.)
+            S=S[i_press], P=P[i_press], pHscale=pHsc[i_press], 1., 1., warn=warn)
     }
 
     ## ------------------- Last conversion in the require pHscale ------------------
@@ -242,10 +242,12 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
 
     ##------------Warnings
 
-    if (   any (is_l & (T>35 | T<2 | S<19 | S>43))  || any (is_r & (T>45 | S<5 | S>45)) )
+    is_w <- warn == "y"
+
+    if (   any (is_w & is_l & (T>35 | T<2 | S<19 | S>43))  || any (is_w & is_r & (T>45 | S<5 | S>45)) )
         warning("S and/or T is outside the range of validity of the formulation chosen for K2.")
 
-    if (any (T>50 | S>50)) 
+    if (any (is_w & (T>50 | S>50))) 
         warning("S and/or T is outside the range of validity of the formulations available for K2 in seacarb.")
 
     ##---------------Attributes

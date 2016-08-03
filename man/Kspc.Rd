@@ -5,13 +5,14 @@
 \title{Solubility product of calcite (mol/kg)}
 \description{Solubility product of calcite (mol/kg)}
 \usage{
-Kspc(S = 35, T = 25, P = 0)
+Kspc(S=35, T=25, P=0, warn="y")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{S}{Salinity, default is 35}
   \item{T}{Temperature in degrees Celsius, default is 25oC}
   \item{P}{Hydrostatic pressure in bar (surface = 0), default is 0}
+  \item{warn}{"y" to show warnings when T or S go beyond the valid range for Kspc; "n" to supress warnings. The default is "y".}
 }
 
 \details{
@@ -21,7 +22,7 @@ This formulation is only valid for specific ranges of temperature and salinity:
 \item S ranging between 5 and 44 and T ranging between 5 and 40oC.
 }
 
-Pressure coorection was performed as described by Millero (1995).
+The pressure coorection was performed as described by Millero (1995).
 
 Note that the arguments can be given as a unique number or as vectors. If the lengths of the vectors are different, the longer vector is retained and only the first value of the other vectors is used. It can therefore be critical to use vectors of the same length.
 } 

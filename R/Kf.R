@@ -11,7 +11,7 @@
 #
 #
 "Kf" <-
-function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0=0,Ks_p=0){
+function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0=0,Ks_p=0,warn="y"){
 
     nK <- max(length(S), length(T), length(P), length(kf), length(pHscale), length(Ks_p0), length(Ks_p))
 
@@ -103,7 +103,7 @@ function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0=0,Ks_p=0){
 
 
     # ------------------- Pressure effect --------------------------------
-    if (any (P != 0)) Kf <- Pcorrect(Kvalue=Kf, Ktype="Kf", T=T, S=S, P=P, pHscale="F") 
+    if (any (P != 0)) Kf <- Pcorrect(Kvalue=Kf, Ktype="Kf", T=T, S=S, P=P, pHscale="F", warn=warn) 
     # All the Kf constants are on free scale, whatever the method or the pressure
 
     # Which pH scales are required ?
@@ -141,8 +141,10 @@ function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0=0,Ks_p=0){
 
     ##------------Warnings
 
-    if (any (is_pf & (T>33 | T<9 | S<10 | S>40)) ) {warning("S and/or T is outside the range of validity of the formulation chosen for Kf.")}
-    if (any( T>45 | S>45 )) {warning("S and/or T is outside the range of validity of the formulations available for Kf in seacarb.")}
+    is_w <- warn == "y"
+
+    if (any (is_w & is_pf & (T>33 | T<9 | S<10 | S>40)) ) {warning("S and/or T is outside the range of validity of the formulation chosen for Kf.")}
+    if (any(is_w & ( T>45 | S>45 ))) {warning("S and/or T is outside the range of validity of the formulations available for Kf in seacarb.")}
 
     ##---------------Attributes
     method <- rep(NA,nK)
