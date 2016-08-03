@@ -11,7 +11,7 @@
 #
 #
 "K2p" <-
-function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0){
+function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,warn="y"){
 
     nK <- max(length(S), length(T), length(P), length(pHscale), length(kSWS2scale))
 
@@ -63,7 +63,7 @@ function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0){
 
     # ----------------- If needed, Pressure Correction ------------------	
     if (any (P != 0))
-        K2P <- Pcorrect(Kvalue=K2P, Ktype="K2p", T=T, S=S, P=P, pHscale="SWS", 1., 1.)
+        K2P <- Pcorrect(Kvalue=K2P, Ktype="K2p", T=T, S=S, P=P, pHscale="SWS", 1., 1., warn=warn)
 
     ###----------------pH scale corrections
    
@@ -100,7 +100,9 @@ function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0){
 
     ##------------Warnings
 
-    if (any (T>45 | S>45 | T<0) ) {warning("S and/or T is outside the range of validity of the formulation available for K2p in seacarb.")}
+    is_w <- warn == "y"
+
+    if (any (is_w & (T>45 | S>45 | T<0)) ) {warning("S and/or T is outside the range of validity of the formulation available for K2p in seacarb.")}
 
     attr(K2P,"unit")     = "mol/kg-soln"
     attr(K2P,"pH scale") = pHsc

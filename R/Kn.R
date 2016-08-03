@@ -11,7 +11,7 @@
 
 
 "Kn" <- 
-function (S=35, T=25, P=0, pHscale="T")
+function (S=35, T=25, P=0, pHscale="T",warn="y")
 
 #--------------------------------------------------------------
 # Dissociation constant of ammonium 
@@ -41,7 +41,7 @@ lnK <- -6285.33/TC+0.0001635*TC-0.25444+(0.46532-123.7184/TC)* sqrt(S)+
 Kn <- exp(lnK)
 
 # ----------------- Pressure Correction ------------------	
-Kn <- Pcorrect(Kvalue=Kn, Ktype="Kn", T=T, S=S, P=P, pHscale="SWS")
+Kn <- Pcorrect(Kvalue=Kn, Ktype="Kn", T=T, S=S, P=P, pHscale="SWS", warn=warn)
 
 
 ###----------------pH scale corrections
@@ -56,9 +56,9 @@ Kn[i] <- Kn[i]*factor[i]
 
 ##------------Warnings
 
-for(i in 1:nK){
-if((T[i]>45)|(S[i]>45)|(T[i]<0)){warning("S and/or T is outside the range of validity of the formulation available for Kn in seacarb.")}
-}
+    is_w <- warn == "y"
+
+    if (any (is_w & (T>45 | T<0 | S<0 | S>45)) ) {warning("S and/or T is outside the range of validity of the formulation chosen for Kn.")}
 
   attr(Kn,"pH scale") = pHsc
   attr(Kn,"unit")     = "mol/kg-soln"

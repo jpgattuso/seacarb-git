@@ -5,7 +5,7 @@
 
 \description{Dissociation constant of boric acid (mol/kg)}
 \usage{
-Kb(S = 35, T = 25, P = 0, pHscale="T", kSWS2scale=0, ktotal2SWS_P0=0)
+Kb(S=35, T=25, P=0, pHscale="T", kSWS2scale=0, ktotal2SWS_P0=0, warn="y")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -16,6 +16,7 @@ Kb(S = 35, T = 25, P = 0, pHscale="T", kSWS2scale=0, ktotal2SWS_P0=0)
   \item{kSWS2scale}{Conversion factor from SWS pH scale to chosen scale at chosen pressure;
 if needed and not given, it is computed; if given, computation speed is increased}
   \item{ktotal2SWS_P0}{Conversion factor from the seawater scale (SWS) to the pH scale selected at the hydrostatic pressure value indicated. It is not required when the selected pH scale is SWS and the hydrostatic pressure is 0. If it is required and not given, it is computed, which slows down computations.}
+  \item{warn}{"y" to show warnings when T or S go beyond the valid range for Kb; "n" to supress warnings. The default is "y".}
 }
 
 \details{

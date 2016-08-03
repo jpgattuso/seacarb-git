@@ -13,7 +13,7 @@
 #
 
 buffer <- 
-  function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74"){
+  function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", warn="y"){
     n <- max(length(flag), length(var1), length(var2), length(S), length(T), length(P), length(Pt), length(Sit), length(k1k2), length(kf), length(pHscale), length(ks), length(b))
     if(length(flag)!=n){flag <- rep(flag[1],n)}
     if(length(var1)!=n){var1 <- rep(var1[1],n)}
@@ -62,8 +62,8 @@ buffer <-
     #---------------------------------------------------------------------
     
     # Ks (free pH scale) at zero pressure and given pressure
-    Ks_P0 <- Ks(S=S, T=T, P=0, ks=ks)
-    Ks    <- Ks(S=S, T=T, P=P, ks=ks)
+    Ks_P0 <- Ks(S=S, T=T, P=0, ks=ks, warn=warn)
+    Ks    <- Ks(S=S, T=T, P=P, ks=ks, warn=warn)
     
     # Kf on free pH scale
     Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks)
@@ -80,22 +80,22 @@ buffer <-
     kSWS2chosen [pHscale == "T"] <- conv$kSWS2total [pHscale == "T"]
     kSWS2chosen [pHscale == "F"] <- conv$kSWS2free [pHscale == "F"]  
 
-    K1 <- K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0)   
-    K2 <- K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0)
-    Kw <- Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
-    K0 <- K0(S=S, T=T, Patm=Patm, P=P)
-    Kb <- Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0)
-    K1p <- K1p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
-    K2p <- K2p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
-    K3p <- K3p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
-    Ksi <- Ksi(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen)
-    Kspa <- Kspa(S=S, T=T, P=P)
-    Kspc <- Kspc(S=S, T=T, P=P)
+    K1 <- K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)   
+    K2 <- K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)
+    Kw <- Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    K0 <- K0(S=S, T=T, Patm=Patm, P=P, warn=warn)
+    Kb <- Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0, warn=warn)
+    K1p <- K1p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    K2p <- K2p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    K3p <- K3p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    Ksi <- Ksi(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    Kspa <- Kspa(S=S, T=T, P=P, warn=warn)
+    Kspc <- Kspc(S=S, T=T, P=P, warn=warn)
 
     rho <- rho(S=S,T=T,P=P)
 
     # Compute potential K0 with S, potential temperature, and atmospheric pressure (usually 1 atm)
-    K0pot <- K0(S=S, T=theta(S=S, T=T, P=P, Pref=0), Patm=Patm, P=0)
+    K0pot <- K0(S=S, T=theta(S=S, T=T, P=P, Pref=0), Patm=Patm, P=0, warn=warn)
     
     #---------------------------------------------------------------------
     #--------------------    buffer effects    ---------------------------

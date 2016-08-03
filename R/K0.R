@@ -10,7 +10,7 @@
 #
 #
 "K0" <-
-function(S=35,T=25,P=0,Patm=1){
+function(S=35,T=25,P=0,Patm=1,warn="y"){
 
     nK <- max(length(S), length(T), length(P), length(Patm))
 
@@ -42,7 +42,9 @@ function(S=35,T=25,P=0,Patm=1){
 
     ##------------Warnings
 
-    if (any (T>45 | S>45 | T<(-1)) ) {warning("S and/or T is outside the range of validity of the formulation available for K0 in seacarb.")}
+    is_w <- warn == "y"
+
+    if (any (is_w & (T>45 | S>45 | T<(-1))) ) {warning("S and/or T is outside the range of validity of the formulation available for K0 in seacarb.")}
 
     K0= exp(nK0we74);
 

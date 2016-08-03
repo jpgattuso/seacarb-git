@@ -10,7 +10,7 @@
 #
 #
 "Kspc" <-
-function(S=35,T=25,P=0){
+function(S=35,T=25,P=0,warn="y"){
     
     nK <- max(length(S), length(T), length(P))
     
@@ -45,12 +45,14 @@ function(S=35,T=25,P=0){
     	
     # ----------------- Pressure Correction ------------------
     	
-    Kspc <- Pcorrect(Kvalue=Kspc, Ktype="Kspc", T=T, S=S, P=P)
+    Kspc <- Pcorrect(Kvalue=Kspc, Ktype="Kspc", T=T, S=S, P=P, warn=warn)
 
 		
 		##------------Warnings
 
-    if( any (T>40 | S>44 | T<5 | S<5))
+    is_w <- warn == "y"
+
+    if (any (is_w & (T>40 | S>44 | T<5 | S<5)) )
         warning("S and/or T is outside the range of validity of the formulation available for Kspc in seacarb.")
 
     

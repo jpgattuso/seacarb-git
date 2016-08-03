@@ -4,7 +4,7 @@
 \title{First dissociation constant of carbonic acid (mol/kg)}
 \description{First dissociation constant of carbonic acid (mol/kg)}
 \usage{
-K1(S = 35, T = 25, P = 0, k1k2="x", pHscale="T", kSWS2scale=0, ktotal2SWS_P0=0)
+K1(S=35, T=25, P=0, k1k2="x", pHscale="T", kSWS2scale=0, ktotal2SWS_P0=0, warn="y")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -15,6 +15,7 @@ K1(S = 35, T = 25, P = 0, k1k2="x", pHscale="T", kSWS2scale=0, ktotal2SWS_P0=0)
   \item{pHscale}{choice of pH scale: "T" for using the total scale, "F" for using the free scale and "SWS" for using the seawater scale, default is total scale}
   \item{kSWS2scale}{Conversion factor from the seawater scale (SWS) to the pH scale selected at the hydrostatic pressure value indicated. It is not required when k1k2 is "m10" or "w14" and the hydrostatic pressure is 0. If it is required and not given, it is computed, which slows down computations.}
   \item{ktotal2SWS_P0}{Conversion factor from the total scale to the SWS at an hydrostatic pressure of 0. It is only required when k1k2 is "l" or "r". If it is required and not given, it is computed, which slows down computations.}
+  \item{warn}{"y" to show warnings when T or S go beyond the valid range for K1; "n" to supress warnings. The default is "y".}
 }
 
 \details{The Lueker et al. (2000) constant is recommended by Guide to Best Practices for Ocean CO2 Measurements (2007). It is, however, critical to consider that each formulation is only valid for specific ranges of temperature and salinity:

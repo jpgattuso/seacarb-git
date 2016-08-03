@@ -10,7 +10,7 @@
 #
 
 "Pcorrect" <-
-function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Scale=0)
+function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Scale=0, warn="y")
 {
   #Pcoeffs <- get("Pcoeffs", envir  = environment()) # added to silence the CRAN note "Pcorrect: no visible binding for global variable ‘Pcoeffs’"
   nK <- max(length(Kvalue), length(Ktype), length(P), length(T), length(pHscale), length(S), length(kconv2ScaleP0), length(kconv2Scale))
@@ -78,7 +78,7 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
                 # Indices in initial vector Kvalue candidate to conversion from T to SWS
                 i_from_T_SWS <- i_SWscale[i_from_T]             
                 # compute conversion factor from Total pH scale to SW pH scale at zero pressure
-                conv[i_from_T] <- kconv(S=S[i_from_T_SWS], T=T[i_from_T_SWS], P=0)$ktotal2SWS        
+                conv[i_from_T] <- kconv(S=S[i_from_T_SWS], T=T[i_from_T_SWS], P=0, warn=warn)$ktotal2SWS        
             }
 
             # Indices in subvector Kvalue[i_SWscale] relevant to pHscale "F" 
@@ -88,7 +88,7 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
                 # Indices in initial vector Kvalue candidate to conversion from F to SWS
                 i_from_F_SWS <- i_SWscale[i_from_F] 
                 # compute conversion factor from Free pH scale to SW pH scale at zero pressure
-                conv[i_from_F] <- kconv(S=S[i_from_F_SWS], T=T[i_from_F_SWS], P=0)$free2SWS
+                conv[i_from_F] <- kconv(S=S[i_from_F_SWS], T=T[i_from_F_SWS], P=0, warn=warn)$free2SWS
             }        
         }
         else
@@ -126,7 +126,7 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
                 # Indices in initial vector Kvalue candidate to conversion from T to SWS
                 i_from_T_SWS <- i_SWscale[i_from_T]
                 # compute conversion factor from Total pH scale to SW pH scale at given pressure
-                conv[i_from_T] <- kconv(S=S[i_from_T_SWS], T=T[i_from_T_SWS], P=P[i_from_T_SWS])$ktotal2SWS        
+                conv[i_from_T] <- kconv(S=S[i_from_T_SWS], T=T[i_from_T_SWS], P=P[i_from_T_SWS], warn=warn)$ktotal2SWS        
             }
     
             # Indices in subvector Kvalue[i_SWscale] relevant to pHscale "F" 
@@ -136,7 +136,7 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
                 # Indices in initial vector Kvalue candidate to conversion from F to SWS
                 i_from_F_SWS <- i_SWscale[i_from_F] 
                 # compute conversion factor from Free pH scale to SW pH scale at given pressure
-                conv[i_from_F] <- kconv(S=S[i_from_F_SWS], T=T[i_from_F_SWS], P=P[i_from_F_SWS])$free2SWS
+                conv[i_from_F] <- kconv(S=S[i_from_F_SWS], T=T[i_from_F_SWS], P=P[i_from_F_SWS], warn=warn)$free2SWS
             }        
         }
         else
