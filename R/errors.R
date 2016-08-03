@@ -18,11 +18,12 @@
 #
 # Input parameters :
 #   - evar1, evar2   :  standard error (uncertainty) in var1 and var2 of input pair of carbonate system variables
-#   - eS, eT         :  standard error (uncertainty) in Salinity and Temperature
+#   - eS, eT         :  standard error (uncertainty) in Salinity and Temperature (default value = 0.01)
 #   - ePt, eSit      :  standard error (uncertainty) in Phosphate and Silicate total concentrations
 #   - epK            :  standard error (uncertainty) in all 7 dissociation constants (a vector)
-#   - method         :  case insensitive character string : "ga" or "mc"
+#   - method         :  case insensitive character string : "ga", "mo", or "mc"
 #                       default is "ga" (gaussian)
+#   - r              :  correlation coefficient (from -1 to 1) between var1 and var2 (only for Method of moments')
 #   - runs           :  number of random samples (for Monte Carlo method only); default is 10000
 #   - others         :  same as input of subroutine carb(): scalar or vectors
 #
@@ -57,19 +58,19 @@
 #      Accuracy is inversely proportional to the number of runs.
 #
 #   Computation time also depends on the type of input pair of variables.
-#     For example, the input pair DIC and Alk (flag=15) requires much more computation time 
+#     For example, the input pair DIC and Alk (flag=15) requires much more computational time 
 #     than does the input pair pH and Alkalinity (flag=8).
 #
 errors <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
          evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=NULL, 
-         method="ga", runs=10000, 
+         method="ga", r=0, runs=10000, 
          k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential")
 {
     # Input checking
     # --------------
     
-    if (! method %in% c("ga", "mc"))
+    if (! method %in% c("ga", "mo", "mc"))
         stop ("Invalid input parameter: ", method)
 
 
@@ -77,7 +78,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     # -------------------
     
     n <- max(length(flag), length(var1), length(var2), length(S), length(T), length(P), length(Pt), length(Sit), 
-             length(evar1), length(evar2), length(eS), length(eT), length(ePt), length(eSit),
+             length(evar1), length(evar2), length(r), length(eS), length(eT), length(ePt), length(eSit),
              length(k1k2), length(kf), length(pHscale), length(ks), length(b))
     if(length(flag)!=n){flag <- rep(flag[1],n)}
     if(length(var1)!=n){var1 <- rep(var1[1],n)}
@@ -89,6 +90,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     if(length(Pt)!=n){Pt <- rep(Pt[1],n)}
     if(length(evar1)!=n){evar1 <- rep(evar1[1],n)}
     if(length(evar2)!=n){evar2 <- rep(evar2[1],n)}
+    if(length(r)!=n){r <- rep(r[1],n)}
     if(length(eS)!=n){eS <- rep(eS[1],n)}
     if(length(eT)!=n){eT <- rep(eT[1],n)}
     if(length(ePt)!=n){ePt <- rep(ePt[1],n)}
@@ -138,7 +140,13 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     
     if (method == "ga")
     {
-        errs <- .errors_ga (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, eS, eT, ePt, eSit,
+        r0 <- r*0.0
+        errs <- .errors_ga (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, r0, eS, eT, ePt, eSit,
+                epK, k1k2, kf, ks, pHscale, b, gas)
+    }
+    else if (method == "mo")
+    {
+        errs <- .errors_ga (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, r, eS, eT, ePt, eSit,
                 epK, k1k2, kf, ks, pHscale, b, gas)
     }
     else if (method == "mc")
@@ -150,11 +158,11 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     return (errs)
 }
 
-#===========================================================================================
-#                                                                                          #
-#    1st method : Gaussian (method of moments with no covariance terms)                    #
-#                                                                                          #
-#===========================================================================================
+#==============================================================================================
+#                                                                                             #
+#    1st method : Gaussian (r=0) or Method of moments (r nonzero, i.e. with covariance terms) #
+#                                                                                             #
+#==============================================================================================
 
 # .errors_ga()
 #
@@ -172,6 +180,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
 #
 # Input parameters :
 #   - evar1, evar2   :  standard error (uncertainty) in var1 and in var2 of input pair of carbonate system variables
+#   - r              :  correlation coefficient between var1 and var2 
 #   - eS, eT         :  standard error (uncertainty) in salinity and in temperature
 #   - ePt, eSit      :  standard error (uncertainty) in total dissolved inorganic phosphorus and in total dissolved inorganic silicon concentrations
 #   - epK            :  standard error (uncertainty) in the 7 dissociation constants mentioned above (a vector)
@@ -200,8 +209,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
 # - OmegaCalcite    total error of Omega calcite   (calcite saturation state)
 
 .errors_ga <- 
-function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0,
-         epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential")
+function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, r=0, eS=0.01, eT=0.01,
+         ePt=0, eSit=0, epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential")
 {
     # names of dissociation constants
     Knames <- c ('K0','K1','K2','Kb','Kw','Kspa', 'Kspc')
@@ -239,6 +248,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 
     # Convert error on pH to error on [H+] concentration
     isH <- (var1name == 'H')
+    r[isH]  <- -1.0*r[isH]       # Inverse sign of 'r' if var1 is pH
     pH <- var1[isH]
     epH <- evar1[isH]       # Error on pH
     H  <- 10**(-pH)         # H+ concentration
@@ -253,6 +263,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 
     # Same conversion for second variable
     isH <- (var2name == 'H')
+    r[isH]  <- -1.0*r[isH]       # Inverse sign of 'r' if var2 is pH
     pH <- var2[isH]
     epH <- evar2[isH]       # Error on pH
     H  <- 10**(-pH)         # H+ concentration
@@ -268,9 +279,9 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     if (any (evar1 != 0.0))
     {
         # Compute sensitivities (partial derivatives)
-        deriv <- derivnum ('1', flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
+        deriv1 <- derivnum ('1', flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
             pHscale=pHscale, b=b, gas=gas)
-        err <- deriv * evar1
+        err <- deriv1 * evar1
         sq_err <- sq_err + err * err
     }
 
@@ -278,10 +289,20 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     if (any (evar2 != 0.0))
     {
         # Compute sensitivities (partial derivatives)
-        deriv <- derivnum ('2', flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
+        deriv2 <- derivnum ('2', flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
             pHscale=pHscale, b=b, gas=gas)
-        err <- deriv * evar2
+        err <- deriv2 * evar2
         sq_err <- sq_err + err * err
+    }
+
+    # Contribution of covariance of var1 and var2 to squared standard error
+    if (any (r != 0.0) & any (evar1 != 0.0) & any (evar2 != 0.0))
+    {
+        # Compute covariance from correlation coeff. and standard deviations
+        covariance <- r * evar1 * evar2
+        # Contribution to squared error
+        err2 <- 2 * deriv1 * deriv2 * covariance
+        sq_err <- sq_err + err2
     }
 
     # Contribution of Silion (total dissolved inorganic concentration) to squared standard error
