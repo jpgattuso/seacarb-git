@@ -35,6 +35,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     Sit[is.na(Sit)] <- 0
     Pt[is.na(Pt)] <- 0
     
+
     #-------Constants----------------   
     tk = 273.15;           # [K] (for conversion [deg C] <-> [K])  
     TK = T + tk;           # TK [K]; T[C]
@@ -54,16 +55,16 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     Ks    <- Ks(S=S, T=T, P=P, ks=ks, warn=warn)
     
     # Kf on free pH scale
-    Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks)
-    Kff <- Kf(S=S, T=T, P=P, pHscale="F", kf=kf, Ks_P0, Ks)
+    Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
+    Kff <- Kf(S=S, T=T, P=P, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
     # Kf on given pH scale
-    Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks)
+    Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks, warn=warn)
     
     # Conversion factor from total to SWS pH scale at zero pressure
     ktotal2SWS_P0 <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0)$ktotal2SWS
 
     # Conversion factor from SWS to chosen pH scale
-    conv <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks,Kff=Kff)
+    conv <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks,Kff=Kff, warn=warn)
     kSWS2chosen <- rep(1.,n)
     kSWS2chosen [pHscale == "T"] <- conv$kSWS2total [pHscale == "T"]
     kSWS2chosen [pHscale == "F"] <- conv$kSWS2free [pHscale == "F"]  

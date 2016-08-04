@@ -255,13 +255,12 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     #
     #   perturbation :  absolute value of (tiny) perturbation
     #   sign_factor  :  factor -1 or +1 gives the sign or perturbation
-    
     if (varid == 'K0') 
     {
-        K0 <- function(S=35,T=25,P=0,Patm=1)
+        K0 <- function(S=35,T=25,P=0,Patm=1,...)
         {
             # Call original K0 function
-            out <- seacarb::K0(S, T, P, Patm=Patm, warn=warn)
+            out <- seacarb::K0(S, T, P, Patm=Patm)
             # perturb value of K0
             out = out + sign_factor * perturbation  # sign_factor is +1 or -1
             return (out)
@@ -269,10 +268,10 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     }
     else if (varid == 'K1') 
     {
-        K1 <-function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
+        K1 <-function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,...)
         {
             # Call original K1 function
-            out <- seacarb::K1(S, T, P, k1k2=k1k2, pHscale=pHscale, kSWS2scale=kSWS2scale, ktotal2SWS_P0=ktotal2SWS_P0, warn=warn)
+            out <- seacarb::K1(S, T, P, k1k2=k1k2, pHscale=pHscale, kSWS2scale=kSWS2scale, ktotal2SWS_P0=ktotal2SWS_P0)
             # perturb value of K1
             out = out + sign_factor * perturbation  # sign_factor is +1 or -1
             return (out)
@@ -280,10 +279,10 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     }
     else if (varid == 'K2') 
     {
-        K2 <- function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
+        K2 <- function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,...)
         {
             # Call original K2 function
-            out <- seacarb::K2(S, T, P, k1k2=k1k2, pHscale=pHscale, kSWS2scale=kSWS2scale, ktotal2SWS_P0=ktotal2SWS_P0, warn=warn)
+            out <- seacarb::K2(S, T, P, k1k2=k1k2, pHscale=pHscale, kSWS2scale=kSWS2scale, ktotal2SWS_P0=ktotal2SWS_P0)
             # perturb value of K2
             out = out + sign_factor * perturbation  # sign_factor is +1 or -1
             return (out)
@@ -291,10 +290,10 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     }
     else if (varid == 'KW') 
     {
-        Kw <- function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0)
+        Kw <- function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,...)
         {
             # Call original Kw function
-            out <- seacarb::Kw(S, T, P, pHscale=pHscale, kSWS2scale=kSWS2scale, warn=warn)
+            out <- seacarb::Kw(S, T, P, pHscale=pHscale, kSWS2scale=kSWS2scale)
             # perturb value of Kw
             out = out + sign_factor * perturbation  # sign_factor is +1 or -1
             return (out)
@@ -302,10 +301,10 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     }
     else if (varid == 'KB')
     {
-        Kb <- function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0)
+        Kb <- function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,...)
         {
             # Call original Kb function
-            out <- seacarb::Kb(S, T, P, pHscale=pHscale, kSWS2scale=kSWS2scale, ktotal2SWS_P0=ktotal2SWS_P0, warn=warn)
+            out <- seacarb::Kb(S, T, P, pHscale=pHscale, kSWS2scale=kSWS2scale, ktotal2SWS_P0=ktotal2SWS_P0)
             # perturb value of Kb
             out = out + sign_factor * perturbation  # sign_factor is +1 or -1
             return (out)
@@ -313,10 +312,10 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     }
     else if (varid == 'KSPA')
     {
-        Kspa <- function(S=35,T=25,P=0)
+        Kspa <- function(S=35,T=25,P=0,...)
         {
             # Call original Kspa function
-            out <- seacarb::Kspa(S, T, P, warn=warn)
+            out <- seacarb::Kspa(S, T, P)
             # perturb value of Kspa
             out = out + sign_factor * perturbation  # sign_factor is +1 or -1
             return (out)
@@ -324,10 +323,10 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     }
     else if (varid == 'KSPC')
     {
-        Kspc <- function(S=35,T=25,P=0)
+        Kspc <- function(S=35,T=25,P=0,...)
         {
             # Call original Kspc function
-            out <- seacarb::Kspc(S, T, P, warn=warn)
+            out <- seacarb::Kspc(S, T, P)
             # perturb value of Kspa
             out = out + sign_factor * perturbation  # sign_factor is +1 or -1
             return (out)
@@ -369,6 +368,7 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         # Point 2: (one of var1, var2, T or S is somewhat bigger)
         cdel2 <- carb(flag, var12, var22, S=S2, T=T2, Patm=Patm, P=P, Pt=Pt2, Sit=Sit2, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn)
     }
+
     # Compute [H+] concentration and add it to data-frame
     H <- 10^(-cdel1$pH)
     cdel1 <- cbind(H,cdel1)

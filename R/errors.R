@@ -406,11 +406,12 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
                           )
             # compute error on Ki from that on pKi
             eKi <- - epK[i] * Ki * log(10)
+
             # Compute sensitivities (partial derivatives)
             deriv <- derivnum (Knames[i], flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
                 pHscale=pHscale, b=b, gas=gas, warn=warn)
-cat ("deriv: ")
-print (deriv)
+#cat ("deriv: ")
+#print (deriv)
             err <- deriv * eKi
             sq_err <- sq_err + err * err
         }
