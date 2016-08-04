@@ -531,13 +531,13 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     {
         # Compute Ki
         Ki <- switch (i,
-                      seacarb::K0(S=S, T=T, Patm=Patm, P=0, warn=warn),
-                      seacarb::K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn),
-                      seacarb::K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn),
-                      seacarb::Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0, warn=warn),
-                      seacarb::Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn),
-                      seacarb::Kspa(S=S, T=T, P=P, warn=warn),
-                      seacarb::Kspc(S=S, T=T, P=P, warn=warn)
+                      seacarb::K0(S=S, T=T, Patm=Patm, P=0),
+                      seacarb::K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0),
+                      seacarb::K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0),
+                      seacarb::Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0),
+                      seacarb::Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen),
+                      seacarb::Kspa(S=S, T=T, P=P),
+                      seacarb::Kspc(S=S, T=T, P=P)
                       )
         if (i == 1)
             center_value = 0.0    # special case for K0
@@ -698,15 +698,16 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 
     # Define local functions K0, K1, K2, ...
     # --------------------------------------
-
     # Special case for K0
     #
     # It computes original K0 values then add precalculated deltas to generate 
     # and return deviate values
-    K0 <- function(S=35,T=25,P=0,Patm=1, warn=warn)
+    K0 <- function(S=35,T=25,P=0,Patm=1,...)
+    #K0 <- function(S=35,T=25,P=0,Patm=1,warn='n')
     {
         # Call original K0 function
-        out <- seacarb::K0(S, T, P, Patm=Patm, warn=warn)
+       #out <- seacarb::K0(S, T, P, Patm=Patm, warn=warn)
+        out <- seacarb::K0(S, T, P, Patm=Patm)
         # perturb value of K0 by adding deltas
         out = out + spl_Kx$K0
         return (out)
