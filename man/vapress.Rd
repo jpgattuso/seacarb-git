@@ -25,15 +25,11 @@ to the 4th decimal place, with that computed by the equation from
 Weiss and Price (1980).}
 
 \references{
-Dickson A. G., Sabine C. L. and Christian J. R. (2007) Guide to best
-practices for ocean CO2 measurements. \emph{PICES Special Publication}
-\bold{3}, 1-191.
+Dickson A. G., Sabine C. L. and Christian J. R. (2007) Guide to best practices for ocean CO2 measurements. \emph{PICES Special Publication} \bold{3}, 1-191.
 
-Weiss, R. F. (1974) Carbon dioxide in water and seawater: the
-solubility of a non-ideal gas, Mar. Chem., \bold{2}, 203-215.
+Weiss, R. F. (1974) Carbon dioxide in water and seawater: the solubility of a non-ideal gas, Marine Chemistry, \bold{2}, 203-215.
 
-Weiss, R. F. and Price, B. A. (1980) Nitrous oxide solubility in water
-and seawater, Mar. Chem., \bold{8}, 347-359.
+Weiss, R. F. and Price, B. A. (1980) Nitrous oxide solubility in water and seawater, Marine Chemistry, \bold{8}, 347-359.
 }
              
 \author{

@@ -100,11 +100,11 @@ This subroutine propagates error from input to output variables using one of thr
      covariance between input variables.  This is the approach used by
      Dickson and Riley (1978). It is the default method.
 
-\item Method of moments: The Method of moments is a more general form
+\item Method of moments: The method of moments is a more general form
      of the Gaussian method. But in addition, it also accounts for
      covariance between input variables.  In this case, the 'errors'
-     routine allows the user to specify a value of the Correlation
-     Coefficient 'r', having a value between -1.0 and 1.0, to indicate
+     routine allows the user to specify a value of the correlation
+     coefficient 'r', having a value between -1.0 and 1.0, to indicate
      the correlation between uncertainties of the input pair of
      carbonate system variables. That correlation is used to comput
      the covariance. But by default, it is assumed that there is no
@@ -115,54 +115,35 @@ This subroutine propagates error from input to output variables using one of thr
      repeated random sampling of input errors, adding those to each
      input variables, calculating the corresponding output variables
      for each sample, and finally assessing the standard deviation in
-     each output variables.  }
+     each output variables.
+}
 
 This subroutine has many input parameters that are identical to those
-in the carb() routine. For their details, refer to the 'carb' documentation.
+in the carb() function. For their details, refer to the 'carb' documentation.
 
-All parameters may be scalars or vectors except epK, method, runs, and gas.\cr
-- method, runs, and gas must be scalars\cr
-- epK must be vector of 7 values: errors of pK0, pK1, pK2, pKb, pKw, pKspa and pKspc;
+All parameters may be scalars or vectors except epK, method, runs, and gas.
+
+\itemize{
+  \item method, runs, and gas must be scalars
+  \item epK must be vector of 7 values: errors of pK0, pK1, pK2, pKb, pKw, pKspa and pKspc;
     that set of errors is identical for all input data.
+}
+In constrast, for evar1, evar2, r, eS, eT, ePt and eSit,
 
-In constrast, for evar1, evar2, r, eS, eT, ePt and eSit,\cr
-- if they are vectors, they represent errors associated with each data point\cr
-- if they are scalars, they represent one error value each associated to all data points
+\itemize{
+  \item  if they are vectors, they represent errors associated with each data point
+  \item  if they are scalars, they represent one error value each associated to all data points
+}
 
-The same remark applies to parameter r (Correlation coefficient).
+The same remark applies to parameter r (correlation coefficient).
 }
 
 \section{Correlation coefficient}{
-By default, 'r' is zero. However, for some pairs the user may want to
-specify a different value. For example, measurements of pCO2 and pH
-are often anti-correlated.  cases. The same goes for two other pairs:
-'CO2 and CO3' and 'pCO2 and CO3'.  But even for these cases, care is
-needed before using non-zero values of 'r'.
+By default, 'r' is zero. However, for some pairs the user may want to specify a different value. For example, measurements of pCO2 and pH are often anti-correlated.  cases. The same goes for two other pairs: 'CO2 and CO3' and 'pCO2 and CO3'.  But even for these cases, care is needed before using non-zero values of 'r'.
 
-When the user wishes to propagate errors for an individual
-measurement, 'r' should ALWAYS be zero if each member of the input pair is
-measured independently. In this case, we are interested in the
-correlation between the uncertainties in those measurements, not in
-the correlation between the measurments themselves. Uncertainties from
-those measurements are probably not correlated if they come from
-different instruments. Conversely, if users are interested in the
-error in the mean of a distribution of measurements (i.e., if they are
-propagating standard errors instead of standard deviations), one
-should then also account for the correlation between the measurements of
-the two variables of the input pair.
+When the user wishes to propagate errors for an individual measurement, 'r' should ALWAYS be zero if each member of the input pair is measured independently. In this case, we are interested in the correlation between the uncertainties in those measurements, not in the correlation between the measurements themselves. Uncertainties from those measurements are probably not correlated if they come from different instruments. Conversely, if users are interested in the error in the mean of a distribution of measurements (i.e., if they are propagating standard errors instead of standard deviations), one should then also account for the correlation between the measurements of the two variables of the input pair.
 
-For input pairs where one member is pH (flags 1, 6, 7, 8, 9, and 21),
-this 'errors' routine automatically inverses the sign of 'r'. The
-reason for that is that the associated derivatives are computed in
-terms of the hydrogen ion concentration H+, not pH. Therefore for each
-of these 6 flags, if the user wants to compute their own 'r' that
-should be done by (1) using the H+ concentration instead of pH, and
-(2) inversing the sign of that computed 'r' before passing it as an
-argument to this routine. Usually though (when not calculating r for
-pH), the user may just use the 'r' in the expected way.  For example,
-to include the covariance term when there is a perfect anticorrelation o
-f pH with pCO2, one would use
-'r=-1.0'.
+For input pairs where one member is pH (flags 1, 6, 7, 8, 9, and 21), this 'errors' routine automatically inverses the sign of 'r'. The reason for that is that the associated derivatives are computed in terms of the hydrogen ion concentration (H+), not pH. Therefore for each of these 6 flags, if the user wants to compute their own 'r' that should be done by (1) using the H+ concentration instead of pH, and (2) inversing the sign of that computed 'r' before passing it as an argument to this routine. Usually though (when not calculating r for pH), the user may just use the 'r' in the expected way.  For example, to include the covariance term when there is a perfect anticorrelation of pH with pCO2, one would use 'r=-1.0'.
 
 }
 
@@ -175,13 +156,13 @@ f pH with pCO2, one would use
      Accuracy is inversely proportional to the number of runs.
 
   Computation time also depends on the chosen pair of input variables.
-    For example, with the input pair DIC and Alkalinity (flag=15), it is much longer 
-    than for input pair pH and Alkalinity (flag=8)
+    For example, with the input pair DIC and Total alkalinity (flag=15), it is much longer 
+    than for input pair pH and Total alkalinity (flag=8)
 }
 
-\value{The function returns a 2-dimensional data-frame, with the folowing columns:
+\value{The function returns a 2-dimensional dataframe, with the folowing columns:
  \itemize{
- \item{H}{total error in [H+] concentration  (mol/kg)}
+ \item{H}{total error in [H+] concentration (mol/kg)}
  \item{pH}{total error in pH}
  \item{CO2}{total error in CO2 concentration (mol/kg)}
  \item{pCO2}{total error in "standard" pCO2, CO2 partial pressure computed at in situ temperature and atmospheric pressure (\eqn{\mu}atm)}
@@ -194,10 +175,7 @@ f pH with pCO2, one would use
  \item{OmegaCalcite}{total error in Omega calcite   (calcite saturation state)}
 }
  
-  If all input data have the same 'flag' value, the returned data frame does not show
-errors on input pair of carbonate system variables. For example, if all input
-flags are 15, the input pair is DIC and ALK; hence, errors on DIC and ALK are
-not returned.
+If all input data have the same 'flag' value, the returned data frame does not show errors on input pair of carbonate system variables. For example, if all input flags are 15, the input pair is DIC and ALK; hence, errors on DIC and ALK are not returned.
 }
 
 \references{
@@ -221,7 +199,7 @@ Millero F. J., 2010. Carbonate constant for estuarine waters. \emph{Marine and F
 
 Millero F. J., Graham T. B., Huang F., Bustos-Serrano H. and Pierrot D., 2006. Dissociation constants of carbonic acid in seawater as a function of salinity and temperature.  \emph{Marine Chemistry} \bold{100}, 80-84.
 
-Orr J. C., Epitalon J.-M. and Gattuso J.-P., 2014. Comparison of seven packages that compute ocean carbonate chemistry. \emph{Biogeosciences Discussions} \bold{11}, 5327-5397.
+Orr J. C., Epitalon J.-M. and Gattuso J.-P., 2015. Comparison of seven packages that compute ocean carbonate chemistry. \emph{Biogeosciences} \bold{12}, 1483-1510.
 
 Perez F. F. and Fraga F., 1987 Association constant of fluoride and hydrogen ions in seawater. \emph{Marine Chemistry} \bold{21}, 161-168.
 

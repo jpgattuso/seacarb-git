@@ -36,9 +36,7 @@ are given in bars and method="unesco" is prescribed.
 }
 
 \references{
-Fofonoff, P. and R. C. Millard Jr, 1983. Algorithms for computation of
-fundamental properties of seawater. \emph{Unesco Technical Papers in
-Marine Science}, \bold{44}, 53 pp.}
+Fofonoff, P. and R. C. Millard Jr, 1983. Algorithms for computation of fundamental properties of seawater. \emph{Unesco Technical Papers in Marine Science}, \bold{44}, 53 pp.}
              
 \author{
 James Orr \email{james.orr@lsce.ipsl.fr}

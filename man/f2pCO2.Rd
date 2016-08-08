@@ -18,23 +18,20 @@ f2pCO2(T = 25, Patm=1, P=0, fCO2)
   \item{pCO2}{Partial pressure of CO2 in \eqn{\mu}atm, the same units as that for the fCO2 input}
 }
 
-\note{\bold{Warning:} pCO2 estimates below 100 m are subject to considerable uncertainty. See Weiss (1974) and Orr et al. (2014)}
+\note{\bold{Warning:} pCO2 estimates below 100 m are subject to considerable uncertainty. See Weiss (1974) and Orr et al. (2015)}
 
 \references{
 Dickson A. G., Sabine C. L. and Christian J. R., 2007. Guide to best
 practices for ocean CO2 measurements. \emph{PICES Special Publication}
 \bold{3}, 1-191.
 
-Orr J. C., Epitalon J.-M. and Gattuso J.-P., 2014. Comparison of seven packages that compute ocean carbonate chemistry. \emph{Biogeosciences Discussions} \bold{11}, 5327-5397.
+Orr J. C., Epitalon J.-M. and Gattuso J.-P., 2015. Comparison of seven packages that compute ocean carbonate chemistry. \emph{Biogeosciences} \bold{12}, 1483-1510.
 
-Weiss, R. F. and Price, B. A., 1980. Nitrous oxide solubility in water and
-seawater, \emph{Mar. Chem.}, \bold{8}, 347-359, 1980.
+Weiss, R. F. and Price, B. A., 1980. Nitrous oxide solubility in water and seawater, \emph{Marine Chemistry}, \bold{8}, 347-359, 1980.
 
-Weiss, R. F., 1974. Carbon dioxide in water and seawater: the solubility of
-a non-ideal gas, \emph{Mar.  Chem.}, \bold{2}, 203-215.
+Weiss, R. F., 1974. Carbon dioxide in water and seawater: the solubility of a non-ideal gas, \emph{Mar.  Chem.}, \bold{2}, 203-215.
 
-Weiss, R. F. and Price, B. A., 1980. Nitrous oxide solubility in water and
-seawater, \emph{Mar. Chem.}, \bold{8}, 347-359.
+Weiss, R. F. and Price, B. A., 1980. Nitrous oxide solubility in water and seawater, \emph{Marine Chemistry}, \bold{8}, 347-359.
 }
              
 \author{
