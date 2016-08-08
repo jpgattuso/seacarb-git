@@ -13,9 +13,8 @@ K3p(S=35, T=25, P=0, pHscale="T", kSWS2scale=0, warn="y")
   \item{T}{Temperature in degrees Celsius, default is 25oC}
   \item{P}{Hydrostatic pressure in bar (surface = 0), default is 0}
   \item{pHscale}{choice of pH scale: "T" for using the total scale, "F" for using the free scale and "SWS" for using the seawater scale, default is total scale}
-  \item{kSWS2scale}{Conversion factor from the seawater scale (SWS) to the pH scale selected at the hydrostatic pressure value indicated. If it is required and not given, it is computed, which slows down computations.
+  \item{kSWS2scale}{Conversion factor from the seawater scale (SWS) to the pH scale selected at the hydrostatic pressure value indicated. If it is required and not given, it is computed, which slows down computations.}
   \item{warn}{"y" to show warnings when T or S go beyond the valid range for K3p; "n" to supress warnings. The default is "y".}
-  }
 }
 
 \details{
