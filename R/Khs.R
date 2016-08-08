@@ -9,7 +9,7 @@
 # You should have received a copy of the GNU General Public License along with seacarb; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-"Khs"              <- function (S=35,T=25,P=0,pHscale="T")
+"Khs"              <- function (S=35,T=25,P=0,pHscale="T",warn="y")
 
 #--------------------------------------------------------------
 # Dissociation constant of H2S
@@ -42,7 +42,7 @@ factor <- kconv(S=S, T=T, P=rep(0,nK))$ktotal2SWS
 Khs <- Khs * factor
 
 # ----------------- Pressure Correction ------------------	
-Khs <- Pcorrect(Kvalue=Khs, Ktype="Khs", T=T, S=S, P=P, pHscale="SWS")
+Khs <- Pcorrect(Kvalue=Khs, Ktype="Khs", T=T, S=S, P=P, pHscale="SWS", warn=warn)
 
 
 ###----------------pH scale corrections
@@ -57,10 +57,9 @@ Khs[i] <- Khs[i]*factor[i]
 
 ##------------Warnings
 
-for(i in 1:nK){
-if((T[i]>45)|(S[i]>45)|(T[i]<0)){warning("S and/or T is outside the range of validity of the formulation available for Khs in seacarb.")}
-}
+    is_w <- warn == "y"
 
+    if (any (is_w & (T>45 | T<0 | S<0 | S>45)) ) {warning("S and/or T is outside the range of validity of the formulation chosen for Khs.")}
 
   attr(Khs,"unit")     = "mol/kg-soln"
   attr(Khs,"pH scale") = pHsc

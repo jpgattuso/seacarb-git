@@ -4,14 +4,15 @@
 \title{Henry's constant mol/(kg/atm)}
 \description{Henry's constant mol/(kg/atm)}
 \usage{
-K0(S = 35, T = 25, P = 0, Patm = 1)
+K0(S=35, T=25, P=0, Patm=1, warn="y")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{S}{Salinity, default is 35}
   \item{T}{Temperature in degrees Celsius, default is 25oC}
   \item{P}{Hydrostatic pressure in bar (surface = 0), default is 0}
-  \item{Patm}{Surface atmospheric pressure in atm, defaultis 1 atm}
+  \item{Patm}{Surface atmospheric pressure in atm, default is 1 atm}
+  \item{warn}{"y" to show warnings when T or S go beyond the valid range for K0; "n" to supress warnings. The default is "y".}
 }
 
 \details{

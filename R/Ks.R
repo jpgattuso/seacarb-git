@@ -10,7 +10,7 @@
 #
 #
 "Ks" <-
-function(S=35,T=25,P=0, ks="d"){
+function(S=35,T=25,P=0, ks="d",warn="y"){
 
     nK <- max(length(S), length(T), length(P), length(ks))
 
@@ -86,14 +86,16 @@ function(S=35,T=25,P=0, ks="d"){
     # ------------------- Pressure effect --------------------------------
 
     if (any(P != 0))
-        Ks <- Pcorrect(Kvalue=Ks, Ktype="Ks", T=T, S=S, P=P, pHscale="F")
+        Ks <- Pcorrect(Kvalue=Ks, Ktype="Ks", T=T, S=S, P=P, pHscale="F", warn=warn)
 
     ##------------Warnings
 
-    if (any (is_k & (T<5 | T>40 | S<20 | S>45)))
+    is_w <- warn == "y"
+
+    if (any (is_w & is_k & (T<5 | T>40 | S<20 | S>45)))
         {warning("S and/or T is outside the range of validity of the formulation chosen for Ks.")}
-    if (any (T>45 | S>45 | T<0 | S<5))
-        {warning("S and/or T is outside the range of validity of the formulations available for Ks in seacarb.")}
+    if (any (is_w & (T>45 | S>45 | T<0 | S<5)) )
+        warning("S and/or T is outside the range of validity of the formulations available for Ks in seacarb.")
 
     ##------------Attributes
 

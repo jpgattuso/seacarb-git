@@ -4,7 +4,7 @@
 \title{Numerical derivatives of seawater carbonate system variables}
 \description{Returns numerical derivatives  of the seawater carbonate system putput variables with respect to input variables.}
 \usage{derivnum(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
-       k1k2="x", kf="x", ks="d", pHscale="T", b="u74", gas="potential")}
+       k1k2="x", kf="x", ks="d", pHscale="T", b="u74", gas="potential", warn="y")}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{varid}{Variable length, case insensitive, character identificator of variable with respect to which derivatives are requested.
@@ -78,6 +78,7 @@ flag = 25     pCO2 and DIC given
 \item{pHscale}{"T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
 \item{b}{Concentration of total boron. "l10" for the Lee et al. (2010) formulation or "u74" for the Uppstrom (1974) formulation, default is "u74" }
  \item{gas}{used to indicate the convention for INPUT pCO2, i.e., when it is an input variable (flags 21 to 25): "insitu" indicates it is referenced to in situ pressure and in situ temperature; "potential" indicates it is referenced to 1 atm pressure and potential temperature; and "standard" indicates it is referenced to 1 atm pressure and in situ temperature. All three options should give identical results at surface pressure. This option is not used when pCO2 is not an input variable (flags 1 to 15). The default is "potential".}
+  \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
 }
 
 \details{

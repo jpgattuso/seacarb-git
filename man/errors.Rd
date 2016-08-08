@@ -10,8 +10,8 @@ the errors in the key dissociation constants pK0, pK1, pK2, pKb, pKw, pKspa and 
 }
 \usage{errors(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
               evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=NULL, 
-              method = "ga", runs=10000,
-              k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential")}
+              method = "ga", r=0.0, runs=10000,
+              k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y")}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{flag}{select the pair of carbonate system input variables. The flags to be used are as follows:
@@ -66,39 +66,56 @@ flag = 25     pCO2 and DIC given
 \item{Sit}{Concentration of total dissolved inorganic silicon (mol/kg); set to 0 if NA}
 \item{evar1}{Standard error (uncertainty) in var1 of input pair of carbonate system variables}
 \item{evar2}{Standard error (uncertainty) in var2 of input pair of carbonate system variables}
-\item{eS}{Standard error (uncertainty) in salinity (psu)}
-\item{eT}{Standard error (uncertainty) in temperature (degree C)}
+\item{eS}{Standard error (uncertainty) in salinity (psu); default is 0.01}
+\item{eT}{Standard error (uncertainty) in temperature (degree C); default is 0.01}
 \item{ePt}{Standard error (uncertainty) in total dissolved inorganic phosphorus concentration (mol/kg)}
 \item{eSit}{Standard error (uncertainty)in total dissolved inorganic silicon concentration (mol/kg)}
 \item{epK}{Standard error (uncertainty) in 7 key dissociation constants (a vector)}
-\item{method}{Case insensitive character string : choice of error-propagation method: 1) Gaussian or 2) Monte Carlo).\cr
-Possible values for method are "ga" or "mc".\cr
+\item{method}{Case insensitive character string : choice of error-propagation method: 1) Gaussian, 
+2) Method of Moments, or 3) Monte Carlo).\cr
+These methods are specified using the 2-letter codes "ga", "mo", or "mc", respectively.\cr
 The default is "ga" (Gaussian).
 }
-\item{runs}{Number of random samples (for Monte Carlo method only); the default is 10000}
+\item{r}{Correlation coefficient between uncertainties of var1 and var2 (only useful with method="mo",
+i.e., ignored for the 2 other methods, the default is r=0.0}
+\item{runs}{Number of random samples (ignored unless method="mc"; the default is runs=10000}
 \item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "m06" from Millero et al. (2006), "m10" from Millero (2010), "w14" from Waters et al. (2014), and "r" from Roy et al. (1993). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "m10".}
 \item{kf}{"pf" for using Kf from Perez and Fraga (1987) and "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994). "x" is the default flag; the default value is then "pf", except if T is outside the range 9 to 33oC and/or S is outside the range 10 to 40. In these cases, the default is "dg".}
 \item{ks}{"d" for using Ks from Dickson (1990) and "k" for using Ks from Khoo et al. (1977), default is "d"}
 \item{pHscale}{"T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
 \item{b}{Concentration of total boron. "l10" for the Lee et al. (2010) formulation or "u74" for the Uppstrom (1974) formulation, default is "u74" }
 \item{gas}{used to indicate the convention for INPUT pCO2, i.e., when it is an input variable (flags 21 to 25): "insitu" indicates it is referenced to in situ pressure and in situ temperature; "potential" indicates it is referenced to 1 atm pressure and potential temperature; and "standard" indicates it is referenced to 1 atm pressure and in situ temperature. All three options should give identical results at surface pressure. This option is not used when pCO2 is not an input variable (flags 1 to 15). The default is "potential".}
+  \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
 }
 
 \details{
-This subroutine propagates error from input to output variables using one of two methods: 
+This subroutine propagates error from input to output variables using one of three methods: 
 \itemize{
 \item Gaussian:
-     The Gaussian method is the standard technique for estimating a computed variable's (z) 
-     second moment (its variance or standard deviation) based on a first-order approximation to z.
-     More precisely, we use here the basic 1st order, 2nd moment uncertainty analysis
-     (a type of Taylor expansion), assuming no covariance between input variables.
-     This is the approach used by Dickson and Riley (1978). It is the default method.
+     The Gaussian method is the standard technique for estimating a
+     computed variable's (z) second moment (its variance or standard
+     deviation) based on a first-order approximation to z.  More
+     precisely, we use here the basic 1st order, 2nd moment
+     uncertainty analysis (a type of Taylor expansion), assuming no
+     covariance between input variables.  This is the approach used by
+     Dickson and Riley (1978). It is the default method.
+
+\item Method of moments: The Method of moments is a more general form
+     of the Gaussian method. But in addition, it also accounts for
+     covariance between input variables.  In this case, the 'errors'
+     routine allows the user to specify a value of the Correlation
+     Coefficient 'r', having a value between -1.0 and 1.0, to indicate
+     the correlation between uncertainties of the input pair of
+     carbonate system variables. That correlation is used to comput
+     the covariance. But by default, it is assumed that there is no
+     covariance (r=0.0).
 
 \item Monte Carlo:
-     The Monte Carlo method is a brute-force approach relying on repeated random
-     sampling of input errors, adding those to each input variables, calculating the corresponding 
-     output variables for each sample, and finally assessing the standard deviation in each output variables.
-}
+     The Monte Carlo method is a brute-force approach relying on
+     repeated random sampling of input errors, adding those to each
+     input variables, calculating the corresponding output variables
+     for each sample, and finally assessing the standard deviation in
+     each output variables.  }
 
 This subroutine has many input parameters that are identical to those
 in the carb() routine. For their details, refer to the 'carb' documentation.
@@ -108,9 +125,45 @@ All parameters may be scalars or vectors except epK, method, runs, and gas.\cr
 - epK must be vector of 7 values: errors of pK0, pK1, pK2, pKb, pKw, pKspa and pKspc;
     that set of errors is identical for all input data.
 
-In constrast, for evar1, evar2, eS, eT, ePt and eSit,\cr
+In constrast, for evar1, evar2, r, eS, eT, ePt and eSit,\cr
 - if they are vectors, they represent errors associated with each data point\cr
 - if they are scalars, they represent one error value each associated to all data points
+
+The same remark applies to parameter r (Correlation coefficient).
+}
+
+\section{Correlation coefficient}{
+By default, 'r' is zero. However, for some pairs the user may want to
+specify a different value. For example, measurements of pCO2 and pH
+are often anti-correlated.  cases. The same goes for two other pairs:
+'CO2 and CO3' and 'pCO2 and CO3'.  But even for these cases, care is
+needed before using non-zero values of 'r'.
+
+When the user wishes to propagate errors for an individual
+measurement, 'r' should ALWAYS be zero if each member of the input pair is
+measured independently. In this case, we are interested in the
+correlation between the uncertainties in those measurements, not in
+the correlation between the measurments themselves. Uncertainties from
+those measurements are probably not correlated if they come from
+different instruments. Conversely, if users are interested in the
+error in the mean of a distribution of measurements (i.e., if they are
+propagating standard errors instead of standard deviations), one
+should then also account for the correlation between the measurements of
+the two variables of the input pair.
+
+For input pairs where one member is pH (flags 1, 6, 7, 8, 9, and 21),
+this 'errors' routine automatically inverses the sign of 'r'. The
+reason for that is that the associated derivatives are computed in
+terms of the hydrogen ion concentration H+, not pH. Therefore for each
+of these 6 flags, if the user wants to compute their own 'r' that
+should be done by (1) using the H+ concentration instead of pH, and
+(2) inversing the sign of that computed 'r' before passing it as an
+argument to this routine. Usually though (when not calculating r for
+pH), the user may just use the 'r' in the expected way.  For example,
+to include the covariance term when there is a perfect anticorrelation o
+f pH with pCO2, one would use
+'r=-1.0'.
+
 }
 
 \section{Computation time}{
@@ -212,7 +265,16 @@ errors(flag=8, var1=8.25, var2=2300e-6,  S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,
        evar1=0.005, evar2=5e-6, eS=0, eT=0, ePt=0.1, eSit=2, epK=0, 
        method="ga", pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
 
-## 3) Use vectors as arguments and compute errors on all output variables
+## 3) For the input pair pCO2 and pH (var1 and var2 when flag=21)
+## compute standard errors in output variables from errors in input variables, i.e., 
+## for pCO2 (2 uatm) and pH (0.005 pH units), with no uncertainties in Pt and Sit
+## nor in the dissociation constants BUT a perfect anticorrelation between pCO2 and pH,
+## (the input pair) using the Method of moments:
+errors(flag=21, var1=400, var2=8.1,  S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0, 
+       evar1=2, evar2=0.005, eS=0, eT=0, ePt=0.0, eSit=0, epK=0, 
+       method="mo", r=-1.0, pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
+
+## 4) Use vectors as arguments and compute errors on all output variables
 ## using Monte Carlo method taking into account input errors on pH, ALK, DIC
 ## and dissociation constants (pKx)
 flag <- c(8, 15, 8)

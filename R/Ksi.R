@@ -11,7 +11,7 @@
 #
 
 "Ksi" <- 
-function (S=35,T=25,P=0,pHscale="T",kSWS2scale=0)
+function (S=35,T=25,P=0,pHscale="T",kSWS2scale=0,warn="y")
 
 #--------------------------------------------------------------
 # Dissociation constant for Si(OH)4
@@ -66,7 +66,7 @@ function (S=35,T=25,P=0,pHscale="T",kSWS2scale=0)
 
     # If needed, pressure correction
     if (any (P != 0))
-        Ksi <- Pcorrect(Kvalue=Ksi, Ktype="Ksi", T=T, S=S, P=P, pHscale="SWS", 1., 1.)
+        Ksi <- Pcorrect(Kvalue=Ksi, Ktype="Ksi", T=T, S=S, P=P, pHscale="SWS", 1., 1., warn=warn)
 
 
     ###----------------pH scale corrections
@@ -103,7 +103,9 @@ function (S=35,T=25,P=0,pHscale="T",kSWS2scale=0)
 
     ##------------Warnings
 
-    if (any (T>45 | S>45 | T<0 | S<0) ) {warning("S and/or T is outside the range of validity of the formulation available for Ksi in seacarb.")}
+    is_w <- warn == "y"
+
+    if (any (is_w & (T>45 | S>45 | T<0 | S<0)) ) {warning("S and/or T is outside the range of validity of the formulation available for Ksi in seacarb.")}
 
     attr(Ksi,"unit")     = "mol/kg-soln"
     attr(Ksi,"pH scale") = pHsc

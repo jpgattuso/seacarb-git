@@ -25,7 +25,7 @@
 #--------------------------------------------------------------
 
 
-"kconv" <- function (S=35,T=25,P=0,kf='x',Ks=0,Kff=0)
+"kconv" <- function (S=35,T=25,P=0,kf='x',Ks=0,Kff=0i,warn="y")
 
 {
     #nK <- max(length(S), length(T), length(P), length(kf), length(Ks), length(Kff))
@@ -58,7 +58,7 @@
     # if Ks not given
     if (missing(Ks))
 	{
-	    Ks = Ks(S=S, T=T, P=P)                 # on free pH scale
+	    Ks = Ks(S=S, T=T, P=P, warn=warn)                 # on free pH scale
 	}
         Cl = S / 1.80655              # Cl = chlorinity; S = salinity (per mille)
         ST = 0.14 * Cl/96.062         # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
@@ -76,7 +76,7 @@
     # if Kf on free pH scale is not given as an argument 
 	if (missing(Kff))
 	{
-	    Kff = Kf(S=S, T=T, P=P, kf=kf, pHscale="F")
+	    Kff = Kf(S=S, T=T, P=P, kf=kf, pHscale="F", warn=warn)
 	}
 
 

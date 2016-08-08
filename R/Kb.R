@@ -11,7 +11,7 @@
 #
 
 "Kb" <-
-function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0){
+function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y"){
 
     nK <- max(length(S), length(T), length(P), length(pHscale), length(kSWS2scale) ,length(ktotal2SWS_P0))
 
@@ -59,7 +59,7 @@ function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0){
 
     # -------------------Correct for Pressure effect, if needed ---------------------------
     if (any (P != 0))
-        Kb <- Pcorrect(Kvalue=Kb, Ktype="Kb", T=T, S=S, P=P, pHscale="SWS", 1., 1.)
+        Kb <- Pcorrect(Kvalue=Kb, Ktype="Kb", T=T, S=S, P=P, pHscale="SWS", 1., 1., warn=warn)
 
     ###----------------pH scale corrections
 
@@ -93,7 +93,10 @@ function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0){
 
     
     ##------------Warnings
-    if (any (T>45 | S>45 | T<0 | S<5) ) {warning("S and/or T is outside the range of validity of the formulation available for Kb in seacarb.")}
+
+    is_w <- warn == "y"
+
+    if (any (is_w & (T>45 | S>45 | T<0 | S<5)) ) {warning("S and/or T is outside the range of validity of the formulation available for Kb in seacarb.")}
 
 
     attr(Kb,"unit")     = "mol/kg-soln"

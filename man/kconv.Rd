@@ -4,7 +4,7 @@
 \title{Conversion factors to change the pH scale of dissociation constants}
 \description{Conversion factors from the total scale to the free and seawater scales}
 \usage{
-kconv(S=35,T=25, P=0, kf, Ks, Kff)
+kconv(S=35, T=25, P=0, kf, Ks, Kff, warn="y")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -17,6 +17,7 @@ if the fonction Kf was used previously, the default value is the value given for
 if not given, it will be computed, if given, it allows for speed optimisation}
   \item{Kff}{Stability constant of hydrogen fluoride (mol/kg) on free pH scale at given S, T and P, optional;
 if not given, it will be computed, if given, it allows for speed optimisation and kf parameter is then ignored}
+  \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
 }
 
 \value{

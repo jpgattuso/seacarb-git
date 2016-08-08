@@ -5,7 +5,7 @@
 \title{Equilibrium constant of hydrogen fluoride (mol/kg)}
 \description{Stability constant of hydrogen fluoride (mol/kg)}
 \usage{
-Kf(S = 35, T = 25, P = 0, kf = "x", pHscale="T", Ks_p0=0, Ks_p=0)
+Kf(S=35, T=25, P=0, kf="x", pHscale="T", Ks_p0=0, Ks_p=0, warn="y")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -18,6 +18,7 @@ Kf(S = 35, T = 25, P = 0, kf = "x", pHscale="T", Ks_p0=0, Ks_p=0)
 needed if kf = "pf" ; if needed and not given, it is computed; if given, computation speed is increased}
   \item{Ks_p}{Stability constant of hydrogen sulfate (mol/kg) at chosen pressure
 if not given, it is computed; if given, computation speed is increased}
+  \item{warn}{"y" to show warnings when T or S go beyond the valid range for Kf; "n" to supress warnings. The default is "y".}
 }
 
 \details{
