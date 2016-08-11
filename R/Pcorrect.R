@@ -102,13 +102,12 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
     
         ## ------------------ Pressure correction
             
-        l <- match(Ktype[i_SWscale], Pcoeffs$K)
+        l <- match(Ktype[i_SWscale], rownames(Pcoeffs))
         deltav  <-  Pcoeffs$a0[l] + Pcoeffs$a1[l] *T[i_SWscale] + Pcoeffs$a2[l] *T[i_SWscale]*T[i_SWscale]
         deltak  <-  Pcoeffs$b0[l]  + Pcoeffs$b1[l] *T[i_SWscale] + Pcoeffs$b2[l] *T[i_SWscale]*T[i_SWscale]
         lnkpok0 <-  -(deltav /(R*TK[i_SWscale]))*P[i_SWscale] + (0.5*deltak /(R*TK[i_SWscale]))*P[i_SWscale]*P[i_SWscale];
         Kvalue[i_SWscale] = Kvalue[i_SWscale]*exp(lnkpok0);
-    
-    
+
         # If conversion factor at given pressure is not given 
         if (missing(kconv2Scale))
         {
@@ -226,11 +225,11 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
             
         ## ------------------ Pressure correction
         
-        l <- match(Ktype[i_Fscale], Pcoeffs$K)
+        l <- match(Ktype[i_Fscale], rownames(Pcoeffs))
         deltav  <-  Pcoeffs$a0[l] + Pcoeffs$a1[l] *T[i_Fscale] + Pcoeffs$a2[l] *T[i_Fscale]*T[i_Fscale]
         deltak  <-  Pcoeffs$b0[l]  + Pcoeffs$b1[l] *T[i_Fscale] + Pcoeffs$b2[l] *T[i_Fscale]*T[i_Fscale]
         lnkpok0 <-  -(deltav /(R*TK[i_Fscale]))*P[i_Fscale] + (0.5*deltak /(R*TK[i_Fscale]))*P[i_Fscale]*P[i_Fscale];
-        
+
         Kvalue[i_Fscale] = Kvalue[i_Fscale]*exp(lnkpok0);
     }
     
