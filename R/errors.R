@@ -115,6 +115,9 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     neg_eSit <- eSit < 0
     eSit[neg_eSit] <- -eSit[neg_eSit]
     
+    # if epK=NULL, set all pK errors to zero
+    if(is.null(epK)) {epK = c(0, 0, 0, 0, 0, 0, 0)}
+
     # Default value for epK
     if (missing(epK))
     {
@@ -410,8 +413,6 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
             # Compute sensitivities (partial derivatives)
             deriv <- derivnum (Knames[i], flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
                 pHscale=pHscale, b=b, gas=gas, warn=warn)
-#cat ("deriv: ")
-#print (deriv)
             err <- deriv * eKi
             sq_err <- sq_err + err * err
         }

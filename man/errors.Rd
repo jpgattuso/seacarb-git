@@ -9,7 +9,8 @@
 the errors in the key dissociation constants pK0, pK1, pK2, pKb, pKw, pKspa and pKspc
 }
 \usage{errors(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
-              evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=NULL, 
+              evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, 
+              epK=c(0.002, 0.01, 0.02, 0.01, 0.01, 0.01, 0.01), 
               method = "ga", r=0.0, runs=10000,
               k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y")}
 %- maybe also 'usage' for other objects documented here.
@@ -125,8 +126,11 @@ All parameters may be scalars or vectors except epK, method, runs, and gas.
 
 \itemize{
   \item method, runs, and gas must be scalars
-  \item epK must be vector of 7 values: errors of pK0, pK1, pK2, pKb, pKw, pKspa and pKspc;
-    that set of errors is identical for all input data.
+  \item epK must be vector of 7 values. It must list errors for 
+    pK0, pK1, pK2, pKb, pKw, pKspa and pKspc, respectively.
+    That set of errors is identical for all input data.
+    Alternatively, users may specify 'epk=NULL' to set all 7 values to zero
+    and thus neglect errors in the equilibrium constants. 
 }
 In constrast, for evar1, evar2, r, eS, eT, ePt and eSit,
 
