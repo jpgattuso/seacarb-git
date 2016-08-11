@@ -202,7 +202,7 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         delta = 1.e-3
 
         center_value = Sit
-        # Change slightly temperature
+        # Change slightly total silicon
         Sit1 = Sit - Sit*delta
         Sit2 = Sit + Sit*delta
         abs_dx = Sit2 - Sit1
@@ -213,7 +213,7 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         delta = 1.e-3
 
         center_value = Pt
-        # Change slightly temperature
+        # Change slightly total phosphorus
         Pt1 = Pt - Pt*delta
         Pt2 = Pt + Pt*delta
         abs_dx = Pt2 - Pt1
@@ -235,7 +235,7 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         delta = 1.e-4
 
         center_value = S
-        # Change slightly temperature
+        # Change slightly salinity
         S1 = S - S*delta
         S2 = S + S*delta
         abs_dx = S2 - S1
