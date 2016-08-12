@@ -224,8 +224,10 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
             if (any(is_free)){  kSWS2scale[is_free]  <- kconv(S=S[is_free],  T=T[is_free],  P=P[is_free])$kSWS2free }
         }
         else
+        {
             # Check its length
             if (length(kSWS2scale)!=nK) kSWS2scale <- rep(kSWS2scale[1], nK)
+        }
         # Apply pH scale correction
         K1[convert] <- K1[convert] * kSWS2scale[convert]
     }
