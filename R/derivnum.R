@@ -17,8 +17,8 @@
 #                = variable length, case insensitive, character code
 #                  case '1' or 'var1'  :  Variable 1 of the input pair (This is TAlk if flag is 15)
 #                  case '2' or 'var2'  :  Variable 2 of the input pair (This is DIC  if flag is 15)
-#                  case 'sil', 'silt', 'tsil' or 'silicate'      : Total silicate concentration
-#                  case 'phos', 'phost', 'tphos' or 'phosphate'  : Total phosphate concentration
+#                  case 'sil', 'silt', 'tsil' or 'silicate'      : Total dissolved inorganic silicon concentration
+#                  case 'phos', 'phost', 'tphos' or 'phosphate'  : Total dissolved inorganic phosphorus concentration
 #                  case 't', 'temp' or 'temperature' : temperature
 #                  case 's', 'sal' or 'salinity'     : salinity
 #                  case 'K0','K1','K2','Kb','Kw','Kspa' or 'Kspc' : dissociation constant
@@ -112,12 +112,6 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         c(1.e-5, 1.e-5)          # flag = 25   
     )
     
-    # BASELINE:    it is useful only if one computes RELATIVE derivatives
-    # --------
-    #seacarb <- carb(flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas)
-    # H <- 10^(-seacarb$pH)
-    # seacarb <- cbind(H,seacarb)
-
     # Compute two slightly different values for input
     # -----------------------------------------------
 
