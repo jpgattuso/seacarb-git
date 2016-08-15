@@ -67,16 +67,14 @@ flag = 25     pCO2 and DIC given
 \item{Sit}{Concentration of total dissolved inorganic silicon (mol/kg); set to 0 if NA}
 \item{evar1}{Standard error (uncertainty) in var1 of input pair of carbonate system variables}
 \item{evar2}{Standard error (uncertainty) in var2 of input pair of carbonate system variables}
-\item{eS}{Standard error (uncertainty) in salinity (psu); default is 0.01}
+\item{eS}{Standard error (uncertainty) in salinity; default is 0.01}
 \item{eT}{Standard error (uncertainty) in temperature (degree C); default is 0.01}
 \item{ePt}{Standard error (uncertainty) in total dissolved inorganic phosphorus concentration (mol/kg)}
 \item{eSit}{Standard error (uncertainty)in total dissolved inorganic silicon concentration (mol/kg)}
-\item{epK}{Standard error (uncertainty) in 7 key dissociation constants (a vector)}
+\item{epK}{Standard error (uncertainty) in 7 key dissociation constants: pK0, pK1, pK2, pKb, pKw, pKspa and pKspc. This is a vector. The default is 0.002, 0.01, 0.02, 0.01, 0.01, 0.01 and 0.01.}
 \item{method}{Case insensitive character string : choice of error-propagation method: 1) Gaussian, 
 2) Method of Moments, or 3) Monte Carlo).\cr
-These methods are specified using the 2-letter codes "ga", "mo", or "mc", respectively.\cr
-The default is "ga" (Gaussian).
-}
+These methods are specified using the 2-letter codes "ga", "mo", or "mc", respectively. The default is "ga" (Gaussian).}
 \item{r}{Correlation coefficient between uncertainties of var1 and var2 (only useful with method="mo",
 i.e., ignored for the 2 other methods, the default is r=0.0}
 \item{runs}{Number of random samples (ignored unless method="mc"; the default is runs=10000}
@@ -227,7 +225,7 @@ Jean-Marie Epitalon, James Orr, and Jean-Pierre Gattuso\email{gattuso@obs-vlfr.f
 \examples{
 
 ## 1) For the input pair ALK and DIC (var1 and var2 when flag=15),
-## compute resulting uncertainty from given uncertainty on ALK and DIC (5 micromol/kg)
+## compute resulting uncertainty from given uncertainty on ALK and DIC (5 umol/kg)
 ## and default uncertainty in dissociation constants
 ## using the default method (Gaussian)
 errors(flag=15, var1=2300e-6, var2=2000e-6, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0, 
@@ -239,9 +237,9 @@ errors(flag=15, var1=2300e-6, var2=2000e-6, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit
 
 ## 2) For the input pair pH and ALK (var1 and var2 when flag=8)
 ## compute standard errors in output variables from errors in input variables, i.e., 
-## for pH (0.005 pH units) and in ALK (5 micromol/kg), along with
-## errors in total dissolved inorganic phosphorus (0.1 micromol/kg) and
-## total dissolved inorganic silicon (2 micromol/kg) concentrations, while
+## for pH (0.005 pH units) and in ALK (5 umol/kg), along with
+## errors in total dissolved inorganic phosphorus (0.1 umol/kg) and
+## total dissolved inorganic silicon (2 umol/kg) concentrations, while
 ## assuming no uncertainty in dissociation constants, using the Gaussian method:
 errors(flag=8, var1=8.25, var2=2300e-6,  S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0, 
        evar1=0.005, evar2=5e-6, eS=0, eT=0, ePt=0.1, eSit=2, epK=0, 
