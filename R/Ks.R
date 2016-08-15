@@ -95,7 +95,7 @@ function(S=35,T=25,P=0, ks="d",warn="y"){
     if (any (is_w & is_k & (T<5 | T>40 | S<20 | S>45)))
         {warning("S and/or T is outside the range of validity of the formulation chosen for Ks.")}
 	
-    if (any (is_w & (T>45 | S>45 | T<0 | S<5)) )
+    if (any (is_w & (T>45 | S>45 | T<0 | S<5)))
         {warning("S and/or T is outside the range of validity of the formulations available for Ks in seacarb.")}
 
     ##------------Attributes

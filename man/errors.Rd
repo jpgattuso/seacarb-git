@@ -88,7 +88,7 @@ i.e., ignored for the 2 other methods, the default is r=0.0}
 }
 
 \details{
-This subroutine propagates error from input to output variables using one of three methods: 
+This function propagates error from input to output variables using one of three methods: 
 \itemize{
 \item Gaussian:
      The Gaussian method is the standard technique for estimating a
@@ -117,8 +117,8 @@ This subroutine propagates error from input to output variables using one of thr
      each output variables.
 }
 
-This subroutine has many input parameters that are identical to those
-in the carb() function. For their details, refer to the 'carb' documentation.
+This function has many input parameters that are identical to those
+in the carb function. For their details, refer to the 'carb' documentation.
 
 All parameters may be scalars or vectors except epK, method, runs, and gas.
 
@@ -127,42 +127,35 @@ All parameters may be scalars or vectors except epK, method, runs, and gas.
   \item epK must be vector of 7 values. It must list errors for 
     pK0, pK1, pK2, pKb, pKw, pKspa and pKspc, respectively.
     That set of errors is identical for all input data.
-    Alternatively, users may specify 'epk=NULL' to set all 7 values to zero
+    Alternatively, users may specify 'epK=NULL' or 'epK=0' to set all 7 values to zero
     and thus neglect errors in the equilibrium constants. 
 }
-In constrast, for evar1, evar2, r, eS, eT, ePt and eSit,
+In constrast, for evar1, evar2, r, eS, eT, ePt and eSit:
 
 \itemize{
   \item  if they are vectors, they represent errors associated with each data point
-  \item  if they are scalars, they represent one error value each associated to all data points
+  \item  if they are scalars (single real numbers), they represent one error value each associated to all data points
 }
 
 The same remark applies to parameter r (correlation coefficient).
 }
 
 \section{Correlation coefficient}{
-By default, 'r' is zero. However, for some pairs the user may want to specify a different value. For example, measurements of pCO2 and pH are often anti-correlated.  cases. The same goes for two other pairs: 'CO2 and CO3' and 'pCO2 and CO3'.  But even for these cases, care is needed before using non-zero values of 'r'.
+By default, 'r' is zero. However, for some pairs the user may want to specify a different value. For example, measurements of pCO2 and pH are often anti-correlated. The same goes for two other pairs: 'CO2 and CO3' and 'pCO2 and CO3'.  But even for these cases, care is needed before using non-zero values of 'r'.
 
 When the user wishes to propagate errors for an individual measurement, 'r' should ALWAYS be zero if each member of the input pair is measured independently. In this case, we are interested in the correlation between the uncertainties in those measurements, not in the correlation between the measurements themselves. Uncertainties from those measurements are probably not correlated if they come from different instruments. Conversely, if users are interested in the error in the mean of a distribution of measurements (i.e., if they are propagating standard errors instead of standard deviations), one should then also account for the correlation between the measurements of the two variables of the input pair.
 
-For input pairs where one member is pH (flags 1, 6, 7, 8, 9, and 21), this 'errors' routine automatically inverses the sign of 'r'. The reason for that is that the associated derivatives are computed in terms of the hydrogen ion concentration (H+), not pH. Therefore for each of these 6 flags, if the user wants to compute their own 'r' that should be done by (1) using the H+ concentration instead of pH, and (2) inversing the sign of that computed 'r' before passing it as an argument to this routine. Usually though (when not calculating r for pH), the user may just use the 'r' in the expected way.  For example, to include the covariance term when there is a perfect anticorrelation of pH with pCO2, one would use 'r=-1.0'.
+For input pairs where one member is pH (flags 1, 6, 7, 8, 9, and 21), this 'errors' function automatically inverses the sign of 'r'. The reason for that is that the associated derivatives are computed in terms of the hydrogen ion concentration (H+), not pH. Therefore for each of these 6 flags, if the user wants to compute their own 'r' that should be done by (1) using the H+ concentration instead of pH, and (2) inversing the sign of that computed 'r' before passing it as an argument to this routine. Usually though (when not calculating r for pH), the user may just use the 'r' in the expected way.  For example, to include the covariance term when there is a perfect anticorrelation of pH with pCO2, one would use 'r=-1.0'.
 
 }
 
 \section{Computation time}{
-  Computation time depends on the method chosen; the Monte Carlo method takes much longer to execute.
+Computation time depends on the method chosen; the Monte Carlo method takes much longer to execute. The computational time required for the Monte Carlo method is proportional to the number of runs. More runs, implies improved accuracy: runs = 10000 appears a minimum to obtain an accuracy of less than 1\%. Accuracy is inversely proportional to the number of runs.
 
-  The computational time required for the Monte Carlo method is proportional to the number of runs.
-  More runs, implies improved accuracy:
-     runs = 10000 appears a minimum to obtain an accuracy of less than 1\%.
-     Accuracy is inversely proportional to the number of runs.
-
-  Computation time also depends on the chosen pair of input variables.
-    For example, with the input pair DIC and Total alkalinity (flag=15), it is much longer 
-    than for input pair pH and Total alkalinity (flag=8)
+Computation time also depends on the chosen pair of input variables. For example, with the input pair DIC and Total alkalinity (flag=15), it is much longer than for input pair pH and Total alkalinity (flag=8)
 }
 
-\value{The function returns a 2-dimensional dataframe, with the folowing columns:
+\value{The function returns a 2-dimensional dataframe, with the following columns:
  \itemize{
  \item{H}{total error in [H+] concentration (mol/kg)}
  \item{pH}{total error in pH}
@@ -189,7 +182,7 @@ Dickson A. G., 1990 Standard potential of the reaction: AgCI(s) + 1/2H2(g) = Ag(
 
 Dickson A. G., Sabine C. L. and Christian J. R., 2007 Guide to best practices for ocean CO2 measurements. \emph{PICES Special Publication} \bold{3}, 1-191.
 
-Khoo H. K., Ramette R. W., Culberson C. H. and Bates R. G., 1977 Determination of Hydrogen Ion Concentration in Seawater from 5 to 40oC: Standard Potentials at Salinities from 20 to 45. \emph{Analytical Chemistry} \bold{22}, vol49 29-34.
+Khoo H. K., Ramette R. W., Culberson C. H. and Bates R. G., 1977 Determination of hydrogen ion concentration in seawater from 5 to 40oC: standard potentials at salinities from 20 to 45. \emph{Analytical Chemistry} \bold{22}, vol49 29-34.
 
 Lee K., Tae-Wook K., Byrne R.H., Millero F.J., Feely R.A. and Liu Y-M, 2010 The universal ratio of the boron to chlorinity for the North Pacific and North Atlantoc oceans. \emph{Geochimica et Cosmochimica Acta} \bold{74} 1801-1811.
 

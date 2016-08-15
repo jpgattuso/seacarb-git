@@ -67,7 +67,12 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
          method="ga", r=0, runs=10000, 
          k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y")
 {
-    # Input checking
+  # if the concentrations of total silicate and total phosphate are NA
+  # they are set to 0
+  Sit[is.na(Sit)] <- 0
+  Pt[is.na(Pt)] <- 0
+  
+  # Input checking
     # --------------
     
     if (! method %in% c("ga", "mo", "mc"))
@@ -314,9 +319,9 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     #          because computation of sensitivity to Sit fails in that case
     #
     Sit_valid <- Sit != 0
-    if (any (Sit_valid))
+    if (any(Sit_valid))
     {
-        if (any (eSit[Sit_valid] != 0.0))
+        if (any(eSit[Sit_valid] != 0.0))
         {
             # Compute sensitivities (partial derivatives)
             deriv <- derivnum ('sil', flag[Sit_valid], var1[Sit_valid], var2[Sit_valid], S=S[Sit_valid], T=T[Sit_valid],
@@ -334,9 +339,9 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     #          because computation of sensitivity to Pt fails in that case
     #
     Pt_valid <- Pt != 0
-    if (any (Pt_valid))
+    if (any(Pt_valid))
     {
-        if (any (ePt[Pt_valid] != 0.0))
+        if (any(ePt[Pt_valid] != 0.0))
         {
             # Compute sensitivities (partial derivatives)
             deriv <- derivnum ('phos', flag[Pt_valid], var1[Pt_valid], var2[Pt_valid], S=S[Pt_valid], T=T[Pt_valid],
