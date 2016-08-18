@@ -81,7 +81,7 @@ function(S=35,T=25,P=0, ks="d",warn="y"){
 
     method <- rep(NA, nK)
     method[!is_k] <- "Dickson (1990)"
-    method[ is_k] <- "Khoo et al. (1977)"
+    method[is_k] <- "Khoo et al. (1977)"
     
     # ------------------- Pressure effect --------------------------------
 
