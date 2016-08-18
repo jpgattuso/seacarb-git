@@ -19,7 +19,7 @@
 # Input parameters :
 #   - evar1, evar2   :  standard error (uncertainty) in var1 and var2 of input pair of carbonate system variables
 #   - eS, eT         :  standard error (uncertainty) in Salinity and Temperature (default value = 0.01)
-#   - ePt, eSit      :  standard error (uncertainty) in Phosphate and Silicate total concentrations
+#   - ePt, eSit      :  standard error (uncertainty) in Phosphorus and Silicon total inorganic concentrations
 #   - epK            :  standard error (uncertainty) in all 7 dissociation constants (a vector)
 #   - method         :  case insensitive character string : "ga", "mo", or "mc"
 #                       default is "ga" (gaussian)
@@ -63,11 +63,16 @@
 #
 errors <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
-         evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=NULL, 
+         evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=c(0.002, 0.01, 0.02, 0.01, 0.01, 0.01, 0.01), 
          method="ga", r=0, runs=10000, 
          k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y")
 {
-    # Input checking
+  # if the concentrations of total silicate and total phosphate are NA
+  # they are set to 0
+  Sit[is.na(Sit)] <- 0
+  Pt[is.na(Pt)] <- 0
+  
+  # Input checking
     # --------------
     
     if (! method %in% c("ga", "mo", "mc"))
@@ -115,6 +120,9 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     neg_eSit <- eSit < 0
     eSit[neg_eSit] <- -eSit[neg_eSit]
     
+    # if epK=NULL, set all pK errors to zero
+    if(is.null(epK)) {epK = c(0, 0, 0, 0, 0, 0, 0)}
+
     # Default value for epK
     if (missing(epK))
     {
@@ -305,15 +313,15 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         sq_err <- sq_err + err2
     }
 
-    # Contribution of Silion (total dissolved inorganic concentration) to squared standard error
+    # Contribution of Silicon (total dissolved inorganic concentration) to squared standard error
     #
     # Remark : does not compute error where Sit = 0 
     #          because computation of sensitivity to Sit fails in that case
     #
     Sit_valid <- Sit != 0
-    if (any (Sit_valid))
+    if (any(Sit_valid))
     {
-        if (any (eSit[Sit_valid] != 0.0))
+        if (any(eSit[Sit_valid] != 0.0))
         {
             # Compute sensitivities (partial derivatives)
             deriv <- derivnum ('sil', flag[Sit_valid], var1[Sit_valid], var2[Sit_valid], S=S[Sit_valid], T=T[Sit_valid],
@@ -331,9 +339,9 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     #          because computation of sensitivity to Pt fails in that case
     #
     Pt_valid <- Pt != 0
-    if (any (Pt_valid))
+    if (any(Pt_valid))
     {
-        if (any (ePt[Pt_valid] != 0.0))
+        if (any(ePt[Pt_valid] != 0.0))
         {
             # Compute sensitivities (partial derivatives)
             deriv <- derivnum ('phos', flag[Pt_valid], var1[Pt_valid], var2[Pt_valid], S=S[Pt_valid], T=T[Pt_valid],
@@ -410,8 +418,6 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
             # Compute sensitivities (partial derivatives)
             deriv <- derivnum (Knames[i], flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
                 pHscale=pHscale, b=b, gas=gas, warn=warn)
-#cat ("deriv: ")
-#print (deriv)
             err <- deriv * eKi
             sq_err <- sq_err + err * err
         }
@@ -572,7 +578,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 # This subroutine does error propagation on the computation of carbonate system variables 
 # from errors (or uncertainties) on six input 
 #  - pair of carbonate system variables 
-#  - nutrients (silicate and phosphate concentrations)
+#  - nutrients (total inorganic silicon and phosphorus concentrations)
 #  - temperature and salinity
 # plus errors on dissociation constants pK0, pK1, pK2, pKb, pKw, pKspa and pKspc
 #
@@ -581,7 +587,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 # Input parameters :
 #   - evar1, evar2   :  standard error (or uncertainty) on var1 and var2 of input pair of carbonate system variables
 #   - eS, eT         :  standard error (or uncertainty) on Salinity and Temperature
-#   - ePt, eSit      :  standard error (or uncertainty) on Phosphate and Silicate total concentrations
+#   - ePt, eSit      :  standard error (or uncertainty) on Phosphorus and Silicon total inorganic concentrations
 #   - epK            :  standard error (or uncertainty) on all seven dissociation constants (a vector)
 #   - runs           :  number of runs of Monte Carlo (= number of simulated samples)
 #                       default is 10000
@@ -666,7 +672,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 
     # Generate deviate sample values for var1
     spl_var1 <- mapply (gen_sim, var1, evar1)
-    # Same for var2, Salinity, Temperature, Phosphate and Silicate
+    # Same for var2, Salinity, Temperature, total inorganic Phosphorus and Silicon
     spl_var2 <- mapply (gen_sim, var2, evar2)
     spl_S    <- mapply (gen_sim, S, eS)
     spl_T    <- mapply (gen_sim, T, eT)

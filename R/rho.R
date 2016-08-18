@@ -45,5 +45,4 @@ function(S=35,T=25,P=0){
 	rho = rho0/(1-P/Ksbm);
 	attr(rho,"unit") = "(kg/m3)"
     return(rho)
-#	print(rho);
 	}
