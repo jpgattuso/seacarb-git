@@ -1,4 +1,4 @@
-version 3.1, 2016-08-08
+version 3.1, 2016-09-26
 -----------------------------------
 New routines have been added to perform error propagation (errors.R) and to take numerical derivatives (derivnum.R) of carb's calculated output variables with respect to its input variables and constants. An existing routine that computes buffer factors (buffesm.R) has been improved. These additions are from Jean-Marie Epitalon and James Orr.
 

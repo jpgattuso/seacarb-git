@@ -10,7 +10,7 @@ the errors in the key dissociation constants pK0, pK1, pK2, pKb, pKw, pKspa and 
 }
 \usage{errors(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
               evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, 
-              epK=c(0.002, 0.01, 0.02, 0.01, 0.01, 0.01, 0.01), 
+              epK=c(0.002, 0.01, 0.02, 0.01, 0.01, 0.02, 0.02), 
               method = "ga", r=0.0, runs=10000,
               k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y")}
 %- maybe also 'usage' for other objects documented here.
