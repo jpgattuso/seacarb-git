@@ -112,6 +112,35 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         c(1.e-5, 1.e-5)          # flag = 25   
     )
     
+    # Reference 'concentrations': sorted by flag number
+    const_refs  = rbind (
+        c(1e-8, 10e-6),          # flag = 1    
+        c(10e-6, 1800e-6),       # flag = 2    
+        c(10e-6, 100e-6),        # flag = 3    
+        c(10e-6, 2300e-6),       # flag = 4    
+        c(10e-6, 2000e-6),       # flag = 5    
+        c(1e-8, 1800e-6),        # flag = 6    
+        c(1e-8, 100e-6),         # flag = 7    
+        c(1e-8, 2300e-6),        # flag = 8    
+        c(1e-8, 2000e-6),        # flag = 9    
+        c(1800e-6, 100e-6),      # flag = 10   
+        c(1800e-6, 2300e-6),     # flag = 11   
+        c(1800e-6, 2000e-6),     # flag = 12   
+        c(100e-6, 2300e-6),      # flag = 13   
+        c(100e-6, 2000e-6),      # flag = 14   
+        c(2300e-6, 2000e-6),     # flag = 15 
+        c(0, 0),
+        c(0, 0),
+        c(0, 0),
+        c(0, 0),
+        c(0, 0),
+        c(400, 1e-8),            # flag = 21   
+        c(400, 1800e-6),         # flag = 22   
+        c(400, 100e-6),          # flag = 23   
+        c(400, 2300e-6),         # flag = 24   
+        c(400, 2000e-6)          # flag = 25   
+    )
+
     # Compute two slightly different values for input
     # -----------------------------------------------
 
@@ -150,13 +179,14 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     {
         # Define relative deltas
         delta = const_deltas[flag, 1]
+        xref  = const_refs[flag, 1]
 
         # where input variable is [H+] concentration
         FH = (var1name == 'H')
         # Change slightly [H+]
         H_var1 <- 10^(-var1[FH])
-        H1 = H_var1 - H_var1*delta[FH]
-        H2 = H_var1 + H_var1*delta[FH]
+        H1 = H_var1 - xref[FH]*delta[FH]
+        H2 = H_var1 + xref[FH]*delta[FH]
         var11[FH] = -log10(H1)
         var12[FH] = -log10(H2)
         abs_dx[FH] = H2 - H1
@@ -164,21 +194,22 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         # where it is not
         GH = ! FH
         # Change slightly var1
-        var11[GH] = var1[GH] - var1[GH]*delta[GH]
-        var12[GH] = var1[GH] + var1[GH]*delta[GH]
+        var11[GH] = var1[GH] - xref[GH]*delta[GH]
+        var12[GH] = var1[GH] + xref[GH]*delta[GH]
         abs_dx[GH] = var12[GH] - var11[GH]
     }
     else if (varid %in% c('2', 'VAR2'))    # var2 (second variable of input pair) is perturbed
     {
         # Define relative deltas
         delta = const_deltas[flag, 2]
+        xref  = const_refs[flag, 2]
 
         # where second input variable is [H+] concentration
         FH = (var2name == 'H')
         # Change slightly H+]
         H_var2 <- 10^(-var2[FH])
-        H1 = H_var2 - H_var2*delta[FH]
-        H2 = H_var2 + H_var2*delta[FH]
+        H1 = H_var2 - xref[FH]*delta[FH]
+        H2 = H_var2 + xref[FH]*delta[FH]
         var21[FH] = -log10(H1)
         var22[FH] = -log10(H2)
         abs_dx[FH] = H2 - H1
@@ -186,52 +217,56 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         # where it is not
         GH = ! FH
         # Change slightly var2
-        var21[GH] = var2[GH] - var2[GH]*delta[GH]
-        var22[GH] = var2[GH] + var2[GH]*delta[GH]
+        var21[GH] = var2[GH] - xref[GH]*delta[GH]
+        var22[GH] = var2[GH] + xref[GH]*delta[GH]
         abs_dx[GH] = var22[GH] - var21[GH]
     }
     else if (varid %in% c('SIL', 'TSIL', 'SILT', 'SILICATE'))    # Sil total
     {
         # Define relative delta
-        delta = 1.e-3
+        delta  = 1.e-3
+        Sitref = 7.5e-6 # mol/kg (Global surface mean)
 
         center_value = Sit
         # Change slightly total silicon
-        Sit1 = Sit - Sit*delta
-        Sit2 = Sit + Sit*delta
+        Sit1 = Sit - Sitref*delta
+        Sit2 = Sit + Sitref*delta
         abs_dx = Sit2 - Sit1
     }
     else if (varid %in% c('PHOS', 'TPHOS', 'PHOST', 'PHOSPHATE'))    # Phos total
     {
         # Define relative delta
         delta = 1.e-3
+        Ptref = 0.5e-6   # mol/kg (Global surface mean)
 
         center_value = Pt
         # Change slightly total phosphorus
-        Pt1 = Pt - Pt*delta
-        Pt2 = Pt + Pt*delta
+        Pt1 = Pt - Ptref*delta
+        Pt2 = Pt + Ptref*delta
         abs_dx = Pt2 - Pt1
     }
     else if (varid %in% c('T', 'TEMP', 'TEMPERATURE'))    # Temperature
     {
         # Define relative delta
         delta = 1.e-4
+        Tref = 18   # degrees Celcius
         
         center_value = T
         # Change slightly temperature
-        T1 = T - T*delta
-        T2 = T + T*delta
+        T1 = T - Tref*delta
+        T2 = T + Tref*delta
         abs_dx = T2 - T1
     }
     else if (varid %in% c('S', 'SAL', 'SALINITY'))   # Salinity
     {
         # Define relative delta
         delta = 1.e-4
+        Sref = 35
 
         center_value = S
         # Change slightly salinity
-        S1 = S - S*delta
-        S2 = S + S*delta
+        S1 = S - Sref*delta
+        S2 = S + Sref*delta
         abs_dx = S2 - S1
     }
     else
