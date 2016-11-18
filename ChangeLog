@@ -1,4 +1,4 @@
-version 3.1, 2016-09-26
+version 3.1, 2016-11-18
 -----------------------------------
 New routines have been added to perform error propagation (errors.R) and to take numerical derivatives (derivnum.R) of carb's calculated output variables with respect to its input variables and constants. An existing routine that computes buffer factors (buffesm.R) has been improved. These additions are from Jean-Marie Epitalon and James Orr.
 
@@ -7,6 +7,8 @@ New routines have been added to perform error propagation (errors.R) and to take
 - New: derivnum.R function is useful not only because it is used in the error propagation (Gaussian approach), but also because it computes partial derivatives of all output variables with respect to all input variables and constants; these sensitivities may also be referred to as buffer factors. The numerical approach has been refined to minimize error and its results agree extremely well with available analytical derivatives and mocsy's automatic derivatives which are as accurate as analytical derivatives. Thus the derivnum routine has been optimized and tested in many ways.
 
 - New: 'buffesm.R' function has been improved to account for effects of total dissolved inorganic phosphorus (Pt) and silicon (Sit) on buffer factors and the Revelle factor. This is an advance relative to the original equations from Egleston et al (2010) who did not acount for effects from these nutrients (Orr and Epitalon, 2015).
+
+- Updated: the default flag to calculate K1 and K2 when T is outside the range 2 to 35oC and/or S is outside the range 19 to 43 is "w14" (Waters et al., 2014).
 
 - Fixed bug in carb: an error was returned when there were NA values for ALK with flags 13 and 15 (many thanks to Matthew A. Birk for reporting this bug and proposing a fix).
 
