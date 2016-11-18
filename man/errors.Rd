@@ -266,9 +266,12 @@ kf <- "pf"
 k1k2 <- "l"
 pHscale <- "T"
 b <- "u74"
-errors(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P, Pt=Pt, Sit=Sit, 
+## NOTE that the following is executable but enclosed in "donttest" 
+## because it takes too long to run when submiting to CRAN
+## and is therefore rejected
+\donttest{errors(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P, Pt=Pt, Sit=Sit, 
        evar1=evar1, evar2=evar2, eS=0, eT=0, ePt=0, eSit=0, epK=epKx, 
-       method=method, runs=10000, kf=kf, k1k2=k1k2, pHscale=pHscale, b=b)
+       method=method, runs=10000, kf=kf, k1k2=k1k2, pHscale=pHscale, b=b)}
 }
 
 \keyword{utilities}
