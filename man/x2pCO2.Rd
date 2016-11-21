@@ -21,7 +21,7 @@ x2pCO2(S=35, T=25, Patm=1.0, xCO2=400)
 \note{\bold{Warning:} pCO2 estimates below 100 m are subject to considerable uncertainty. See Weiss (1974) and Orr et al. (2015)}
 
 \details{
-The mole fraction xCO2 (ppm) is computed from pCO2 (\eqn{\mu}atm) using the following equation: \eqn{ pCO2 = xCO2 (Patm - pH2O)}, where pH20 is the vapor pressure of seawater computed following best practices (Dickson et al., 2007). That computed pH20 is identical, when rounded to the 4th decimal place, with that computed by the equation from Weiss and Price (1980).}
+The mole fraction xCO2 (ppm) is computed from pCO2 (\eqn{\mu}atm) using the following equation: \eqn{ xCO2 = pCO2 (Patm - pH2O)}, where pH20 is the vapor pressure of seawater computed following best practices (Dickson et al., 2007). That computed pH20 is identical, when rounded to the 4th decimal place, with that computed by the equation from Weiss and Price (1980).}
 
 \references{ 
 Dickson A. G., Sabine C. L. and Christian J. R., 2007 Guide to best practices for ocean CO2 measurements. \emph{PICES Special Publication} \bold{3}, 1-191.
