@@ -10,7 +10,7 @@ the errors in the key dissociation constants pK0, pK1, pK2, pKb, pKw, pKspa and 
 }
 \usage{errors(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
               evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, 
-              epK=c(0.002, 0.01, 0.02, 0.01, 0.01, 0.01, 0.01), 
+              epK=c(0.002, 0.01, 0.02, 0.01, 0.01, 0.02, 0.02), 
               method = "ga", r=0.0, runs=10000,
               k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y")}
 %- maybe also 'usage' for other objects documented here.
@@ -78,7 +78,7 @@ These methods are specified using the 2-letter codes "ga", "mo", or "mc", respec
 \item{r}{Correlation coefficient between uncertainties of var1 and var2 (only useful with method="mo",
 i.e., ignored for the 2 other methods, the default is r=0.0}
 \item{runs}{Number of random samples (ignored unless method="mc"; the default is runs=10000}
-\item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "m06" from Millero et al. (2006), "m10" from Millero (2010), "w14" from Waters et al. (2014), and "r" from Roy et al. (1993). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "m10".}
+\item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "m06" from Millero et al. (2006), "m10" from Millero (2010), "w14" from Waters et al. (2014), and "r" from Roy et al. (1993). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "w14".}
 \item{kf}{"pf" for using Kf from Perez and Fraga (1987) and "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994). "x" is the default flag; the default value is then "pf", except if T is outside the range 9 to 33oC and/or S is outside the range 10 to 40. In these cases, the default is "dg".}
 \item{ks}{"d" for using Ks from Dickson (1990) and "k" for using Ks from Khoo et al. (1977), default is "d"}
 \item{pHscale}{"T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
@@ -266,9 +266,12 @@ kf <- "pf"
 k1k2 <- "l"
 pHscale <- "T"
 b <- "u74"
-errors(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P, Pt=Pt, Sit=Sit, 
+## NOTE that the following is executable but enclosed in "donttest" 
+## because it takes too long to run when submiting to CRAN
+## and is therefore rejected
+\donttest{errors(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P, Pt=Pt, Sit=Sit, 
        evar1=evar1, evar2=evar2, eS=0, eT=0, ePt=0, eSit=0, epK=epKx, 
-       method=method, runs=10000, kf=kf, k1k2=k1k2, pHscale=pHscale, b=b)
+       method=method, runs=10000, kf=kf, k1k2=k1k2, pHscale=pHscale, b=b)}
 }
 
 \keyword{utilities}

@@ -32,8 +32,8 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     is_x <- k1k2 == 'x'
     is_outrange <- T>35 | T<2 | S<19 | S>43
     k1k2[is_x] <- 'l'  ## luecker by default
-    k1k2 [is_x & is_outrange] <- "m10"  # Millero 2010 if outrange
-
+    k1k2[is_x & is_outrange] <- "w14"  # Waters et al. (2014) if outrange
+    
     #-------Constants----------------
 
     #---- issues of equic----
