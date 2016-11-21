@@ -37,7 +37,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
 
     #---- issues of equic----
     tk <- 273.15;           # [K] (for conversion [deg C] <-> [K])
-    TK <- T + tk;           # T [C]; T[K]
+    TK <- T + tk;           # TC [C]; T[K]
     
     
     # --------------------- K1 ---------------------------------------
@@ -55,20 +55,6 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     K1[is_l]<- 10^logK1lue
     pHsc[is_l] <- "T"
 
-
-    # --------------------- K1 ---------------------------------------
-    #   first acidity constant:
-    #   [H^+] [HCO_3^-] / [CO2] = K_1
-    #
-    #   (Dickson & Millero, 1987, A comparison of the equilibrium constants for the dissociation of
-    #    carbonic acid in seawater media, Deep-Sea Res, 34 (10), 1733-1743)
-    #   pH-scale: 'SWS scale'. mol/kg-soln
-    is_d87 <- k1k2 == "d87"
-    pK1tmp  <- (-840.39 / TK[is_d87] + 19.894   - 3.0189 * log(TK[is_d87]) ) * sqrt(S[is_d87]) + 0.00668*S[is_d87]
-    pK1o    <-  6320.81 / TK[is_d87] - 126.3405 + 19.568 * log(TK[is_d87]) 
-    pK1 <- pK1o + pK1tmp
-    K1[is_d87] <- 10^(-pK1)
-    pHsc[is_d87] <- "SWS"
 
     # --------------------- K1 ---------------------------------------
     #   first acidity constant:
@@ -253,6 +239,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     pHlabel[is_free]  <- "free scale"
     pHlabel[!is_total & !is_free] <- "seawater scale"
 
+
     ##------------Warnings
 
     is_w <- warn == "y"
@@ -265,15 +252,14 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
 
     ##---------------Attributes
     method <- rep(NA, nK)
-    method[is_d87] <- "Dickson and Millero (1987)"
     method[is_m06] <- "Millero et al. (2006)"
     method[is_m10] <- "Millero (2010)"
     method[is_w14] <- "Waters et al. (2014)"
     method[is_r]   <- "Roy et al. (1993)"
     method[! (is_m06 | is_m10 | is_w14 | is_r) ] <- "Luecker et al. (2000)"
 
-    attr(K1,"unit")     <- "mol/kg-soln"
+    attr(K1,"unit") <- "mol/kg-soln"
     attr(K1,"pH scale") <- pHlabel
-    attr(K1, "method")  <- method
+    attr(K1, "method") <- method
     return(K1)
 }

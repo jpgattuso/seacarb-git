@@ -29,6 +29,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     K2 <- rep(NA, nK)
 
     ##----------Check the validity of the method regarding the T/S range
+
     is_x <- k1k2 == 'x'
     is_outrange <- T>35 | T<2 | S<19 | S>43
     k1k2[is_x] <- 'l'  ## luecker by default
@@ -60,20 +61,6 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     logK2lue <- -471.78/TK[is_l] - 25.9290 + 3.16967*log(TK[is_l]) + 0.01781*S[is_l] - 0.0001122*S[is_l]*S[is_l]
     K2[is_l] <- 10^(logK2lue)
     pHsc[is_l] <- "T"
-
-    # --------------------- K1 ---------------------------------------
-    #   second acidity constant:
-    #   [H^+] [CO_3^--] / [HCO_3^-] = K_2
-    #
-    #   (Dickson & Millero, 1987, A comparison of the equilibrium constants for the dissociation of
-    #    carbonic acid in seawater media, Deep-Sea Res, 34 (10), 1733-1743)
-    #   pH-scale: 'SWS scale'. mol/kg-soln
-    is_d87 <- k1k2 == "d87"
-    pK2tmp  <- (-690.59 / TK[is_d87] + 17.176  -  2.6719 * log(TK[is_d87]) ) * sqrt(S[is_d87]) + 0.0217*S[is_d87]
-    pK2o    <-  5143.69 / TK[is_d87] - 90.1833 + 14.613 * log(TK[is_d87]) 
-    pK2 <- pK2o + pK2tmp
-    K2[is_d87] <- 10^(-pK2)
-    pHsc[is_d87] <- "SWS"
 
     # --------------------- K2 Roy et al. 1993----------------------------------------
     #
@@ -240,10 +227,8 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
             if (any(is_free)){  kSWS2scale[is_free]  <- kconv(S=S[is_free],  T=T[is_free],  P=P[is_free])$kSWS2free }
         }
         else
-        {
             # Check its length
             if (length(kSWS2scale)!=nK) kSWS2scale <- rep(kSWS2scale[1], nK)
-        }
         # Apply pH scale correction
         K2[convert] <- K2[convert] * kSWS2scale[convert]
     }
@@ -267,15 +252,14 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
 
     ##---------------Attributes
     method <- rep(NA, nK)
-    method[is_d87] <- "Dickson and Millero (1987)"
     method[is_m06] <- "Millero et al. (2006)"
     method[is_m10] <- "Millero (2010)"
     method[is_w14] <- "Waters et al. (2014)"
     method[is_r]   <- "Roy et al. (1993)"
     method[! (is_m06 | is_m10 | is_w14 | is_r) ] <- "Luecker et al. (2000)"
     
-    attr(K2,"unit")     <- "mol/kg-soln"
-    attr(K2,"pH scale") <- pHlabel
-    attr(K2,"method")   <- method
+    attr(K2,"unit")     = "mol/kg-soln"
+    attr(K2,"pH scale") = pHlabel
+    attr(K2,"method") = method
     return(K2)
 }
