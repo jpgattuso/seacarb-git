@@ -132,14 +132,22 @@ buffesm <-
    # GOOD formula with last sign above inverted (1st line of code just below),
    # ...  also added are effects from phosphoric and silicic acid systems (code lines 2-6 just below)
    #      The addition of these 2 acid systems from J.-M. Epitalon, 2016 (expanded equation from Egleston)
-   Segle  = ( HCO3 + 4*CO3 + (h*Borate/(Kb + h)) + h + oh
-              + (- h3po4 * (-h2po4 - 2*hpo4 - 3*po4)
-                 + hpo4  * (2*h3po4 + h2po4 - po4)
-                 + 2*po4 * (3*h3po4 + 2*h2po4 + hpo4)
-                ) / Pt
-              + h * sioh3/(Ksi + h)
-            )
-              
+   SegleC = ( HCO3 + 4*CO3 + (h*Borate/(Kb + h)) + h + oh)
+
+   # Protect against division by zero
+   if (Pt > 0) {  
+       SegleP =     (- h3po4 * (-h2po4 - 2*hpo4 - 3*po4)
+                     + hpo4  * (2*h3po4 + h2po4 - po4)
+                     + 2*po4 * (3*h3po4 + 2*h2po4 + hpo4)
+                    ) / Pt
+   } else {
+       SegleP <- 0
+   }
+
+   SegleSi =  h * sioh3/(Ksi + h)
+
+   Segle <- SegleC + SegleP + SegleSi
+
    # GOOD formula from Sabine (Excel sheet, 23 Aug 2010)
    Pegle  = (2*CO2 + HCO3)                                  
 
