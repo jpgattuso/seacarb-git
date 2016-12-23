@@ -1,3 +1,8 @@
+version 3.1.1, 2016-11-22
+-----------------------------------
+- Fixed: buffesm was returning NaNs when Pt=0 
+
+
 version 3.1, 2016-11-18
 -----------------------------------
 New routines have been added to perform error propagation (errors.R) and to take numerical derivatives (derivnum.R) of carb's calculated output variables with respect to its input variables and constants. An existing routine that computes buffer factors (buffesm.R) has been improved. These additions are from Jean-Marie Epitalon and James Orr.
