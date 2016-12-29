@@ -119,7 +119,7 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 
 \item The addition of strong acid does not simulate well natural ocean acidification (higher concentration of dissolved inorganic carbon at constant total alkalinity) since it generates a decrease in total alkalinity while dissolved inorganic carbon is kept constant.
 
-\item Other important advice is provided in Gattuso and Lavigne (2009), Schulz et al. (2009) and in the \dQuote{Guide for Best Practices on Ocean Acidification Research and Data Reporting} (\url{http://www.epoca-project.eu/index.php/Home/Guide-to-OA-Research/})
+\item Other important advice is provided in Gattuso and Lavigne (2009), Schulz et al. (2009) and in the \dQuote{Guide for Best Practices on Ocean Acidification Research and Data Reporting} (\url{https://www.iaea.org/ocean-acidification/page.php?page=2194})
 }
 }
 
