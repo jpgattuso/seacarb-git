@@ -1,16 +1,18 @@
 version 3.2, 2016-12-29
 -----------------------------------
-A series of additions from Mathilde Hagens
+A series of additions from Mathilde Hagens (M.Hagens@uu.nl)
 
-- New [thanks to M. Hagens]: added function Ksi to calculate the second dissociation constant of Si(OH)4.
+- New: carbfull, an extension of carb. Returns parameters of the seawater carbonate system, including the ammonium and sulfide acid-base systems, as well as full acid-base speciation. This function has not been tested very extensively.
+- New: buffgen which returns the buffer factors of the seawater carbonate system as defined by Hagens and Middelburg (2016), the proton concentration buffer factor (beta.H of Hofmann et al, 2010) as well as the classic Revelle factor. This function has not been tested very extensively.
+- New: K2si to calculate the second dissociation constant of Si(OH)4.
 - Update: Pcoeffs and its help file now include K2si.
-- Update: kconv help now lists the 6 conversion factors that the function returns (rather than only 3 before).
+- Update: Pcorrect and its help file now include K2si.
+- Update: kconv help file now lists the 6 conversion factors that the function returns (rather than only 3 before).
 - Update: in Oa, the link to the "Guide to Best Practices for Ocean Acidification Research and Data Reporting" is to the OA-ICC instead of the EPOCA web site.
 
 version 3.1.1, 2016-11-22
 -----------------------------------
 - Fixed: buffesm was returning NaNs when Pt=0 
-
 
 version 3.1, 2016-11-18
 -----------------------------------

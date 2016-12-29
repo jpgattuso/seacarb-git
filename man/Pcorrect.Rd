@@ -26,6 +26,7 @@ Pcorrect(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T",
 	\item Khs	Dissociation constant of hydrogen sufide(mol/kg)
 	\item Kn	Dissociation constant of ammonium (mol/kg)
 	\item Ksi	Dissociation constant of Si(OH)4 (mol/kg)
+	\item K2si	Second dissociation constant of Si(OH)4 (mol/kg)
 }}
   \item{T}{Temperature in degrees Celsius, default is 25oC}
   \item{S}{Salinity, default is 35}
@@ -38,7 +39,7 @@ Pcorrect(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T",
 
 \details{
   \itemize{
-  \item The pressure correction is applied on the seawater scale for K1, K2, K1p, K2p, K3p, Kb, Khs, Kn, Ksi and Kw. Hence the K value is first converted on the seawater scale if needed. After pressure correction, the constant is converted back to the initial pH scale.
+  \item The pressure correction is applied on the seawater scale for K1, K2, K1p, K2p, K3p, Kb, Khs, Kn, Ksi, K2si and Kw. Hence the K value is first converted on the seawater scale if needed. After pressure correction, the constant is converted back to the initial pH scale.
   \item The pressure correction is applied on the free scale for Kf.
   \item There is no issue of pH scale for Ks, Kspa and Kspc.
 }
