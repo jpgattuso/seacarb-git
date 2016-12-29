@@ -3,7 +3,9 @@ version 3.2, 2016-12-29
 A series of additions from Mathilde Hagens
 
 - New [thanks to M. Hagens]: added function Ksi to calculate the second dissociation constant of Si(OH)4.
-- New url in Oa: link to the "Guide to Best Practices for Ocean Acidification Research and Data Reporting" at the OA-ICC instead of the EPOCA web site.
+- Update: Pcoeffs and its help file now include K2si.
+- Update: kconv help now lists the 6 conversion factors that the function returns (rather than only 3 before).
+- Update: in Oa, the link to the "Guide to Best Practices for Ocean Acidification Research and Data Reporting" is to the OA-ICC instead of the EPOCA web site.
 
 version 3.1.1, 2016-11-22
 -----------------------------------
