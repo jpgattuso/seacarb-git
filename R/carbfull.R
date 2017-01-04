@@ -597,7 +597,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
         fluo  <- FLUO[i]
         phs   <- pHscale[i]
         # Calculate [H+] from total alk
-        h[j] <- uniroot(fALK,c(10^(-9.5),10^(-3.5)), tol=1e-20)$root
+        #h[j] <- uniroot(fALK,c(10^(-9.5),10^(-3.5)), tol=1e-20)$root
+        h[j] <- tryCatch(uniroot(fALK, c(1e-10, 10^(-3.5)), tol = 1e-30)$root, error = function(e) NA)
         j <- j + 1
     }   
     
@@ -708,7 +709,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
         fluo  <- FLUO[i]
         phs   <- pHscale[i]
         # Calculate [H+] from total alk
-        h[j] <- uniroot(fALK,c(1e-10,10^(-3.5)), tol=1e-30)$root
+        #h[j] <- uniroot(fALK,c(1e-10,10^(-3.5)), tol=1e-30)$root
+        h[j] <- tryCatch(uniroot(fALK, c(1e-10, 10^(-3.5)), tol = 1e-30)$root, error = function(e) NA)
         j <- j + 1
     }   
 
