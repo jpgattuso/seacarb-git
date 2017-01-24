@@ -9,7 +9,7 @@
 # You should have received a copy of the GNU General Public License along with seacarb; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 "pmix" <-
-function(flag, var1, var2, pCO2s, wf, S=35, T=20, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74"){
+function(flag, var1, var2, pCO2s, wf, S=35, T=20, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", eos="eos80", long=1.e20, lat=1.e20){
   # if the concentrations of total silicate and total phosphate are NA
   # they are set at 0
   Sit[is.na(Sit)] <- 0
@@ -19,11 +19,11 @@ function(flag, var1, var2, pCO2s, wf, S=35, T=20, P=0, Pt=0, Sit=0, k1k2='x', kf
 	if (sys==0) {
 		ws <- 1 * wf
 		wi <- 1 - ws
-		ci <- carb(flag=flag, var1=var1, var2=var2, S=S ,T=T, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)
-		cs <- carb(24, var1=pCO2s, var2=ci$ALK, S=S ,T=T, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b) # carbonate chemistry of high-CO2 component
+		ci <- carb(flag=flag, var1=var1, var2=var2, S=S ,T=T, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, eos=eos, long=long, lat=lat)
+		cs <- carb(24, var1=pCO2s, var2=ci$ALK, S=S ,T=T, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, eos=eos, long=long, lat=lat) # carbonate chemistry of high-CO2 component
 		alkf <- ci$ALK  # final alkalinity
 		dicf <- (ci$DIC*wi + cs$DIC*ws)/(wi+ws)	# final dic
-		cf <- carb(flag=15, var1=alkf, var2=dicf, S=S ,T=T, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)	 # final carbonate chemistry
+		cf <- carb(flag=15, var1=alkf, var2=dicf, S=S ,T=T, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, eos=eos, long=long, lat=lat)	 # final carbonate chemistry
 		co <- as.data.frame(c("pmix-closed-initial", rep("pmix-closed-final", nrow(cf)))) # comment column
 		out <- rbind(ci, cf)
 		out <- cbind(co, out)
