@@ -35,10 +35,10 @@ TEOS-10 web site: http://www.teos-10.org/
 
 What every oceanographer needs to know about TEOS-10 (The TEOS-10 Primer) by Rich Pawlowicz (on TEOS-10 web site)
 
-R. Pawlowicz 1 , D. G. Wright 2,† , and F. J. Millero, 2011: The effects of biogeochemical processes on oceanic conductivity/
+R. Pawlowicz, D. G. Wright, and F. J. Millero, 2011: The effects of biogeochemical processes on oceanic conductivity/
 salinity/density relationships and the characterization of real seawater
 
-T. J. McDougall 1 , D. R. Jackett 2 , F. J. Millero 3 , R. Pawlowicz 4 , and P. M. Barker, 2012: Algorithm for estimating Absolute Salinity}
+T. J. McDougall, D. R. Jackett, F. J. Millero, R. Pawlowicz, and P. M. Barker, 2012: Algorithm for estimating Absolute Salinity}
              
 \seealso{
 eos2teos_chem does the reverse, teos2eos_geo, sa2sp_cham

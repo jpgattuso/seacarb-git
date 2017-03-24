@@ -33,7 +33,7 @@ TEOS-10 web site: http://www.teos-10.org/
 
 What every oceanographer needs to know about TEOS-10 (The TEOS-10 Primer) by Rich Pawlowicz (on TEOS-10 web site)
 
-T. J. McDougall 1 , D. R. Jackett 2 , F. J. Millero 3 , R. Pawlowicz 4 , and P. M. Barker, 2012: Algorithm for estimating Absolute Salinity}
+T. J. McDougall, D. R. Jackett, F. J. Millero, R. Pawlowicz, and P. M. Barker, 2012: Algorithm for estimating Absolute Salinity}
 
 \seealso{
 eos2teos_geo does the reverse, teos2eos_chem, sa2sp_geo
