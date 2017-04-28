@@ -13,7 +13,7 @@ Authors@R: c(person("Jean-Pierre", "Gattuso", role = c("aut", "cre", "cph"), ema
   person("Karline", "Soetaert", role = "ctb"),
   person("James", "Rae", role = "ctb")
   )
-Depends: R (>= 2.10), oce
+Depends: R (>= 2.10), oce, gsw
 Description: Calculates parameters of the seawater carbonate system and assists the design of ocean acidification perturbation experiments.
 Encoding: UTF-8
 URL: https://CRAN.R-project.org/package=seacarb

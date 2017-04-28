@@ -68,7 +68,7 @@ flag = 25     pCO2 and DIC given
   \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
   \item{eos}{"teos" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos" to specify T and S according to EOS-80.}
   \item{long}{longitude of data point, used when eos parameter is "teos" as a conversion parameter from Absolute to Practical Salinity.}
-  \item{lat}{latitude of data point, used when eos parameter is "teos". long and lat are used as conversion parameters from Absolute to Practical Salinity: when seawater is not of standard composition, Practical Salinity alone is not sufficient to compute Absolute Salinity and vice-versa. One needs to know the water density. When long and lat are given, water density is inferred from WOA silicate concentration at given location. When they are not, an arbitrary geographic point is chosen : mid equatorial Atlantic. Note that this implies an error on computed salinity up to 0.02 g/kg.}
+  \item{lat}{latitude of data point, used when eos parameter is "teos".}
 }
 
 \details{The Lueker et al. (2000) constants for K1 and K2, the Perez and Fraga (1987) constant for Kf and the Dickson (1990) constant for Ks are recommended by Dickson et al. (2007). It is, however, critical to consider that each formulation is only valid for specific ranges of temperature and salinity:
@@ -113,6 +113,8 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 
 \item For Kn, The pressure correction was applied on the seawater scale. The pressure correction was applied as described by Millero (1995), and the value was transformed back to the required scale (T, F or SWS).
 }
+
+long and lat are used as conversion parameters from absolute to practical salinity: when seawater is not of standard composition, practical salinity alone is not sufficient to compute absolute salinity and vice-versa. One needs to know the density. When long and lat are given, density is inferred from WOA silicate concentration at given location. When they are not, an arbitrary geographic point is chosen: mid equatorial Atlantic. Note that this implies an error on computed salinity up to 0.02 g/kg.
 }
 
 \value{The function returns a data frame containing the following columns:

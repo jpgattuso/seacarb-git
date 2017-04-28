@@ -3,23 +3,21 @@
 \alias{sa2sp_chem}
 
 \title{From Absolute to Practical Salinity}
-\description{Convert from Absolute (SA) to Practical Salinity (SP)
-based on Total Alkalinity, Dissolved Inorganic Carbon 
-and Nitrate and Silicate concentrations.}
+\description{Converts from absolute (SA) to practical salinity (SP). Salinity conversion depends on total alkalinity as well as the concentrations of dissolved inorganic carbon, nitrate and silicate.}
 \usage{
 sa2sp_chem(SA, TA=2300e-6, DIC=2000e-6, NO3=0, SIOH4=0)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{SA}{Absolute Salinity in g/kg}
-  \item{TA}{Total Alkalinity, in mol/kg, default is 2300 µmol/kg}
-  \item{DIC}{Dissolved Inorganic Carbone concentration in mol/kg, default is 2000 µmol/kg}
-  \item{NO3}{Total Nitrate concentration in mol/kg, default is 0}
-  \item{SIOH4}{Total Silicate concentration in mol/kg, default is 0}
+  \item{SA}{Absolute salinity in g/kg}
+  \item{TA}{Total alkalinity, in mol/kg, default is 2300 µmol/kg}
+  \item{DIC}{Dissolved inorganic carbon concentration in mol/kg, default is 2000 µmol/kg}
+  \item{NO3}{Total nitrate concentration in mol/kg, default is 0}
+  \item{SIOH4}{Total silicate concentration in mol/kg, default is 0}
   }
 
 \value{
-  \item{SP}{Practical Salinity (in psu)}
+  \item{SP}{Practical salinity (in psu)}
 }
 
 \details{
@@ -28,19 +26,15 @@ from carbon system parameters and ion concentration which most affect water dens
 }
 
 \references{
-TEOS-10 web site: http://www.teos-10.org/
+McDougall T. J., Jackett D. R., Millero F. J., Pawlowicz R. and Barker P. M., 2012. A global algorithm for estimating Absolute Salinity. \emph{Ocean Science} \bold{8}, 1123-1134.
 
-What every oceanographer needs to know about TEOS-10 (The TEOS-10 Primer) by Rich Pawlowicz (on TEOS-10 web site)
+Pawlowicz R., Wright D. G. and Millero F. J., 2011. The effects of biogeochemical processes on oceanic conductivity/salinity/density relationships and the characterization of real seawater. \emph{Ocean Science} \bold{7}, 363-387.
 
-R. Pawlowicz, D. G. Wright, and F. J. Millero, 2011: The effects of biogeochemical processes on oceanic conductivity/
-salinity/density relationships and the characterization of real seawater
-
-T. J. McDougall, D. R. Jackett, F. J. Millero, R. Pawlowicz, and P. M. Barker, 2012: Algorithm for estimating Absolute Salinity}
+Pawlowicz R., 2013. What every oceanographer needs to know about TEOS-10 (The TEOS-10 Primer). http://www.teos-10.org/
+}
              
 \seealso{
-sp2sa_chem does the reverse
-
-sa2sp_geo
+sp2sa_chem does the reverse, sa2sp_geo
 }
 
 \author{
