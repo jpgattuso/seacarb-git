@@ -3,47 +3,42 @@
 \alias{teos2eos_chem}
 
 \title{Convert temperature and salinity from TEOS-10 to EOS-80}
-\description{Convert conservative temperature to in-situ temperature and Absolute Salinity (SA) to Practical Salinity (SP).
-Salinity conversion depends on Total Alkalinity, Dissolved Inorganic Carbon 
-and Nitrate and Silicate concentrations.}
+\description{Converts conservative temperature to in situ temperature and Absolute Salinity (SA) to Practical Salinity (SP). Salinity conversion depends on total alkalinity as well as on the concentrations of dissolved inorganic carbon, nitrate and silicate.}
+
 \usage{
 teos2eos_chem(SA, CT, P=0, TA=2300e-6, DIC=2000e-6, NO3=0, SIOH4=0)
 }
 %- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{SA}{Absolute Salinity in g/kg}
-  \item{CT}{Conservative Temperature in degrees C}
+  \item{SA}{Absolute salinity in g/kg}
+  \item{CT}{Conservative temperature in degrees C}
   \item{P}{Sea water pressure in dbar}
-  \item{TA}{Total Alkalinity, in mol/kg, default is 2300 µmol/kg}
-  \item{DIC}{Dissolved Inorganic Carbone concentration in mol/kg, default is 2000 µmol/kg}
-  \item{NO3}{Total Nitrate concentration in mol/kg, default is 0}
-  \item{SIOH4}{Total Silicate concentration in mol/kg, default is 0}
+  \item{TA}{Total alkalinity, in mol/kg, default is 2300 µmol/kg}
+  \item{DIC}{Dissolved inorganic carbon concentration in mol/kg, default is 2000 µmol/kg}
+  \item{NO3}{Total nitrate concentration in mol/kg, default is 0}
+  \item{SIOH4}{Total silicate concentration in mol/kg, default is 0}
   }
 
 \value{The function returns a data frame containing the following columns:
-  \item{T}{in situ Temperature (deg C)}
-  \item{SP}{Practical Salinity (psu)}
+  \item{T}{In situ temperature (deg C)}
+  \item{SP}{Practical salinity (psu)}
 }
 
 \details{
-Conversion from Absolute (SA) to Practical Salinity (SP)
-depends on carbon system parameters and ion concentration which most affect water density anomalies.
+Conversion from absolute (SA) to practical salinity (SP) depends on carbonate system parameters and ion concentration which mostly affect water density anomalies.
 }
 
 \references{
-TEOS-10 web site: http://www.teos-10.org/
+McDougall T. J., Jackett D. R., Millero F. J., Pawlowicz R. and Barker P. M., 2012. A global algorithm for estimating Absolute Salinity. \emph{Ocean Science} \bold{8}, 1123-1134.
 
-What every oceanographer needs to know about TEOS-10 (The TEOS-10 Primer) by Rich Pawlowicz (on TEOS-10 web site)
+Pawlowicz R., Wright D. G. and Millero F. J., 2011. The effects of biogeochemical processes on oceanic conductivity/salinity/density relationships and the characterization of real seawater. \emph{Ocean Science} \bold{7}, 363-387.
 
-R. Pawlowicz, D. G. Wright, and F. J. Millero, 2011: The effects of biogeochemical processes on oceanic conductivity/
-salinity/density relationships and the characterization of real seawater
-
-T. J. McDougall, D. R. Jackett, F. J. Millero, R. Pawlowicz, and P. M. Barker, 2012: Algorithm for estimating Absolute Salinity}
+Pawlowicz R., 2013. What every oceanographer needs to know about TEOS-10 (The TEOS-10 Primer). http://www.teos-10.org/
+}
              
 \seealso{
-eos2teos_chem does the reverse, teos2eos_geo, sa2sp_cham
-
-package gsw
+eos2teos_chem, teos2eos_geo, sa2sp_cham, package gsw
 }
 
 \author{

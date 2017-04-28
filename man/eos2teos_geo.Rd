@@ -3,42 +3,37 @@
 \alias{eos2teos_geo}
 
 \title{Convert temperature and salinity from EOS-80 to TEOS-10}
-\description{Convert in-situ to Conservative temperature and Practical (SP) to Absolute Salinity (SA)
-Salinity conversion depends on depth and geographic location. 
+\description{Converts in situ to conservative temperature and practical (SP) to absolute salinity (SA). Salinity conversion depends on depth and geographic location. 
 }
 \usage{
 eos2teos_geo(SP, T, P=0, long=1.e20, lat=1.e20)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{SP}{Practical Salinity on the practical salinity scale}
-  \item{T}{in-situ temperature in deg. C}
+  \item{SP}{Practical salinity on the practical salinity scale}
+  \item{T}{In situ temperature in deg. C}
   \item{P}{Sea water pressure in dbar}
   \item{long}{Longitude in decimal degrees [ 0 ... +360 ] or  [ -180 ... +180 ]}
-  \item{lat}{latitude in decimal degrees [-90 ... 90]}
+  \item{lat}{Latitude in decimal degrees [-90 ... 90]}
   }
 
 \value{The function returns a data frame containing the following columns:
-  \item{CT}{Conservative Temperature (deg C)}
-  \item{SA}{Absolute Salinity (g/kg)}
+  \item{CT}{Conservative temperature (deg C)}
+  \item{SA}{Absolute salinity (g/kg)}
 }
 
 \details{
-Conversion from Practical (SP) to Absolute Salinity (SA) depends on water density anomaly which is correlated with Silicate concentration.
-This function relies on silicate concentration taken from WOA (World Ocean Atlas) to evaluate density anomaly.
+Conversion from Practical (SP) to Absolute Salinity (SA) depends on water density anomaly which is correlated with silicate concentration. This function relies on silicate concentration taken from WOA (World Ocean Atlas) to evaluate density anomaly.
 }
 
 \references{
-TEOS-10 web site: http://www.teos-10.org/
+McDougall T. J., Jackett D. R., Millero F. J., Pawlowicz R. and Barker P. M., 2012. A global algorithm for estimating Absolute Salinity. \emph{Ocean Science} \bold{8}, 1123-1134.
 
-What every oceanographer needs to know about TEOS-10 (The TEOS-10 Primer) by Rich Pawlowicz (on TEOS-10 web site)
-
-T. J. McDougall 1 , D. R. Jackett 2 , F. J. Millero 3 , R. Pawlowicz 4 , and P. M. Barker, 2012: Algorithm for estimating Absolute Salinity}
+Pawlowicz R., 2013. What every oceanographer needs to know about TEOS-10 (The TEOS-10 Primer). http://www.teos-10.org/
+}
              
 \seealso{
-teos2eos_geo does the reverse, eos2teos_chem, sp2sa_geo
-
-package gsw
+teos2eos_geo does the reverse, eos2teos_chem, sp2sa_geo, package gsw
 }
 
 \author{

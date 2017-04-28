@@ -1,10 +1,7 @@
 version 3.1.2, 2017-04-28
 -----------------------------------
-- New: 
+- New: added support of the Thermodynamic Equation of Seawater 2010 (TEOS-10). Added three optional parameters to functions carb, errors, derivnum, and all high-level routines that call carb: TEOS-10 option, longitude and latitude. Added functions eos2teos, teos2eos, sa2sp and sp2sa, all in one source file eos.R and one manual file (.Rd) for each.
 - Fixed: After alerting message sent to all CRAN-package maintainers, fixed a bug related to vector "Pt" compared to scalar 0 in a "if" statement
-
-
-
 
 version 3.1.1, 2016-11-22
 -----------------------------------
