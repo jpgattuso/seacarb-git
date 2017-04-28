@@ -8,15 +8,15 @@
 #
 # You should have received a copy of the GNU General Public License along with seacarb; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-"pgas" <- function(flag, var1, var2, pCO2g, S=35, T=20, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74"){
+"pgas" <- function(flag, var1, var2, pCO2g, S=35, T=20, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", eos="eos80", long=1.e20, lat=1.e20){
   # if the concentrations of total silicate and total phosphate are NA
   # they are set at 0
   Sit[is.na(Sit)] <- 0
   Pt[is.na(Pt)] <- 0
   
-  ci <- carb(flag=flag, var1=var1, var2=var2, S=S ,T=T, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)
+  ci <- carb(flag=flag, var1=var1, var2=var2, S=S ,T=T, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, eos=eos, long=long, lat=lat)
 		alkf <- ci$ALK
-		cf <- carb(flag=24,var1=pCO2g, var2=alkf, S=S, T=T, P=P,  Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)		
+		cf <- carb(flag=24,var1=pCO2g, var2=alkf, S=S, T=T, P=P,  Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, eos=eos, long=long, lat=lat)		
 		co <- as.data.frame(c("pgas-initial", rep("pgas-final", nrow(cf))))
 		out <- rbind(ci, cf)
 		out <- cbind(co, out)

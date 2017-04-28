@@ -20,25 +20,25 @@
 # NaOH 1N: 0.1 ml therefore adds 0.1 e-3 mol of OH-, increasing TA
 # DIC is constant in a closed system
 "ppH" <-
-function(flag, sys, var1, var2, pCO2a, vol, N, S=35, T=20, P=0, Pt=0, Sit=0, pHscale="T", k1k2='x', kf='x', ks="d"){
+function(flag, sys, var1, var2, pCO2a, vol, N, S=35, T=20, P=0, Pt=0, Sit=0, pHscale="T", k1k2='x', kf='x', ks="d", eos="eos80", long=1.e20, lat=1.e20){
   # if the concentrations of total silicate and total phosphate are NA
   # they are set at 0
   Sit[is.na(Sit)] <- 0
   Pt[is.na(Pt)] <- 0
   if (sys==0) {
-		ci <- carb(flag=flag, var1=var1, var2=var2, S=S ,T=T, P=P, Pt=Pt, Sit=Sit,  pHscale=pHscale, k1k2=k1k2, kf=kf, ks=ks)
+		ci <- carb(flag=flag, var1=var1, var2=var2, S=S ,T=T, P=P, Pt=Pt, Sit=Sit,  pHscale=pHscale, k1k2=k1k2, kf=kf, ks=ks, eos=eos, long=long, lat=lat)
 		alkf <- (ci$ALK + vol*N)/(1+abs(vol)) #final alk - dilution is taken into account
 		dicf <- (ci$DIC)/(1+abs(vol))  #final dic - dilution is taken into account
-		cf <- carb(flag=15, var1=alkf, var2=dicf, S=S, T=T, P=P,  Pt=Pt, Sit=Sit, pHscale=pHscale, k1k2=k1k2, kf=kf, ks=ks)
+		cf <- carb(flag=15, var1=alkf, var2=dicf, S=S, T=T, P=P,  Pt=Pt, Sit=Sit, pHscale=pHscale, k1k2=k1k2, kf=kf, ks=ks, eos=eos, long=long, lat=lat)
 		co <- as.data.frame(c("ppH-closed-initial", rep("ppH-closed-final", nrow(cf)))) 
 	}
 	if (sys==1) {
-		ci <- carb(flag=flag, var1=var1, var2=var2, S=S ,T=T, P=P, Pt=Pt, Sit=Sit,  pHscale=pHscale, k1k2=k1k2, kf=kf, ks=ks)
+		ci <- carb(flag=flag, var1=var1, var2=var2, S=S ,T=T, P=P, Pt=Pt, Sit=Sit,  pHscale=pHscale, k1k2=k1k2, kf=kf, ks=ks, eos=eos, long=long, lat=lat)
 		alkf <- (ci$ALK + vol*N)/(1+abs(vol)) # final total alkalinity  - dilution is taken into account
 		dicf <- (ci$DIC)/(1+abs(vol))	# final dic  before requilibration - dilution is taken into account
 		#pHf <- ci$pH + ci$PhiH * (-vol) *N	# final pH using a buffer factor (see Frankignoulle, 1994)
-		cc <- carb(flag=15, var1=alkf, var2=dicf, S=S, T=T, P=P, Pt=Pt, Sit=Sit,  pHscale=pHscale, k1k2=k1k2, kf=kf, ks=ks) #  before requilibration	
-		cf <- carb(flag=24,var1=pCO2a, var2=alkf, S=S, T=T, P=P, Pt=Pt, Sit=Sit,  pHscale=pHscale, k1k2=k1k2, kf=kf, ks=ks)		
+		cc <- carb(flag=15, var1=alkf, var2=dicf, S=S, T=T, P=P, Pt=Pt, Sit=Sit,  pHscale=pHscale, k1k2=k1k2, kf=kf, ks=ks, eos=eos, long=long, lat=lat) #  before requilibration
+		cf <- carb(flag=24,var1=pCO2a, var2=alkf, S=S, T=T, P=P, Pt=Pt, Sit=Sit,  pHscale=pHscale, k1k2=k1k2, kf=kf, ks=ks, eos=eos, long=long, lat=lat)
 		co <- as.data.frame(c("ppH-open-initial", rep("ppH-open-final", nrow(cf))))
 	}
 	out <- rbind(ci, cf)
