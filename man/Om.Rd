@@ -134,12 +134,13 @@ Only the references related to the saturation state of magnesian calcite are lis
 
 Andersson A. J., Mackenzie F. T., Nicholas R. B., 2008, Life on the margin: implications of ocean acidification on Mg-calcite, high latitude and cold-water marine calcifiers. \emph{Marine Ecology Progress Series} \bold{373}, 265-273.
 
-Bischoff W. D., Bertram M. A., Mackenzie F. T. and Bishop F.C., 1993 Diagenetic stabilization pathways of magnesian calcites. \emph{Carbonates and Evaporites} \bold{8}, 82-89.
+Bischoff W. D., Mackenzie F. T. and Bishop F. C., 1987. Stabilities of synthetic magnesian calcites in aqueous solution: comparison with biogenic materials. \emph{Geochimica et Cosmochimica Acta} \bold{51}:1413-1423.
 
 Millero F. J. and Pierrot D., 1998. A chemical equilibrium model for natural waters. \emph{Aquatic Geochemistry} \bold{4}, 153-199.
 
-Morse J. W., Andersson A. J. and Mackenzie F. T., 2006. Initial responses of carbonate-rich shelf sediments to rising atmospheric pCO2 and 
-ocean acidification: Role of high Mg-calcites. \emph{Geochimica et Cosmochimica Acta} \bold{70}, 5814-5830.
+Morse J. W., Andersson A. J. and Mackenzie F. T., 2006. Initial responses of carbonate-rich shelf sediments to rising atmospheric pCO2 and ocean acidification: Role of high Mg-calcites. \emph{Geochimica et Cosmochimica Acta} \bold{70}, 5814-5830.
+
+Plummer L. N. and Mackenzie F. T., 1974. Predicting mineral solubility from rate data: application to the dissolution of magnesian calcites. \emph{American Journal of Science} \bold{274}:61-83.
 
 Thorstenson D.C. and Plummer L.N., 1977. Equilibrium criteria for two component solids reacting with fixed composition in an aqueous phase-example: the magnesian calcites. \emph{American Journal of Science} \bold{277}, 1203-1233.
 }
