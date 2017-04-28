@@ -1,3 +1,11 @@
+version 3.1.2, 2017-04-28
+-----------------------------------
+- New: 
+- Fixed: After alerting message sent to all CRAN-package maintainers, fixed a bug related to vector "Pt" compared to scalar 0 in a "if" statement
+
+
+
+
 version 3.1.1, 2016-11-22
 -----------------------------------
 - Fixed: buffesm was returning NaNs when Pt=0 
