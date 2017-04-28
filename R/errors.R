@@ -65,7 +65,7 @@ errors <-
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
          evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=c(0.004, 0.015, 0.03, 0.01, 0.01, 0.02, 0.02, 0.01), 
          method="ga", r=0, runs=10000, 
-         k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y")
+         k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y", eos="eos80", long=1.e20, lat=1.e20)
 {
   # if the concentrations of total silicate and total phosphate are NA
   # they are set to 0
@@ -78,6 +78,9 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     if (! method %in% c("ga", "mo", "mc"))
         stop ("Invalid input parameter: ", method)
 
+    # Only two options for eos
+    if (eos != "teos10" && eos != "eos80")
+        stop ("invalid parameter eos: ", eos)
 
     # Input conditioning
     # -------------------
@@ -151,17 +154,17 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     {
         r0 <- r*0.0
         errs <- .errors_ga (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, r0, eS, eT, ePt, eSit,
-                epK, k1k2, kf, ks, pHscale, b, gas, warn)
+                epK, k1k2, kf, ks, pHscale, b, gas, warn, eos=eos, long=long, lat=lat)
     }
     else if (method == "mo")
     {
         errs <- .errors_ga (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, r, eS, eT, ePt, eSit,
-                epK, k1k2, kf, ks, pHscale, b, gas, warn)
+                epK, k1k2, kf, ks, pHscale, b, gas, warn, eos=eos, long=long, lat=lat)
     }
     else if (method == "mc")
     {
         errs <- .errors_mc (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, eS, eT, ePt, eSit,
-                epK, k1k2, kf, ks, pHscale, b, gas, runs, warn)
+                epK, k1k2, kf, ks, pHscale, b, gas, runs, warn, eos=eos, long=long, lat=lat)
     }
 
     return (errs)
@@ -219,7 +222,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
 
 .errors_ga <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, r=0, eS=0.01, eT=0.01,
-         ePt=0, eSit=0, epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y")
+         ePt=0, eSit=0, epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y",
+         eos="eos80", long=1.e20, lat=1.e20)
 {
     # names of dissociation constants
     Knames <- c ('K0','K1','K2','Kb','Kw','Kspa', 'Kspc', 'bor')
@@ -289,7 +293,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     {
         # Compute sensitivities (partial derivatives)
         deriv1 <- derivnum ('1', flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
-                            pHscale=pHscale, b=b, gas=gas, warn=warn)
+                            pHscale=pHscale, b=b, gas=gas, warn=warn, eos=eos, long=long, lat=lat)
         err <- deriv1 * evar1
         sq_err <- sq_err + err * err
     }
@@ -299,7 +303,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     {
         # Compute sensitivities (partial derivatives)
         deriv2 <- derivnum ('2', flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
-                            pHscale=pHscale, b=b, gas=gas, warn=warn)
+                            pHscale=pHscale, b=b, gas=gas, warn=warn, eos=eos, long=long, lat=lat)
         err <- deriv2 * evar2
         sq_err <- sq_err + err * err
     }
@@ -319,7 +323,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     {
         # Compute sensitivities (partial derivatives)
         deriv <- derivnum ('sil', flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
-                           pHscale=pHscale, b=b, gas=gas, warn=warn)
+                           pHscale=pHscale, b=b, gas=gas, warn=warn, eos=eos, long=long, lat=lat)
         err <- deriv * eSit
         sq_err <- sq_err + err * err
     }
@@ -329,7 +333,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     {
         # Compute sensitivities (partial derivatives)
         deriv <- derivnum ('phos', flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
-                           pHscale=pHscale, b=b, gas=gas, warn=warn)
+                           pHscale=pHscale, b=b, gas=gas, warn=warn, eos=eos, long=long, lat=lat)
         err <- deriv * ePt
         sq_err <- sq_err + err * err
     }
@@ -339,7 +343,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     {
         # Compute sensitivities (partial derivatives)
         deriv <- derivnum ('T', flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
-                           pHscale=pHscale, b=b, gas=gas, warn=warn)
+                           pHscale=pHscale, b=b, gas=gas, warn=warn, eos=eos, long=long, lat=lat)
         err <- deriv * eT
         sq_err <- sq_err + err * err
     }
@@ -349,29 +353,49 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     {
         # Compute sensitivities (partial derivatives)
         deriv <- derivnum ('S', flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
-                           pHscale=pHscale, b=b, gas=gas, warn=warn)
+                           pHscale=pHscale, b=b, gas=gas, warn=warn, eos=eos, long=long, lat=lat)
         err <- deriv * eS
         sq_err <- sq_err + err * err
     }
+    
+    # Salinity and Temperature converted to EOS-80 (if necessary)
+    SP    <- rep(NA, n)
+    InsT  <- rep(NA, n)
 
     # Preliminary calculations for dissociation constants
     if (any (epK != 0))
     {
+        # if use of EOS-10 standard
+        if (eos == "teos10")
+        {
+            # Must convert temperature and salinity from TEOS-10 to EOS-80
+            # convert temperature: from Conservative (CT) to in-situ temperature
+            # and salinity from Absolute to Practical (SP)
+            STeos <- teos2eos_geo (S, T, P, lon, lat)
+            InsT <- STeos$T
+            SP <- STeos$SP
+        }
+        else
+        {
+            InsT <- T
+            SP <- S
+        }
+
         # Ks (free pH scale) at zero pressure and given pressure
-        Ks_P0 <- Ks(S=S, T=T, P=0, ks=ks, warn=warn)
-        Ks    <- Ks(S=S, T=T, P=P, ks=ks, warn=warn)
+        Ks_P0 <- Ks(S=SP, T=InsT, P=0, ks=ks, warn=warn)
+        Ks    <- Ks(S=SP, T=InsT, P=P, ks=ks, warn=warn)
 
         # Kf on free pH scale
-        Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
-        Kff <- Kf(S=S, T=T, P=P, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
+        Kff_P0 <- Kf(S=SP, T=InsT, P=0, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
+        Kff <- Kf(S=SP, T=InsT, P=P, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
         # Kf on given pH scale
-        Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks, warn=warn)
+        Kf <- Kf(S=SP, T=InsT, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks, warn=warn)
 
         # Conversion factor from total to SWS pH scale at zero pressure
-        ktotal2SWS_P0 <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0,warn=warn)$ktotal2SWS
+        ktotal2SWS_P0 <- kconv(S=SP,T=InsT,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0,warn=warn)$ktotal2SWS
 
         # Conversion factor from SWS to chosen pH scale
-        conv <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks,Kff=Kff,warn=warn)
+        conv <- kconv(S=SP,T=InsT,P=P,kf=kf,Ks=Ks,Kff=Kff,warn=warn)
         kSWS2chosen <- rep(1.,n)
         kSWS2chosen [pHscale == "T"] <- conv$kSWS2total [pHscale == "T"]
         kSWS2chosen [pHscale == "F"] <- conv$kSWS2free [pHscale == "F"]  
@@ -385,6 +409,15 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         {
             # Compute Ki
             Ki <- switch (i,
+<<<<<<< HEAD
+                          K0(S=SP, T=InsT, Patm=Patm, P=0, warn=warn),
+                          K1(S=SP, T=InsT, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn),
+                          K2(S=SP, T=InsT, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn),
+                          Kb(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0, warn=warn),
+                          Kw(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn),
+                          Kspa(S=SP, T=InsT, P=P, warn=warn),
+                          Kspc(S=SP, T=InsT, P=P, warn=warn)
+=======
                           K0(S=S, T=T, Patm=Patm, P=0, warn=warn),
                           K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn),
                           K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn),
@@ -393,6 +426,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
                           Kspa(S=S, T=T, P=P, warn=warn),
                           Kspc(S=S, T=T, P=P, warn=warn),
                           bor(S=S, b=b)
+>>>>>>> 3.1.2
                           )
             # compute error on Ki from that on pKi
             if ( i == 8 ) 
@@ -404,7 +438,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 
 
             # Compute sensitivities (partial derivatives)
-            deriv <- derivnum (Knames[i], flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
+            # No need to pass option "eos" since conversion to eos has been done
+            deriv <- derivnum (Knames[i], flag, var1, var2, S=SP, T=InsT, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
                 pHscale=pHscale, b=b, gas=gas, warn=warn)
             err <- deriv * eKi
             sq_err <- sq_err + err * err
@@ -615,7 +650,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 #
 .errors_mc <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0,
-         epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", runs=10000, warn="y")
+         epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", runs=10000, warn="y",
+         eos="eos80", long=1.e20, lat=1.e20)
 {
     # Constant table :  names of input pair variables sorted by flag number
     varnames  = rbind (
@@ -646,6 +682,22 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         c("pCO2", "DIC")          # flag = 25   
     )
 
+    # if use of EOS-10 standard
+    if (eos == "teos10")
+    {
+        # Must convert temperature and salinity from TEOS-10 to EOS-80
+        # convert temperature: from Conservative (CT) to in-situ temperature
+        # and salinity from Absolute to Practical (SP)
+        STeos <- teos2eos_geo (S, T, P, lon, lat)
+        InsT <- STeos$T
+        SP <- STeos$SP
+    }
+    else
+    {
+        InsT <- T
+        SP <- S
+    }
+    
     # Devise a function that generates simulation samples 
     # for one variable with central value "val" and standard error "std_err"
     gen_sim <- function (val, std_err)
@@ -684,7 +736,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         
     # Generate deviate delta values for K0
     # Generate deviate values for other dissoc. constants Kx
-    spl_Kx <- .gen_delta_Kx (epK, S, T, P, Patm, pHscale, k1k2, kf, ks, runs, warn=warn)
+    # Note : use of Salinity and Temperature converted to EOS-80 as they are when routine carb() computes dissociation constants  
+    spl_Kx <- .gen_delta_Kx (epK, S=SP, T=InsT, P, Patm, pHscale, k1k2, kf, ks, runs, warn=warn)
 
     # All other parameters and variables
     spl_flag <- rep (flag, each=runs)
@@ -723,9 +776,10 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     bor <- function(S=35,b="u74")  spl_Kx$bor
 
     # Note : in the general case (K1, K2,...) the function Kx is called once by the function carb()
-    #        We can call the function in anticipation and substitute real values with deviate values
+    #        We can calculate in anticipation deviate values and substitute real values with deviate ones
     #        at run time.
-    #        in the special case of K0, function K0() is called twice, twice by function carb()
+    #        In the special case of K0, function K0() is called twice by function carb() 
+    #        with two different parameter sets so that we cannot precalculate deviate values.
     #        We must generate deviate values at run time, when K0() is called.
     #        This is the purpose of locally defined K0() function
     
@@ -741,7 +795,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 
     # Compute output carbonate system variables
     seacarb = carb(spl_flag, spl_var1, spl_var2, S=spl_S, T=spl_T, Patm=spl_Patm, P=spl_P, Pt=spl_Pt, Sit=spl_Sit, 
-                spl_k1k2, spl_kf, spl_ks, spl_pHscale, spl_b, warn=warn)
+                spl_k1k2, spl_kf, spl_ks, spl_pHscale, spl_b, warn=warn, eos=eos, long=long, lat=lat)
 
     # Restore environment of carb()
     environment(carb) <- saved_env

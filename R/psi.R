@@ -9,13 +9,13 @@
 # You should have received a copy of the GNU General Public License along with seacarb; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 "psi" <-
-function(flag, var1, var2, S=35, T=20, Patm=1, P=0, Pt=0, Sit=0, pHscale="T", kf="x", k1k2="x", ks="d"){
+function(flag, var1, var2, S=35, T=20, Patm=1, P=0, Pt=0, Sit=0, pHscale="T", kf="x", k1k2="x", ks="d", eos="eos80", long=1.e20, lat=1.e20){
   # if the concentrations of total silicate and total phosphate are NA
   # they are set at 0
   Sit[is.na(Sit)] <- 0
   Pt[is.na(Pt)] <- 0
   
-  buf <- buffer(flag=flag, var1=var1, var2=var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, pHscale=pHscale, kf=kf, k1k2=k1k2, ks=ks)
+  buf <- buffer(flag=flag, var1=var1, var2=var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, pHscale=pHscale, kf=kf, k1k2=k1k2, ks=ks, eos=eos, long=long, lat=lat)
 	psi <- -buf$PiC/buf$PiD
 out <- psi
 attr(out,"unit") <- "mol CO2/mol CaCO3"

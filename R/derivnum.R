@@ -28,7 +28,7 @@
 # Returns one set of partial derivatives
 derivnum <- 
 function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
-         k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y")
+         k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y",  eos="eos80", long=1.e20, lat=1.e20)
 {
     # Input conditionning
     # -------------------
@@ -48,6 +48,10 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     if(length(ks)!=n){ks <- rep(ks[1],n)}
     if(length(pHscale)!=n){pHscale <- rep(pHscale[1],n)}
     if(length(b)!=n){b <- rep(b[1],n)}
+
+    # Only two options for eos
+    if (eos != "teos10" && eos != "eos80")
+        stop ("invalid parameter eos: ", eos)
 
     varid <-toupper(varid)
     
@@ -434,11 +438,11 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         
         # Point 1: (one dissociation constant is somewhat smaller)
         sign_factor = -1.0
-        cdel1 <- carb(flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn)
+        cdel1 <- carb(flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn, eos=eos, long=long, lat=lat)
 
         # Point 2: (one dissociation constant is somewhat bigger)
         sign_factor = 1.0
-        cdel2 <- carb(flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn)
+        cdel2 <- carb(flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn, eos=eos, long=long, lat=lat)
 
         # Restore environment of carb()
         environment(carb) <- saved_env
@@ -446,10 +450,10 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     else
     {
         # Point 1: (one of var1, var2, T or S is somewhat smaller)
-        cdel1 <- carb(flag, var11, var21, S=S1, T=T1, Patm=Patm, P=P, Pt=Pt1, Sit=Sit1, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn)
+        cdel1 <- carb(flag, var11, var21, S=S1, T=T1, Patm=Patm, P=P, Pt=Pt1, Sit=Sit1, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn, eos=eos, long=long, lat=lat)
 
         # Point 2: (one of var1, var2, T or S is somewhat bigger)
-        cdel2 <- carb(flag, var12, var22, S=S2, T=T2, Patm=Patm, P=P, Pt=Pt2, Sit=Sit2, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn)
+        cdel2 <- carb(flag, var12, var22, S=S2, T=T2, Patm=Patm, P=P, Pt=Pt2, Sit=Sit2, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn, eos=eos, long=long, lat=lat)
     }
 
     # Compute [H+] concentration and add it to data-frame
