@@ -9,7 +9,7 @@
 # ---------------------------------------------------------------------------------
 
 buffesm <-  
-  function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", warn="y"){
+  function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", warn="y",  eos="eos80", long=1.e20, lat=1.e20){
     n <- max(length(flag), length(var1), length(var2), length(S), length(T), length(P), length(Pt), length(Sit), length(k1k2), length(kf), length(pHscale), length(ks), length(b))
     if(length(flag)!=n){flag <- rep(flag[1],n)}
     if(length(var1)!=n){var1 <- rep(var1[1],n)}
@@ -31,9 +31,27 @@ buffesm <-
     Sit[is.na(Sit)] <- 0
     Pt[is.na(Pt)] <- 0
 
-    Carb <- carb(flag=flag, var1=var1, var2=var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)
- 	S    <- Carb$S
- 	T    <- Carb$T
+    # Only two options for eos
+    if (eos != "teos10" && eos != "eos80")
+        stop ("invalid parameter eos: ", eos)
+    
+    # if use of EOS-10 standard
+    if (eos == "teos10")
+    {
+        # Must convert temperature and salinity from TEOS-10 to EOS-80
+        # convert temperature: from Conservative (CT) to in-situ temperature
+        # and salinity from Absolute to Practical (SP)
+        eos <- teos2eos_geo (S, T, P, lon, lat)
+        InsT <- eos$T
+        SP <- eos$SP
+    }
+    else
+    {
+        InsT <- T
+        SP <- S
+    }
+
+     Carb <- carb(flag=flag, var1=var1, var2=var2, S=SP, T=InsT, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)
  	P    <- Carb$P
  	pH   <- Carb$pH
 	h    <- 10^(-pH)
@@ -47,53 +65,53 @@ buffesm <-
 
     #-------Constants----------------  
     tk = 273.15;           # [K] (for conversion [deg C] <-> [K])
-    TK = T + tk;           # TK [K]; T[C]
+    TK = InsT + tk;           # TK [K]; InsT[C]
     
-    Cl = S / 1.80655;            # Cl = chlorinity; S = salinity (per mille)
+    Cl = SP / 1.80655;            # Cl = chlorinity; SP = practical salinity (psu)
     ST = 0.14 * Cl/96.062        # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
     FLUO = 6.7e-5 * Cl/18.9984   # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
-    bor = bor(S=S , b=b)         # (mol/kg) total boron
+    bor = bor(S=SP , b=b)         # (mol/kg) total boron
 
     #---------------------------------------------------------------------
     #--------------------- compute K's ----------------------------------
     #---------------------------------------------------------------------
     
     # Ks (free pH scale) at zero pressure and given pressure
-    Ks_P0 <- Ks(S=S, T=T, P=0, ks=ks, warn=warn)
-    Ks    <- Ks(S=S, T=T, P=P, ks=ks, warn=warn)
+    Ks_P0 <- Ks(S=SP, T=InsT, P=0, ks=ks, warn=warn)
+    Ks    <- Ks(S=SP, T=InsT, P=P, ks=ks, warn=warn)
     
     # Kf on free pH scale
-    Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks)
-    Kff <- Kf(S=S, T=T, P=P, pHscale="F", kf=kf, Ks_P0, Ks)
+    Kff_P0 <- Kf(S=SP, T=InsT, P=0, pHscale="F", kf=kf, Ks_P0, Ks)
+    Kff <- Kf(S=SP, T=InsT, P=P, pHscale="F", kf=kf, Ks_P0, Ks)
     # Kf on given pH scale
-    Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks)
+    Kf <- Kf(S=SP, T=InsT, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks)
     
     # Conversion factor from total to SWS pH scale at zero pressure
-    ktotal2SWS_P0 <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0)$ktotal2SWS
+    ktotal2SWS_P0 <- kconv(S=SP,T=InsT,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0)$ktotal2SWS
 
     # Conversion factor from SWS to chosen pH scale
-    conv <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks,Kff=Kff)
+    conv <- kconv(S=SP,T=InsT,P=P,kf=kf,Ks=Ks,Kff=Kff)
     kSWS2chosen <- rep(1.,n)
     kSWS2chosen [pHscale == "T"] <- conv$kSWS2total [pHscale == "T"]
     kSWS2chosen [pHscale == "F"] <- conv$kSWS2free [pHscale == "F"]  
 
    # Commented out lines below when specific K is not used in subsequent buffer factor calculations
-   #K1 <- K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)   
-   #K2 <- K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)
-    Kw <- Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-   #K0 <- K0(S=S, T=T, Patm=Patm, P=P, warn=warn)
-    Kb <- Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0, warn=warn)
-   K1p <- K1p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-   K2p <- K2p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-   K3p <- K3p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-   Ksi <- Ksi(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-   #Kspa <- Kspa(S=S, T=T, P=P, warn=warn)
-   #Kspc <- Kspc(S=S, T=T, P=P, warn=warn)
+   #K1 <- K1(S=SP, T=InsT, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)   
+   #K2 <- K2(S=SP, T=InsT, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)
+    Kw <- Kw(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+   #K0 <- K0(S=SP, T=InsT, Patm=Patm, P=P, warn=warn)
+    Kb <- Kb(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0, warn=warn)
+   K1p <- K1p(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+   K2p <- K2p(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+   K3p <- K3p(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+   Ksi <- Ksi(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+   #Kspa <- Kspa(S=SP, T=InsT, P=P, warn=warn)
+   #Kspc <- Kspc(S=SP, T=InsT, P=P, warn=warn)
 
-   #rho <- rho(S=S,T=T,P=P)
+   #rho <- rho(S=SP,T=InsT,P=P)
 
    # Compute potential K0 with S, potential temperature, and atmospheric pressure (usually 1 atm)
-   #K0pot <- K0(S=S, T=theta(S=S, T=T, P=P, Pref=0), Patm=Patm, P=0)
+   #K0pot <- K0(S=SP, T=theta(S=SP, T=InsT, P=P, Pref=0), Patm=Patm, P=0)
 
    #--------------------------------------------------------------------- 
    #--------------------    buffer effects    --------------------------- 
