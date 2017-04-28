@@ -134,15 +134,12 @@ buffesm <-
    #      The addition of these 2 acid systems from J.-M. Epitalon, 2016 (expanded equation from Egleston)
    SegleC = ( HCO3 + 4*CO3 + (h*Borate/(Kb + h)) + h + oh)
 
+   numPt <-  - h3po4 * (-h2po4 - 2*hpo4 - 3*po4)
+             + hpo4  * (2*h3po4 + h2po4 - po4)
+             + 2*po4 * (3*h3po4 + 2*h2po4 + hpo4)
    # Protect against division by zero
-   if (Pt > 0) {  
-       SegleP =     (- h3po4 * (-h2po4 - 2*hpo4 - 3*po4)
-                     + hpo4  * (2*h3po4 + h2po4 - po4)
-                     + 2*po4 * (3*h3po4 + 2*h2po4 + hpo4)
-                    ) / Pt
-   } else {
-       SegleP <- 0
-   }
+   SegleP <- rep(0.0,n)
+   SegleP[Pt > 0] <- numPt[Pt > 0] / Pt[Pt > 0]
 
    SegleSi =  h * sioh3/(Ksi + h)
 
