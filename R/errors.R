@@ -63,7 +63,7 @@
 #
 errors <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
-         evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=c(0.002, 0.01, 0.02, 0.01, 0.01, 0.02, 0.02), 
+         evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=c(0.004, 0.015, 0.03, 0.01, 0.01, 0.02, 0.02, 0.01), 
          method="ga", r=0, runs=10000, 
          k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y", eos="eos80", long=1.e20, lat=1.e20)
 {
@@ -82,7 +82,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     if (eos != "teos10" && eos != "eos80")
         stop ("invalid parameter eos: ", eos)
 
-    # Input conditionning
+    # Input conditioning
     # -------------------
     
     n <- max(length(flag), length(var1), length(var2), length(S), length(T), length(P), length(Pt), length(Sit), 
@@ -96,6 +96,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     if(length(Patm)!=n){Patm <- rep(Patm[1],n)}
     if(length(P)!=n){P <- rep(P[1],n)}
     if(length(Pt)!=n){Pt <- rep(Pt[1],n)}
+    if(length(Sit)!=n){Sit <- rep(Sit[1],n)}
     if(length(evar1)!=n){evar1 <- rep(evar1[1],n)}
     if(length(evar2)!=n){evar2 <- rep(evar2[1],n)}
     if(length(r)!=n){r <- rep(r[1],n)}
@@ -124,12 +125,12 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     eSit[neg_eSit] <- -eSit[neg_eSit]
     
     # if epK=NULL, set all pK errors to zero
-    if(is.null(epK)) {epK = c(0, 0, 0, 0, 0, 0, 0)}
+    if(is.null(epK)) {epK = c(0, 0, 0, 0, 0, 0, 0, 0)}
 
     # Default value for epK
     if (missing(epK))
     {
-        epK <- c(0.002, 0.01, 0.02, 0.01, 0.01, 0.02, 0.02)
+        epK <- c(0.004, 0.015, 0.03, 0.01, 0.01, 0.02, 0.02, 0.01)
     }
     else
     {
@@ -137,9 +138,9 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         if (length(epK) == 1 && epK == 0)
         {
             # this means that the caller does not want to account for errors on dissoc. constants
-            epK <- rep(0, 7)
+            epK <- rep(0, 8)
         }
-        else if (length(epK) != 7)
+        else if (length(epK) != 8)
             stop ("invalid parameter epK: ", epK)
         else
         {
@@ -225,7 +226,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
          eos="eos80", long=1.e20, lat=1.e20)
 {
     # names of dissociation constants
-    Knames <- c ('K0','K1','K2','Kb','Kw','Kspa', 'Kspc')
+    Knames <- c ('K0','K1','K2','Kb','Kw','Kspa', 'Kspc', 'bor')
 
     # Constant table :  names of input pair variables sorted by flag number
     varnames  = rbind (
@@ -408,6 +409,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         {
             # Compute Ki
             Ki <- switch (i,
+<<<<<<< HEAD
                           K0(S=SP, T=InsT, Patm=Patm, P=0, warn=warn),
                           K1(S=SP, T=InsT, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn),
                           K2(S=SP, T=InsT, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn),
@@ -415,9 +417,25 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
                           Kw(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn),
                           Kspa(S=SP, T=InsT, P=P, warn=warn),
                           Kspc(S=SP, T=InsT, P=P, warn=warn)
+=======
+                          K0(S=S, T=T, Patm=Patm, P=0, warn=warn),
+                          K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn),
+                          K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn),
+                          Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0, warn=warn),
+                          Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn),
+                          Kspa(S=S, T=T, P=P, warn=warn),
+                          Kspc(S=S, T=T, P=P, warn=warn),
+                          bor(S=S, b=b)
+>>>>>>> 3.1.2
                           )
             # compute error on Ki from that on pKi
-            eKi <- - epK[i] * Ki * log(10)
+            if ( i == 8 ) 
+            {
+                eKi <- - epK[i] * Ki
+            } else {
+                eKi <- - epK[i] * Ki * log(10)
+            }
+
 
             # Compute sensitivities (partial derivatives)
             # No need to pass option "eos" since conversion to eos has been done
@@ -492,7 +510,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 {
     n <- length(S)
     # names of dissociation constants
-    Knames <- c ('K0','K1','K2','Kb','Kw','Kspa', 'Kspc')
+    Knames <- c ('K0','K1','K2','Kb','Kw','Kspa', 'Kspc', 'bor')
 
     # Initalise output data frame
     nrows <- n * runs
@@ -548,7 +566,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
                       seacarb::Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0),
                       seacarb::Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen),
                       seacarb::Kspa(S=S, T=T, P=P),
-                      seacarb::Kspc(S=S, T=T, P=P)
+                      seacarb::Kspc(S=S, T=T, P=P),
+                      seacarb::bor(S=S, b=b)
                       )
         if (i == 1)
             center_value = 0.0    # special case for K0
@@ -559,7 +578,12 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         if (epK[i] != 0.0)
         {
             # compute error (not signed) on Ki from that on pKi
-            eKi <- epK[i] * Ki * log(10)
+            if ( i == 8 ) 
+            {
+                eKi <- - epK[i] * Ki
+            } else {
+                eKi <- - epK[i] * Ki * log(10)
+            }
             # Generate deviate values for Ki or deltas for K0
             spl_Ki <- mapply (gen_sim, center_value, eKi)
             # Reshape samples from 2D matrix to vector
@@ -749,6 +773,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     Kb <- function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0, warn="y")  spl_Kx$Kb
     Kspa <- function(S=35,T=25,P=0, warn="y")  spl_Kx$Kspa
     Kspc <- function(S=35,T=25,P=0, warn="y")  spl_Kx$Kspc
+    bor <- function(S=35,b="u74")  spl_Kx$bor
 
     # Note : in the general case (K1, K2,...) the function Kx is called once by the function carb()
     #        We can calculate in anticipation deviate values and substitute real values with deviate ones

@@ -115,6 +115,35 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         c(1.e-6, 1.e-6),         # flag = 24   
         c(1.e-5, 1.e-5)          # flag = 25   
     )
+
+    # Replace all values of const_deltas (above) with 1e-6 for consistency with CO2SYS-MATLAB
+    const_deltas = rbind (
+        c(1.e-6, 1.e-6),         # flag = 1    
+        c(1.e-6, 1.e-6),         # flag = 2    
+        c(1.e-6, 1.e-6),         # flag = 3    
+        c(1.e-6, 1.e-6),         # flag = 4    
+        c(1.e-6, 1.e-6),         # flag = 5    
+        c(1.e-6, 1.e-6),         # flag = 6    
+        c(1.e-6, 1.e-6),         # flag = 7    
+        c(1.e-6, 1.e-6),         # flag = 8    
+        c(1.e-6, 1.e-6),         # flag = 9    
+        c(1.e-6, 1.e-6),         # flag = 10   
+        c(1.e-6, 1.e-6),         # flag = 11   
+        c(1.e-6, 1.e-6),         # flag = 12   
+        c(1.e-6, 1.e-6),         # flag = 13   
+        c(1.e-6, 1.e-6),         # flag = 14   
+        c(1.e-6, 1.e-6),         # flag = 15   
+        c(0, 0),
+        c(0, 0),
+        c(0, 0),
+        c(0, 0),
+        c(0, 0),
+        c(1.e-6, 1.e-6),         # flag = 21   
+        c(1.e-6, 1.e-6),         # flag = 22   
+        c(1.e-6, 1.e-6),         # flag = 23   
+        c(1.e-6, 1.e-6),         # flag = 24   
+        c(1.e-6, 1.e-6)          # flag = 25   
+    )
     
     # Reference 'concentrations': sorted by flag number
     const_refs  = rbind (
@@ -163,16 +192,16 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     abs_dx <- rep(NA, n)
 
     # Uppercase names of dissociation constants
-    K_id <- c('K0', 'K1', 'K2', 'KB', 'KW', 'KSPA', 'KSPC')
+    K_id <- c('K0', 'K1', 'K2', 'KB', 'KW', 'KSPA', 'KSPC', 'BOR')
     # Flag for dissociation constant as perturbed variable 
     flag_dissoc_K = varid %in% K_id
     
     # if perturbed variable is a dissociation constant
     if (flag_dissoc_K)
     {
-        # Approximate values for K0, K1, K2, Kb, Kw, Kspa and Kspc
+        # Approximate values for K0, K1, K2, Kb, Kw, Kspa, Kspc, and bor
         # They will be used to compute an absolute perturbation value on these constants
-        K <- c(0.034, 1.2e-06, 8.3e-10, 2.1e-09, 3.1e-14, 6.7e-07, 4.3e-07)
+        K <- c(0.034, 1.2e-06, 8.3e-10, 2.1e-09, 3.1e-14, 6.7e-07, 4.3e-07, 4.156877e-4)
         # Choose value of absolute perturbation
         index <- which (K_id == varid)
         perturbation = K[index] * 1.e-3   # 0.1 percent of Kx value
@@ -225,7 +254,7 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         var22[GH] = var2[GH] + xref[GH]*delta[GH]
         abs_dx[GH] = var22[GH] - var21[GH]
     }
-    else if (varid %in% c('SIL', 'TSIL', 'SILT', 'SILICATE'))    # Sil total
+    else if (varid %in% c('SIL', 'TSIL', 'SILT', 'SILICATE', 'SIT'))    # Sil total
     {
         # Define relative delta
         delta  = 1.e-3
@@ -237,7 +266,7 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         Sit2 = Sit + Sitref*delta
         abs_dx = Sit2 - Sit1
     }
-    else if (varid %in% c('PHOS', 'TPHOS', 'PHOST', 'PHOSPHATE'))    # Phos total
+    else if (varid %in% c('PHOS', 'TPHOS', 'PHOST', 'PHOSPHATE', 'PT'))    # Phos total
     {
         # Define relative delta
         delta = 1.e-3
@@ -374,7 +403,18 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
             # Call original Kspc function
             out <- seacarb::Kspc(S, T, P)
            #out <- Kspc(S, T, P, warn=warn)
-            # perturb value of Kspa
+            # perturb value of Kspc
+            out = out + sign_factor * perturbation  # sign_factor is +1 or -1
+            return (out)
+        }
+    }
+    else if (varid == 'BOR')
+    {
+        bor <- function(S=35,...)
+        {
+            # Call original bor function
+            out <- seacarb::bor(S)
+            # perturb value of bor
             out = out + sign_factor * perturbation  # sign_factor is +1 or -1
             return (out)
         }
