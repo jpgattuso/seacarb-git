@@ -5,3 +5,4 @@ importFrom("graphics", "arrows", "contour", "matlines", "matplot",
              "mtext", "par")
 importFrom("stats", "lm", "nls", "uniroot", "rnorm")
 importFrom(oce, swTheta)
+importFrom(gsw, gsw_CT_from_t, gsw_SA_from_SP, gsw_SP_from_SA, gsw_t_from_CT)
