@@ -29,7 +29,8 @@ This function is almost an alias of function gsw_SA_from_SP of the gsw package o
 McDougall T. J., Jackett D. R., Millero F. J., Pawlowicz R. and Barker P. M., 2012. A global algorithm for estimating Absolute Salinity. \emph{Ocean Science} \bold{8}, 1123-1134.
 
 Pawlowicz R., 2013. What every oceanographer needs to know about TEOS-10 (The TEOS-10 Primer). http://www.teos-10.org/
-             
+}
+
 \seealso{
 sa2sp_geo does the reverse, sp2sa_chem
 }
