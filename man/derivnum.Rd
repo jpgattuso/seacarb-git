@@ -4,7 +4,8 @@
 \title{Numerical derivatives of seawater carbonate system variables}
 \description{Returns numerical derivatives  of the seawater carbonate system putput variables with respect to input variables.}
 \usage{derivnum(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
-       k1k2="x", kf="x", ks="d", pHscale="T", b="u74", gas="potential", warn="y")}
+       k1k2="x", kf="x", ks="d", pHscale="T", b="u74", gas="potential", warn="y", 
+       eos = "eos80", long = 1e+20, lat = 1e+20)}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{varid}{Variable length, case insensitive, character identificator of variable with respect to which derivatives are requested.
@@ -79,6 +80,9 @@ flag = 25     pCO2 and DIC given
 \item{b}{Concentration of total boron. "l10" for the Lee et al. (2010) formulation or "u74" for the Uppstrom (1974) formulation, default is "u74" }
  \item{gas}{used to indicate the convention for INPUT pCO2, i.e., when it is an input variable (flags 21 to 25): "insitu" indicates it is referenced to in situ pressure and in situ temperature; "potential" indicates it is referenced to 1 atm pressure and potential temperature; and "standard" indicates it is referenced to 1 atm pressure and in situ temperature. All three options should give identical results at surface pressure. This option is not used when pCO2 is not an input variable (flags 1 to 15). The default is "potential".}
   \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
+    \item{eos}{"teos" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos" to specify T and S according to EOS-80.}
+  \item{long}{longitude of data point, used when eos parameter is "teos" as a conversion parameter from Absolute to Practical Salinity.}
+  \item{lat}{latitude of data point, used when eos parameter is "teos".}
 }
 
 \details{
@@ -101,6 +105,8 @@ lengths of the vectors differs, only the longest vector is retained and the othe
 arguments are set equal to the first value of the other vectors are used. Hence users
 should use either vectors with the same dimension or one vector for one argument and
 scalars for others; otherwise, results may not be as intended.
+
+long and lat are used as conversion parameters from absolute to practical salinity: when seawater is not of standard composition, practical salinity alone is not sufficient to compute absolute salinity and vice-versa. One needs to know the density. When long and lat are given, density is inferred from WOA silicate concentration at given location. When they are not, an arbitrary geographic point is chosen: mid equatorial Atlantic. Note that this implies an error on computed salinity up to 0.02 g/kg.
 }
 
 \value{The function returns a data frame containing the following columns:

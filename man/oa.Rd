@@ -5,7 +5,8 @@
 \title{Perturbation of the seawater carbonate system}
 \description{Describes the various approaches that can be used to alter the seawater carbonate system. Its main purpose is to assist the design of ocean acidification perturbation experiments.}
 \usage{oa(flag, var1, var2, pCO2f, pCO2s=1e6, S=35, T=25, P=0, 
-	Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", plot=FALSE, b="u74")}
+	Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", plot=FALSE, 
+	b="u74", eos = "eos80", long = 1e+20, lat = 1e+20)}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 	\item{flag}{select the couple of variables available to describe the initial seawater. The flags which can be used are: 
@@ -64,7 +65,10 @@ flag = 25     pCO2 and DIC given
 	\item{ks}{"d" for using Ks from Dickon (1990), "k" for using Ks from Khoo et al. (1977), default is "d"} 
 	\item{pHscale}{"T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
 	\item{plot}{A plot of the different perturbation methods can be plotted in a DIC vs ALK field with pCO2 isoclines are drawn in the back. Default is false.}
-	\item{b}{Concentration of total boron. "l10" for the Lee et al. (2010) formulation or "u74" for the Uppstrom (1974) formulation, default is "u74" }
+	\item{b}{Concentration of total boron. "l10" for the Lee et al. (2010) formulation or "u74" for the Uppstrom (1974) formulation, default is "u74".}
+	 \item{eos}{"teos" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos" to specify T and S according to EOS-80.}
+  \item{long}{longitude of data point, used when eos parameter is "teos" as a conversion parameter from Absolute to Practical Salinity.}
+  \item{lat}{latitude of data point, used when eos parameter is "teos".}
 }
 
 \details{The Lueker et al. (2000) constants for K1 and K2, the Perez and Fraga (1987) constant for Kf and the Dickson (1990) constant for Ks are recommended by Dickson et al. (2007). It is, however, critical to consider that each formulation is only valid for specific ranges of temperature and salinity:
@@ -121,6 +125,7 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 
 \item Other important advice is provided in Gattuso and Lavigne (2009), Schulz et al. (2009) and in the \dQuote{Guide for Best Practices on Ocean Acidification Research and Data Reporting} (\url{http://www.epoca-project.eu/index.php/Home/Guide-to-OA-Research/})
 }
+long and lat are used as conversion parameters from absolute to practical salinity: when seawater is not of standard composition, practical salinity alone is not sufficient to compute absolute salinity and vice-versa. One needs to know the density. When long and lat are given, density is inferred from WOA silicate concentration at given location. When they are not, an arbitrary geographic point is chosen: mid equatorial Atlantic. Note that this implies an error on computed salinity up to 0.02 g/kg.
 }
 
 
