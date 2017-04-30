@@ -3,7 +3,7 @@
 \alias{sp2sa_geo}
 
 \title{From practical to absolute salinity}
-\description{Converts from practical (SP) to absolute salinity (SA) based on depth and geographic location.}
+\description{Converts from practical to absolute salinity based on depth and geographic location.}
 
 \usage{
 sp2sa_geo(SP, P=0, long=1.e20, lat=1.e20)

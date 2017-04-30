@@ -3,7 +3,7 @@
 \alias{eos2teos_geo}
 
 \title{Convert temperature and salinity from EOS-80 to TEOS-10}
-\description{Converts in situ to conservative temperature and practical (SP) to absolute salinity (SA). Salinity conversion depends on depth and geographic location. 
+\description{Converts in situ to conservative temperature and practical to absolute salinity (SA). Salinity conversion depends on depth and geographic location. 
 }
 \usage{
 eos2teos_geo(SP, T, P=0, long=1.e20, lat=1.e20)
@@ -23,7 +23,7 @@ eos2teos_geo(SP, T, P=0, long=1.e20, lat=1.e20)
 }
 
 \details{
-Conversion from Practical (SP) to Absolute Salinity (SA) depends on water density anomaly which is correlated with silicate concentration. This function relies on silicate concentration taken from WOA (World Ocean Atlas) to evaluate density anomaly.
+Conversion from practical to absolute salinity depends on water density anomaly which is correlated with silicate concentration. This function relies on silicate concentration taken from WOA (World Ocean Atlas) to evaluate density anomaly.
 }
 
 \references{
@@ -41,12 +41,12 @@ Jean-Marie Epitalon
 }
 
 \examples{
-   # Calculate Conservative Temperature and Absolute Salinity of a sample with 
-   # Practical Salinity of 35 psu, in-situ Temperature of 18 deg C,
+   # Calculate conservative temperature and absolute salinity of a sample with 
+   # Practical salinity of 35 psu, in situ temperature of 18 deg C,
    # depth is 10 dbar and location is 188 degrees East and 4 degrees North.
    f <- eos2teos_geo(SP=35, T=18, P=10, long=188, lat=4)
-   CT <- f$CT     # Conservative Temperature
-   SA <- f$SA     # Absolute Salinity
+   CT <- f$CT     # Conservative temperature
+   SA <- f$SA     # Absolute salinity
 }
 
 \keyword{utilities}

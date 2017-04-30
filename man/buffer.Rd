@@ -68,7 +68,7 @@ flag = 25     pCO2 and DIC given
  	\item{b}{Concentration of total boron. "l10" for the Lee et al. (2010) formulation or "u74" for the Uppstrom (1974) formulation, default is "u74" }
   \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
     \item{eos}{"teos" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos" to specify T and S according to EOS-80.}
-  \item{long}{longitude of data point, used when eos parameter is "teos" as a conversion parameter from Absolute to Practical Salinity.}
+  \item{long}{longitude of data point, used when eos parameter is "teos" as a conversion parameter from absolute to practical salinity.}
   \item{lat}{latitude of data point, used when eos parameter is "teos".}
 }
 

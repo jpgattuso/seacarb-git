@@ -3,7 +3,7 @@
 \alias{eos2teos_chem}
 
 \title{Convert temperature and salinity from EOS-80 to TEOS-10}
-\description{Converts in situ temperature to conservative temperature and practical (SP) to absolute salinity (SA). Salinity conversion depends on total alkalinity as well as the concentrations of dissolved inorganic carbon, nitrate and silicate.}
+\description{Converts in situ temperature to conservative temperature and practical to absolute salinity (SA). Salinity conversion depends on total alkalinity as well as the concentrations of dissolved inorganic carbon, nitrate and silicate.}
 \usage{
 eos2teos_chem(SP, T, P=0, TA=2300e-6, DIC=2000e-6, NO3=0, SIOH4=0)
 }
@@ -24,7 +24,7 @@ eos2teos_chem(SP, T, P=0, TA=2300e-6, DIC=2000e-6, NO3=0, SIOH4=0)
 }
 
 \details{
-Conversion from Practical (SP) to Absolute Salinity (SA) depends on carbonate system parameters and ion concentration which mostly affect water density anomalies.
+Conversion from practical to absolute salinity depends on carbonate system parameters and ion concentration which mostly affect water density anomalies.
 }
 
 \references{
@@ -47,8 +47,8 @@ Jean-Marie Epitalon
 
 \examples{
    # Calculate Conservative Temperature and Absolute Salinity of a sample with 
-   # Practical Salinity of 35 psu, in-situ Temperature of 18 deg C,
-   # at 0 dbar and Total Alkalinity of 0.00234 mol/kg and DIC of 0.00202 mol/kg
+   # Practical salinity of 35 psu, in-situ temperature of 18 deg C,
+   # at 0 dbar and total alkalinity of 0.00234 mol/kg and DIC of 0.00202 mol/kg
    f <- eos2teos_chem(SP=35, T=18, P=0, TA=0.00234, DIC=0.00202)
    CT <- f$CT     # Conservative Temperature
    SA <- f$SA     # Absolute Salinity

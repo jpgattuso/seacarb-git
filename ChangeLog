@@ -1,7 +1,15 @@
-version 3.1.2, 2017-04-28
+version 3.1.2, 2017-04-30
 -----------------------------------
-- New: added support of the Thermodynamic Equation of Seawater 2010 (TEOS-10). Added three optional parameters to functions carb, errors, derivnum, and all high-level routines that call carb: TEOS-10 option, longitude and latitude. Added functions eos2teos, teos2eos, sa2sp and sp2sa, all in one source file eos.R and one manual file (.Rd) for each.
-- Fixed: After alerting message sent to all CRAN-package maintainers, fixed a bug related to vector "Pt" compared to scalar 0 in a "if" statement
+- New: added support of the Thermodynamic Equation of Seawater 2010 (TEOS-10). Added three optional parameters to functions carb, errors, derivnum, and all high-level routines that call carb: TEOS-10 option, longitude and latitude. Added functions eos2teos, teos2eos, sa2sp and sp2sa, all in one source file eos.R and one manual file (.Rd) for each. These additions are from Jean-Marie Epitalon.
+- New eos2teos_chem function: Converts in situ temperature to conservative temperature and practical to absolute salinity based on total alkalinity as well as the concentrations of dissolved inorganic carbon, nitrate and silicate
+- New eos2teos_geo function: Converts in situ temperature to conservative temperature and practical to absolute salinity based on depth and geographic location. 
+- New teos2eos_chem function: Converts conservative temperature to in situ temperature and absolute salinity to practical salinity based on total alkalinity as well as on the concentrations of dissolved inorganic carbon, nitrate and silicate.
+- New teos2eos_geo function: Converts conservative temperature to in situ temperature and absolute salinity to practical salinity based on depth and geographic location.
+- New sa2sp_chem function: Converts from absolute to practical salinity based on total alkalinity as well as the concentrations of dissolved inorganic carbon, nitrate and silicate
+- New sa2sp_geo function: Converts from absolute (SA) to practical salinity (SP) based on depth and geographic location.
+- New sp2sa_chem function: Converts from practical to absolute salinity based on total alkalinity as well as on the concentrations of dissolved inorganic carbon, nitrate and silicate.
+- New sp2sa_geo function: Converts from practical to absolute salinity based on depth and geographic location
+- Fixed: following an alert message sent to all CRAN-package maintainers, fixed a bug related to vector "Pt" compared to scalar 0 in a "if" statement.
 
 version 3.1.1, 2016-11-22
 -----------------------------------

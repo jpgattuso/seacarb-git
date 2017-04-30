@@ -2,8 +2,8 @@
 \name{sa2sp_chem}
 \alias{sa2sp_chem}
 
-\title{From Absolute to Practical Salinity}
-\description{Converts from absolute (SA) to practical salinity (SP). Salinity conversion depends on total alkalinity as well as the concentrations of dissolved inorganic carbon, nitrate and silicate.}
+\title{From absolute to practical salinity}
+\description{Converts from absolute to practical salinity (SP). Salinity conversion depends on total alkalinity as well as the concentrations of dissolved inorganic carbon, nitrate and silicate.}
 \usage{
 sa2sp_chem(SA, TA=2300e-6, DIC=2000e-6, NO3=0, SIOH4=0)
 }
@@ -21,8 +21,7 @@ sa2sp_chem(SA, TA=2300e-6, DIC=2000e-6, NO3=0, SIOH4=0)
 }
 
 \details{
-Convert from Absolute (SA) to Practical Salinity (SP)
-from carbon system parameters and ion concentration which most affect water density anomalies.
+Convert from absolute to practical salinity from carbon system parameters and ion concentration which most affect water density anomalies.
 }
 
 \references{

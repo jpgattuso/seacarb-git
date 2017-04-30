@@ -65,7 +65,7 @@ flag = 25     pCO2 and DIC given
   \item{kf}{"pf" for using Kf from Perez and Fraga (1987) and "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994). "x" is the default flag; the default value is then "pf", except if T is outside the range 9 to 33oC and/or S is outside the range 10 to 40. In these cases, the default is "dg".}
 	\item{ks}{"d" for using Ks from Dickon (1990), "k" for using Ks from Khoo et al. (1977), default is "d"}
 	  \item{eos}{"teos" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos" to specify T and S according to EOS-80.}
-  \item{long}{longitude of data point, used when eos parameter is "teos" as a conversion parameter from Absolute to Practical Salinity.}
+  \item{long}{longitude of data point, used when eos parameter is "teos" as a conversion parameter from absolute to practical salinity.}
   \item{lat}{latitude of data point, used when eos parameter is "teos".}
 }
 
