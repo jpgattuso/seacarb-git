@@ -45,7 +45,7 @@ buffer <-
         # Must convert temperature and salinity from TEOS-10 to EOS-80
         # convert temperature: from Conservative (CT) to in-situ temperature
         # and salinity from Absolute to Practical (SP)
-        STeos <- teos2eos_geo (S, T, P, lon, lat)
+        STeos <- teos2eos_geo (S, T, P, long, lat)
         InsT <- STeos$T
         SP <- STeos$SP
     }

@@ -45,7 +45,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
         # Must convert temperature and salinity from TEOS-10 to EOS-80
         # convert temperature: from Conservative (CT) to in-situ temperature
         # and salinity from Absolute to Practical (SP)
-        STeos <- teos2eos_geo (S, T, P, lon, lat)
+        STeos <- teos2eos_geo (S, T, P, long, lat)
         InsT <- STeos$T
         SP <- STeos$SP
     }

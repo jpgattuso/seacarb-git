@@ -24,7 +24,7 @@
   {
       # Must convert salinity from TEOS-10 to EOS-80
       # convert salinity from Absolute to Practical (SP)
-      STeos <- teos2eos_geo (S, TLab, P, lon, lat)
+      STeos <- teos2eos_geo (S, Tlab, P=0, long, lat)
       SP <- STeos$SP
   }
   else

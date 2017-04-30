@@ -41,7 +41,7 @@ buffesm <-
         # Must convert temperature and salinity from TEOS-10 to EOS-80
         # convert temperature: from Conservative (CT) to in-situ temperature
         # and salinity from Absolute to Practical (SP)
-        eos <- teos2eos_geo (S, T, P, lon, lat)
+        eos <- teos2eos_geo (S, T, P, long, lat)
         InsT <- eos$T
         SP <- eos$SP
     }

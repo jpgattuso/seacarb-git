@@ -4,7 +4,7 @@ Version: 3.1.2
 Date: 2017-04-28
 LazyData: true
 Authors@R: c(person("Jean-Pierre", "Gattuso", role = c("aut", "cre", "cph"), email = "gattuso@obs-vlfr.fr"),
-  person("Jean-Marie", "Epitalon", role = "aut", email = "Jean-Marie.Epitalon@cerfacs.fr"),
+  person("Jean-Marie", "Epitalon", role = "aut", email = "Jean-Marie.Epitalon@orange.fr"),
   person("Heloise", "Lavigne", role = "aut", email = "lavigne@obs-vlfr.fr"),
   person("James", "Orr", role = "aut"),
   person("Bernard", "Gentili", role = "ctb"),
