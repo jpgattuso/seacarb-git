@@ -12,7 +12,7 @@
 #
 #
 carbb<-
-function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", badd=0, warn="y"){
+function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", badd=0, warn="y", eos="eos80", long=1.e20, lat=1.e20){
     n <- max(length(var1), length(var2), length(S), length(T), length(P), length(Pt), length(Sit), length(k1k2), length(kf), length(pHscale), length(ks), length(b))
     if(length(flag)!=n){flag <- rep(flag[1],n)}
     if(length(var1)!=n){var1 <- rep(var1[1],n)}
@@ -35,12 +35,32 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     Sit[is.na(Sit)] <- 0
     Pt[is.na(Pt)] <- 0
     
+    # Only two options for eos
+    if (eos != "teos10" && eos != "eos80")
+        stop ("invalid parameter eos: ", eos)
+    
+    # if use of EOS-10 standard
+    if (eos == "teos10")
+    {
+        # Must convert temperature and salinity from TEOS-10 to EOS-80
+        # convert temperature: from Conservative (CT) to in-situ temperature
+        # and salinity from Absolute to Practical (SP)
+        STeos <- teos2eos_geo (S, T, P, long, lat)
+        InsT <- STeos$T
+        SP <- STeos$SP
+    }
+    else
+    {
+        InsT <- T
+        SP <- S
+    }
+ 
     #-------Constants----------------   
     tk = 273.15;           # [K] (for conversion [deg C] <-> [K])  
-    TK = T + tk;           # TK [K]; T[C]
+    TK = InsT + tk;           # TK [K]; T[C]
     
     #---- issues de equic----
-    Cl = S / 1.80655;             # Cl = chlorinity; S = salinity (per mille)
+    Cl = SP / 1.80655;             # Cl = chlorinity; S = salinity (per mille)
     ST = 0.14 * Cl/96.062         # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
     FLUO = 6.7e-5 * Cl/18.9984    # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
     BOR = bor(S=S , b=b) + badd;         # (mol/kg) total boron + boron added
@@ -50,43 +70,43 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     #---------------------------------------------------------------------
     
     # Ks (free pH scale) at zero pressure and given pressure
-    Ks_P0 <- Ks(S=S, T=T, P=0, ks=ks, warn=warn)
-    Ks    <- Ks(S=S, T=T, P=P, ks=ks, warn=warn)
+    Ks_P0 <- Ks(S=SP, T=InsT, P=0, ks=ks, warn=warn)
+    Ks    <- Ks(S=SP, T=InsT, P=P, ks=ks, warn=warn)
     
     # Kf on free pH scale
-    Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks)
-    Kff <- Kf(S=S, T=T, P=P, pHscale="F", kf=kf, Ks_P0, Ks)
+    Kff_P0 <- Kf(S=SP, T=InsT, P=0, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
+    Kff <- Kf(S=SP, T=InsT, P=P, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
     # Kf on given pH scale
-    Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks)
+    Kf <- Kf(S=SP, T=InsT, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks, warn=warn)
     
     # Conversion factor from total to SWS pH scale at zero pressure
-    ktotal2SWS_P0 <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0)$ktotal2SWS
+    ktotal2SWS_P0 <- kconv(S=SP,T=InsT,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0)$ktotal2SWS
 
     # Conversion factor from SWS to chosen pH scale
-    conv <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks,Kff=Kff)
+    conv <- kconv(S=SP,T=InsT,P=P,kf=kf,Ks=Ks,Kff=Kff, warn=warn)
     kSWS2chosen <- rep(1.,n)
     kSWS2chosen [pHscale == "T"] <- conv$kSWS2total [pHscale == "T"]
     kSWS2chosen [pHscale == "F"] <- conv$kSWS2free [pHscale == "F"]  
 
-    K1 <- K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)   
-    K2 <- K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)
-    Kw <- Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-    Kb <- Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0, warn=warn)
-    K1p <- K1p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-    K2p <- K2p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-    K3p <- K3p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-    Ksi <- Ksi(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-    Kspa <- Kspa(S=S, T=T, P=P, warn=warn)
-    Kspc <- Kspc(S=S, T=T, P=P, warn=warn)
+    K1 <- K1(S=SP, T=InsT, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)   
+    K2 <- K2(S=SP, T=InsT, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)
+    Kw <- Kw(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    Kb <- Kb(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0, warn=warn)
+    K1p <- K1p(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    K2p <- K2p(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    K3p <- K3p(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    Ksi <- Ksi(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    Kspa <- Kspa(S=SP, T=InsT, P=P, warn=warn)
+    Kspc <- Kspc(S=SP, T=InsT, P=P, warn=warn)
     
-    rho <- rho(S=S,T=T,P=P)
+    rho <- rho(S=SP,T=InsT,P=P)
 
     # Compute "standard" K0 with S, in situ T, and atmospheric pressure
-    K0 <- K0(S=S, T=T, Patm=Patm, P=0, warn=warn)                         
+    K0 <- K0(S=SP, T=InsT, Patm=Patm, P=0, warn=warn)                         
     # Compute potential K0 with S, potential temperature, and atmospheric pressure (usually 1 atm)
-    K0pot <- K0(S=S, T=theta(S=S, T=T, P=P, Pref=0), Patm=Patm, P=0, warn=warn)
+    K0pot <- K0(S=SP, T=theta(S=SP, T=InsT, P=P, Pref=0), Patm=Patm, P=0, warn=warn)
     # Compute in situ K0 with S, in situ temperature, and total pressure pressure (atmospheric + hydrostatic)
-    K0insitu <- K0(S=S, T=T, Patm=Patm, P=P, warn=warn)
+    K0insitu <- K0(S=SP, T=InsT, Patm=Patm, P=P, warn=warn)
  
     #------------------------------------------------------------------#
     #------------------------------------------------------------------#
@@ -126,9 +146,9 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     DIC  <- rep(NA, n)
     ALK  <- rep(NA, n)
 
-    # ------------ case 1.) PH and CO2 given
+    # ------------ case 1.) PH and CO2 given ----
     # Indices of flag elements where flag = 1
-    i_flag_1 <- which (flag == 1)     
+    i_flag_1 <- which (flag == 1)    
     PH[i_flag_1]   <- var1[i_flag_1]
     CO2[i_flag_1]  <- var2[i_flag_1]
     h <- 10^(-PH[i_flag_1])
@@ -138,7 +158,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     DIC[i_flag_1]  <- CO2[i_flag_1] + HCO3[i_flag_1] + CO3[i_flag_1]
     H[i_flag_1] <- h
     
-    # ------------ case 2.) CO2 and HCO3 given 
+    # ------------ case 2.) CO2 and HCO3 given ----
     # Indices of flag elements where flag = 2
     i_flag_2 <- which (flag == 2)     
     CO2[i_flag_2]  <- var1[i_flag_2]
@@ -150,7 +170,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_2]   <- -log10(h)
     H[i_flag_2] <- h
 
-    # ------------ case 3.) CO2 and CO3 given
+    # ------------ case 3.) CO2 and CO3 given ----
     # Indices of flag elements where flag = 3
     i_flag_3 <- which (flag == 3)     
     CO2[i_flag_3]  <- var1[i_flag_3]
@@ -163,12 +183,11 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_3]   <- -log10(h)
     H[i_flag_3] <- h
 
-    # ------------ case 4.) CO2 and ALK given
+    # ------------ case 4.) CO2 and ALK given ----
     # Indices of flag elements where flag = 4
     i_flag_4 <- which (flag == 4)     
     CO2[i_flag_4] <- var1[i_flag_4]
     ALK[i_flag_4] <- var2[i_flag_4]
-    
     fALK <- function(x)# K1=K1, K2=K2, CO2=CO2, BOR=BOR, Kb=Kb, Kw=Kw, Pt=Pt, K1p=K1p, K2p=K2p, K3p=K3p, Sit=Sit, Ksi=Ksi, ST=ST, Ks=Ks, FLUO=FLUO, Kf=Kf, ALK=ALK) 
     {
         # components for ALK
@@ -245,7 +264,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_4]   <- -log10(h)
     H[i_flag_4] <- h
 
-    # ------------ case 5.) CO2 and DIC given
+    # ------------ case 5.) CO2 and DIC given ----
     # Indices of flag elements where flag = 5
     i_flag_5 <- which (flag == 5)     
     CO2[i_flag_5]  <- var1[i_flag_5]
@@ -261,7 +280,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_5] <- -log10(h)
     H[i_flag_5] <- h
 
-    # ------------ case 6.) PH and HCO3 given
+    # ------------ case 6.) PH and HCO3 given ----
     # Indices of flag elements where flag = 6
     i_flag_6 <- which (flag == 6)     
     PH[i_flag_6] <- var1[i_flag_6]
@@ -273,7 +292,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     fCO2[i_flag_6] <- CO2[i_flag_6]/K0[i_flag_6]
     H[i_flag_6] <- h
 
-    # ------------ case 7.) PH and CO3 given    
+    # ------------ case 7.) PH and CO3 given ---- 
     # Indices of flag elements where flag = 7
     i_flag_7 <- which (flag == 7)     
     PH[i_flag_7] <- var1[i_flag_7]
@@ -285,10 +304,9 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     DIC[i_flag_7]  <- CO2[i_flag_7] + HCO3[i_flag_7] + CO3[i_flag_7]
     H[i_flag_7] <- h
 
-    # ------------ case 8.) PH and ALK given
-
+    # ------------ case 8.) PH and ALK given ----
     # Indices of flag elements where flag = 8
-    i_flag_8 <- which (flag == 8)     
+    i_flag_8 <- which(flag == 8)     
     PH[i_flag_8]  <- var1[i_flag_8]
     ALK[i_flag_8] <- var2[i_flag_8] 
     h <- 10^(-PH[i_flag_8])
@@ -346,7 +364,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     CO3[i_flag_8]  <- HCO3[i_flag_8]*K2[i_flag_8]/h
     fCO2[i_flag_8] <- CO2[i_flag_8]/K0[i_flag_8]
     
-    # ------------ case 9.) PH and DIC given
+    # ------------ case 9.) PH and DIC given ----
     # Indices of flag elements where flag = 9
     i_flag_9 <- which (flag == 9)     
     PH[i_flag_9]  <- var1[i_flag_9]
@@ -359,7 +377,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     CO2[i_flag_9]  <- h*HCO3[i_flag_9]/K1[i_flag_9]
     fCO2[i_flag_9] <- CO2[i_flag_9]/K0[i_flag_9]
     
-    # ------------ case 10.) HCO3 and CO3 given 
+    # ------------ case 10.) HCO3 and CO3 given ----
     # Indices of flag elements where flag = 10
     i_flag_10 <- which (flag == 10)     
     HCO3[i_flag_10] <- var1[i_flag_10]
@@ -371,12 +389,11 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_10] <- -log10(h)
     H[i_flag_10] <- h
 
-    # ------------ case 11.) HCO3 and ALK given
+    # ------------ case 11.) HCO3 and ALK given ----
     # Indices of flag elements where flag = 11
     i_flag_11 <- which (flag == 11)     
     HCO3[i_flag_11] <- var1[i_flag_11]
     ALK[i_flag_11]  <- var2[i_flag_11]
-    
     fALK <- function(x)# K1=K1, K2=K2, HCO3=HCO3, BOR=BOR, Kb=Kb, Kw=Kw, Pt=Pt, K1p=K1p, K2p=K2p, K3p=K3p, Sit=Sit, Ksi=Ksi, ST=ST, Ks=Ks, FLUO=FLUO, Kf=Kf, ALK=ALK) {
     {
         # components for ALK
@@ -467,12 +484,11 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_12] <- -log10(h)
     H[i_flag_12] <- h
 
-    # ------------ case 13.) CO3 and ALK given
+    # ------------ case 13.) CO3 and ALK given ----
     # Indices of flag elements where flag = 13
     i_flag_13 <- which (flag == 13)     
     CO3[i_flag_13] <- var1[i_flag_13]
     ALK[i_flag_13] <- var2[i_flag_13]
-    
     fALK <- function(x)# K1=K1, K2=K2, HCO3=HCO3, BOR=BOR, Kb=Kb, Kw=Kw, Pt=Pt, K1p=K1p, K2p=K2p, K3p=K3p, Sit=Sit, Ksi=Ksi, ST=ST, Ks=Ks, FLUO=FLUO, Kf=Kf, ALK=ALK) {
     {
         # composants for ALK
@@ -536,7 +552,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
         fluo  <- FLUO[i]
         phs   <- pHscale[i]
         # Calculate [H+] from total alk
-        h[j] <- uniroot(fALK,c(10^(-9.5),10^(-3.5)), tol=1e-20)$root
+        #h[j] <- uniroot(fALK,c(10^(-9.5),10^(-3.5)), tol=1e-20)$root
+        h[j] <- tryCatch(uniroot(fALK, c(1e-10, 10^(-3.5)), tol = 1e-30)$root, error = function(e) NA)
         j <- j + 1
     }   
     
@@ -547,7 +564,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_13] <- -log10(h)
     H[i_flag_13] <- h
 
-    # ------------ case 14.) CO3 and DIC given
+    # ------------ case 14.) CO3 and DIC given ----
     # Indices of flag elements where flag = 14
     i_flag_14 <- which (flag == 14)     
     CO3[i_flag_14] <- var1[i_flag_14]
@@ -564,12 +581,11 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_14] <- -log10(h)
     H[i_flag_14] <- h
     
-    # ------------ case 15.) ALK and DIC given
+    # ------------ case 15.) ALK and DIC given ----
     # Indices of flag elements where flag = 15
-    i_flag_15 <- which (flag == 15)     
+    i_flag_15 <- which(flag == 15)     
     ALK[i_flag_15] <- var1[i_flag_15]
     DIC[i_flag_15] <- var2[i_flag_15]
-
     fALK <- function(x) # K1=K1, K2=K2, DIC=DIC, BOR=BOR, Kb=Kb, Kw=Kw, Pt=Pt, K1p=K1p, K2p=K2p, K3p=K3p, Sit=Sit, Ksi=Ksi, ST=ST, Ks=Ks, FLUO=FLUO, Kf=Kf, ALK=ALK) {
     {
         # composants for ALK
@@ -633,7 +649,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
         fluo  <- FLUO[i]
         phs   <- pHscale[i]
         # Calculate [H+] from total alk
-        h[j] <- uniroot(fALK,c(1e-10,10^(-3.5)), tol=1e-30)$root
+        #h[j] <- uniroot(fALK,c(1e-10,10^(-3.5)), tol=1e-30)$root
+        h[j] <- tryCatch(uniroot(fALK, c(1e-10, 10^(-3.5)), tol = 1e-30)$root, error = function(e) NA)
         j <- j + 1
     }   
 
@@ -665,7 +682,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     fugfacinsitu <- exp((Patm[i_flag] + P[i_flag]/1.01325)*(B + 2*((1-xCO2approx)^2)*(57.7-0.118*tk))/(82.05736*tk))
     pCO2insitu[i_flag]    <- fCO2insitu[i_flag] / fugfacinsitu
     # 3) Potential pCO2: compute from potential T & surface P (Patm only)  
-    tkp <- theta(S=S[i_flag], T=T[i_flag], P=P[i_flag], Pref=0) + 273.15       #Potential temperature in Kelvin 
+    tkp <- theta(S=SP[i_flag], T=InsT[i_flag], P=P[i_flag], Pref=0) + 273.15       #Potential temperature in Kelvin 
     Bpot   <- -1636.75 + 12.0408*tkp - 0.0327957*(tkp*tkp) + 0.0000316528*(tkp*tkp*tkp);
     fCO2pot[i_flag] <- fCO2[i_flag] * K0[i_flag] / K0pot[i_flag]
     fugfacpot <- exp((Patm[i_flag])*(Bpot + 2*((1-fCO2pot[i_flag])^2)*(57.7-0.118*tkp))/(82.05736*tkp))
@@ -676,7 +693,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     i_flag <- which (flag >= 21 & flag <= 25)
 
     tk    <- TK[i_flag]     
-    tkp   <- theta(S=S[i_flag], T=T[i_flag], P=P[i_flag], Pref=0) + 273.15       #Potential temperature in Kelvin
+    tkp   <- theta(S=SP[i_flag], T=InsT[i_flag], P=P[i_flag], Pref=0) + 273.15       #Potential temperature in Kelvin
     B     <- -1636.75 + 12.0408*tk  - 0.0327957*(tk*tk)   + 0.0000316528*(tk*tk*tk);
     Bpot  <- -1636.75 + 12.0408*tkp - 0.0327957*(tkp*tkp) + 0.0000316528*(tkp*tkp*tkp);
 
@@ -731,7 +748,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
       pCO2insitu[i_flag] <- fCO2insitu[i_flag] / fugfacinsitu
     }
 
-    # ------------ case 21.) PH and pCO2 given
+    # ------------ case 21.) PH and pCO2 given ----
     # Indices of flag elements where flag = 21
     i_flag_21 <- which (flag == 21)
     PH[i_flag_21] <- var2[i_flag_21]
@@ -742,7 +759,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     CO3[i_flag_21]  <- K2[i_flag_21]*HCO3[i_flag_21]/h
     DIC[i_flag_21]  <- CO2[i_flag_21] + HCO3[i_flag_21] + CO3[i_flag_21]
 
-    # ------------ case 22.) HCO3 and pCO2 given
+    # ------------ case 22.) HCO3 and pCO2 given ----
     # Indices of flag elements where flag = 22
     i_flag_22 <- which (flag == 22)
     HCO3[i_flag_22] <- var2[i_flag_22]
@@ -753,7 +770,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_22] <- -log10(h)
     H[i_flag_22] <- h
 
-    # ------------ case 23.) CO3 and pCO2 given
+    # ------------ case 23.) CO3 and pCO2 given ----
     # Indices of flag elements where flag = 23
     i_flag_23 <- which (flag == 23)
     CO3[i_flag_23] <- var2[i_flag_23]
@@ -764,12 +781,11 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_23] <- -log10(h)
     H[i_flag_23] <- h
 
-    # ------------ case 24.) ALK and pCO2 given
+    # ------------ case 24.) ALK and pCO2 given ----
     # Indices of flag elements where flag = 24
     i_flag_24 <- which (flag == 24)
     ALK[i_flag_24] <- var2[i_flag_24]
     CO2[i_flag_24] <- fCO2[i_flag_24]*K0[i_flag_24]
-
     # From this line on, this case is similar to case 4
     fALK <- function(x)# K1=K1, K2=K2, CO2=CO2, BOR=BOR, Kb=Kb, Kw=Kw, Pt=Pt, K1p=K1p, K2p=K2p, K3p=K3p, Sit=Sit, Ksi=Ksi, ST=ST, Ks=Ks, FLUO=FLUO, Kf=Kf, ALK=ALK) 
     {
@@ -844,7 +860,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     H[i_flag_24] <- h
     DIC[i_flag_24]  <- CO2[i_flag_24] + HCO3[i_flag_24] + CO3[i_flag_24]
 
-    # ------------ case 25.) DIC and pCO2 given
+    # ------------ case 25.) DIC and pCO2 given ----
     # Indices of flag elements where flag = 25
     i_flag_25 <- which (flag == 25)
     DIC[i_flag_25] <- var2[i_flag_25]
@@ -861,7 +877,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     PH[i_flag_25] <- -log10(h)
     H[i_flag_25] <- h
 
-    # ------------ CALCULATION OF ALK in cases 
+    # ------------ CALCULATION OF ALK in cases ----
     cases <- c(1, 2, 3, 5, 6, 7, 9, 10, 12, 14, 21, 22, 23, 25)
     # Indices of flag elements in these cases
     i_flag <- which (flag %in% cases)
@@ -907,7 +923,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     # CALCULATION OF ARAGONITE AND CALCITE SATURATION STATE  #
     ##########################################################
 
-    Ca = (0.02128/40.078) * S/1.80655  #Improved formula from Dickson et al. (2007) as discussed in Orr & Epitalon (2014, revised)
+    Ca = (0.02128/40.078) * SP/1.80655  #Improved formula from Dickson et al. (2007) as discussed in Orr & Epitalon (2014, revised)
     Oa  <- (Ca*CO3)/Kspa
     Oc  <- (Ca*CO3)/Kspc
 

@@ -12,7 +12,8 @@ the errors in the key dissociation constants pK0, pK1, pK2, pKb, pKw, pKspa and 
               evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, 
               epK=c(0.002, 0.01, 0.02, 0.01, 0.01, 0.02, 0.02), 
               method = "ga", r=0.0, runs=10000,
-              k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y")}
+              k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", 
+              warn="y", eos = "eos80", long = 1e+20, lat = 1e+20)}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{flag}{select the pair of carbonate system input variables. The flags to be used are as follows:
@@ -84,7 +85,10 @@ i.e., ignored for the 2 other methods, the default is r=0.0}
 \item{pHscale}{"T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
 \item{b}{Concentration of total boron. "l10" for the Lee et al. (2010) formulation or "u74" for the Uppstrom (1974) formulation, default is "u74" }
 \item{gas}{used to indicate the convention for INPUT pCO2, i.e., when it is an input variable (flags 21 to 25): "insitu" indicates it is referenced to in situ pressure and in situ temperature; "potential" indicates it is referenced to 1 atm pressure and potential temperature; and "standard" indicates it is referenced to 1 atm pressure and in situ temperature. All three options should give identical results at surface pressure. This option is not used when pCO2 is not an input variable (flags 1 to 15). The default is "potential".}
-  \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
+\item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
+\item{eos}{"teos" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos" to specify T and S according to EOS-80.}
+\item{long}{longitude of data point, used when eos parameter is "teos" as a conversion parameter from absolute to practical salinity.}
+\item{lat}{latitude of data point, used when eos parameter is "teos".}
 }
 
 \details{
@@ -138,6 +142,8 @@ In constrast, for evar1, evar2, r, eS, eT, ePt and eSit:
 }
 
 The same remark applies to parameter r (correlation coefficient).
+
+long and lat are used as conversion parameters from absolute to practical salinity: when seawater is not of standard composition, practical salinity alone is not sufficient to compute absolute salinity and vice-versa. One needs to know the density. When long and lat are given, density is inferred from WOA silicate concentration at given location. When they are not, an arbitrary geographic point is chosen: mid equatorial Atlantic. Note that this implies an error on computed salinity up to 0.02 g/kg.
 }
 
 \section{Correlation coefficient}{

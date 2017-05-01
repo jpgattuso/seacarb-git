@@ -12,7 +12,7 @@
 #
 #
 carb<-
-function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y"){
+function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y", eos="eos80", long=1.e20, lat=1.e20){
     n <- max(length(var1), length(var2), length(S), length(T), length(P), length(Pt), length(Sit), length(k1k2), length(kf), length(pHscale), length(ks), length(b))
     if(length(flag)!=n){flag <- rep(flag[1],n)}
     if(length(var1)!=n){var1 <- rep(var1[1],n)}
@@ -35,59 +35,78 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     Sit[is.na(Sit)] <- 0
     Pt[is.na(Pt)] <- 0
     
-
+    # Only two options for eos
+    if (eos != "teos10" && eos != "eos80")
+        stop ("invalid parameter eos: ", eos)
+    
+    # if use of EOS-10 standard
+    if (eos == "teos10")
+    {
+        # Must convert temperature and salinity from TEOS-10 to EOS-80
+        # convert temperature: from Conservative (CT) to in-situ temperature
+        # and salinity from Absolute to Practical (SP)
+        STeos <- teos2eos_geo (S, T, P, long, lat)
+        InsT <- STeos$T
+        SP <- STeos$SP
+    }
+    else
+    {
+        InsT <- T
+        SP <- S
+    }
+ 
     #-------Constants----------------   
     tk = 273.15;           # [K] (for conversion [deg C] <-> [K])  
-    TK = T + tk;           # TK [K]; T[C]
+    TK = InsT + tk;           # TK [K]; T[C]
     
     #---- issues de equic----
-    Cl = S / 1.80655;             # Cl = chlorinity; S = salinity (per mille)
+    Cl = SP / 1.80655;             # Cl = chlorinity; S = salinity (per mille)
     ST = 0.14 * Cl/96.062         # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
     FLUO = 6.7e-5 * Cl/18.9984    # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
-    BOR = bor(S=S , b=b);         # (mol/kg) total boron
+    BOR = bor(S=SP , b=b);         # (mol/kg) total boron
 
     #---------------------------------------------------------------------
     #--------------------- compute K's ----------------------------------
     #---------------------------------------------------------------------
     
     # Ks (free pH scale) at zero pressure and given pressure
-    Ks_P0 <- Ks(S=S, T=T, P=0, ks=ks, warn=warn)
-    Ks    <- Ks(S=S, T=T, P=P, ks=ks, warn=warn)
+    Ks_P0 <- Ks(S=SP, T=InsT, P=0, ks=ks, warn=warn)
+    Ks    <- Ks(S=SP, T=InsT, P=P, ks=ks, warn=warn)
     
     # Kf on free pH scale
-    Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
-    Kff <- Kf(S=S, T=T, P=P, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
+    Kff_P0 <- Kf(S=SP, T=InsT, P=0, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
+    Kff <- Kf(S=SP, T=InsT, P=P, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
     # Kf on given pH scale
-    Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks, warn=warn)
+    Kf <- Kf(S=SP, T=InsT, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks, warn=warn)
     
     # Conversion factor from total to SWS pH scale at zero pressure
-    ktotal2SWS_P0 <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0)$ktotal2SWS
+    ktotal2SWS_P0 <- kconv(S=SP,T=InsT,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0)$ktotal2SWS
 
     # Conversion factor from SWS to chosen pH scale
-    conv <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks,Kff=Kff, warn=warn)
+    conv <- kconv(S=SP,T=InsT,P=P,kf=kf,Ks=Ks,Kff=Kff, warn=warn)
     kSWS2chosen <- rep(1.,n)
     kSWS2chosen [pHscale == "T"] <- conv$kSWS2total [pHscale == "T"]
     kSWS2chosen [pHscale == "F"] <- conv$kSWS2free [pHscale == "F"]  
 
-    K1 <- K1(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)   
-    K2 <- K2(S=S, T=T, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)
-    Kw <- Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-    Kb <- Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0, warn=warn)
-    K1p <- K1p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-    K2p <- K2p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-    K3p <- K3p(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-    Ksi <- Ksi(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-    Kspa <- Kspa(S=S, T=T, P=P, warn=warn)
-    Kspc <- Kspc(S=S, T=T, P=P, warn=warn)
+    K1 <- K1(S=SP, T=InsT, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)   
+    K2 <- K2(S=SP, T=InsT, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)
+    Kw <- Kw(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    Kb <- Kb(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0, warn=warn)
+    K1p <- K1p(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    K2p <- K2p(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    K3p <- K3p(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    Ksi <- Ksi(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    Kspa <- Kspa(S=SP, T=InsT, P=P, warn=warn)
+    Kspc <- Kspc(S=SP, T=InsT, P=P, warn=warn)
     
-    rho <- rho(S=S,T=T,P=P)
+    rho <- rho(S=SP,T=InsT,P=P)
 
     # Compute "standard" K0 with S, in situ T, and atmospheric pressure
-    K0 <- K0(S=S, T=T, Patm=Patm, P=0, warn=warn)                         
+    K0 <- K0(S=SP, T=InsT, Patm=Patm, P=0, warn=warn)                         
     # Compute potential K0 with S, potential temperature, and atmospheric pressure (usually 1 atm)
-    K0pot <- K0(S=S, T=theta(S=S, T=T, P=P, Pref=0), Patm=Patm, P=0, warn=warn)
+    K0pot <- K0(S=SP, T=theta(S=SP, T=InsT, P=P, Pref=0), Patm=Patm, P=0, warn=warn)
     # Compute in situ K0 with S, in situ temperature, and total pressure pressure (atmospheric + hydrostatic)
-    K0insitu <- K0(S=S, T=T, Patm=Patm, P=P, warn=warn)
+    K0insitu <- K0(S=SP, T=InsT, Patm=Patm, P=P, warn=warn)
  
     #------------------------------------------------------------------#
     #------------------------------------------------------------------#
@@ -663,7 +682,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     fugfacinsitu <- exp((Patm[i_flag] + P[i_flag]/1.01325)*(B + 2*((1-xCO2approx)^2)*(57.7-0.118*tk))/(82.05736*tk))
     pCO2insitu[i_flag]    <- fCO2insitu[i_flag] / fugfacinsitu
     # 3) Potential pCO2: compute from potential T & surface P (Patm only)  
-    tkp <- theta(S=S[i_flag], T=T[i_flag], P=P[i_flag], Pref=0) + 273.15       #Potential temperature in Kelvin 
+    tkp <- theta(S=SP[i_flag], T=InsT[i_flag], P=P[i_flag], Pref=0) + 273.15       #Potential temperature in Kelvin 
     Bpot   <- -1636.75 + 12.0408*tkp - 0.0327957*(tkp*tkp) + 0.0000316528*(tkp*tkp*tkp);
     fCO2pot[i_flag] <- fCO2[i_flag] * K0[i_flag] / K0pot[i_flag]
     fugfacpot <- exp((Patm[i_flag])*(Bpot + 2*((1-fCO2pot[i_flag])^2)*(57.7-0.118*tkp))/(82.05736*tkp))
@@ -674,7 +693,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     i_flag <- which (flag >= 21 & flag <= 25)
 
     tk    <- TK[i_flag]     
-    tkp   <- theta(S=S[i_flag], T=T[i_flag], P=P[i_flag], Pref=0) + 273.15       #Potential temperature in Kelvin
+    tkp   <- theta(S=SP[i_flag], T=InsT[i_flag], P=P[i_flag], Pref=0) + 273.15       #Potential temperature in Kelvin
     B     <- -1636.75 + 12.0408*tk  - 0.0327957*(tk*tk)   + 0.0000316528*(tk*tk*tk);
     Bpot  <- -1636.75 + 12.0408*tkp - 0.0327957*(tkp*tkp) + 0.0000316528*(tkp*tkp*tkp);
 
@@ -904,7 +923,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
     # CALCULATION OF ARAGONITE AND CALCITE SATURATION STATE  #
     ##########################################################
 
-    Ca = (0.02128/40.078) * S/1.80655  #Improved formula from Dickson et al. (2007) as discussed in Orr & Epitalon (2014, revised)
+    Ca = (0.02128/40.078) * SP/1.80655  #Improved formula from Dickson et al. (2007) as discussed in Orr & Epitalon (2014, revised)
     Oa  <- (Ca*CO3)/Kspa
     Oc  <- (Ca*CO3)/Kspc
 
