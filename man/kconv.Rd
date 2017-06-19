@@ -21,10 +21,13 @@ if not given, it will be computed, if given, it allows for speed optimisation an
 }
 
 \value{
-The function returns a list with 3 conversion factors :
+The function returns a list with 6 conversion factors :
   \item{ktotal2SWS}{to convert from the total scale to seawater scale}
   \item{ktotal2free}{to convert from the total scale to the free scale}
   \item{kfree2SWS}{to convert from the free scale to the seawater scale}  
+  \item{kfree2total}{to convert from the free scale to total scale}
+  \item{kSWS2total}{to convert from the seawater scale to the total scale}
+  \item{kSWS2free}{to convert from the seawater scale to the free scale}  
 }
 
 \details{It is critical to consider that each formulation is valid in specific ranges of temperature and salinity:
@@ -34,7 +37,7 @@ The function returns a list with 3 conversion factors :
   \item Dickson and Riley (1979 in Dickson and Goyet, 1994): S ranging between 0 and 45 and T ranging between 0 and 45oC.
 }
 
-Note that kconv may be called in many functions (i.e. K1, K2, K1P, K2P, K3P, Kw, Ksi, etc...) without user controls it. 
+Note that kconv may be called in many functions (i.e. K1, K2, K1p, K2p, K3p, Kw, Ksi, K2si, etc...) without user controls it. 
 To force a particular formulation for Kf, it is recommended to call kconv() first then pass the resulting conversion factors
 to these functions.
 }

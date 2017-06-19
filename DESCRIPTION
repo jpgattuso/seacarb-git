@@ -1,13 +1,14 @@
 Package: seacarb
 Title: Seawater Carbonate Chemistry
-Version: 3.1.2
-Date: 2017-04-30
+Version: 3.2
+Date: 2017-06-19
 LazyData: true
 Authors@R: c(person("Jean-Pierre", "Gattuso", role = c("aut", "cre", "cph"), email = "gattuso@obs-vlfr.fr"),
   person("Jean-Marie", "Epitalon", role = "aut", email = "Jean-Marie.Epitalon@orange.fr"),
   person("Heloise", "Lavigne", role = "aut", email = "lavigne@obs-vlfr.fr"),
   person("James", "Orr", role = "aut"),
   person("Bernard", "Gentili", role = "ctb"),
+  person("Mathilde", "Hagens", role = "ctb"),
   person("Andreas", "Hofmann", role = "ctb"),
   person("Aurélien", "Proye", role = "ctb"),
   person("Karline", "Soetaert", role = "ctb"),
