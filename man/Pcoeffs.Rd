@@ -38,7 +38,7 @@ The variables are:
 }
 \usage{Pcoeffs}
 
-\format{A data frame with 14 rows and 7 variables}
+\format{A data frame with 15 rows and 7 variables}
 
 \source{
 Millero F. J., 1979 The thermodynamics of the carbonate system in seawater. \emph{Geochemica et Cosmochemica Acta} \bold{43}: 1651-1661.
