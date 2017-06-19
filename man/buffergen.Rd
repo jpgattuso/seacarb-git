@@ -10,7 +10,7 @@
   nitrite acid-base systems presented in this paper, as well as the fully protonoted form of 
   sulfate (H2SO4) and fully deprotonated form of sulfide (S2-), as their contributions to total 
   alkalinity under natural seawater conditions are negligible. Its input arguments are 
-  indentical to those in the “carbfull” function of seacarb.}
+  identical to those in the carbfull function of seacarb.}
 \usage{buffergen(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2="x", kf="x",
                  ks="d", pHscale="T", b="u74", gas="potential", NH4t=0, HSt=0)}
 %- maybe also 'usage' for other objects documented here.
@@ -120,7 +120,7 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 }
 
 \value{The function returns a list containing the following matrices:
-  \item{Carbfull}{Output of the 'carbfull' function that is used within 'buffergen'}
+  \item{Carbfull}{Output of the carbfull function that is used within buffergen}
   \item{dALK.dH}{Sensitivity of ALK to a change in proton concentration (dimensionless). Species-specific.}
   \item{dtotX.dH}{Sensitivity of an acid-base species to a change in proton concentration (dimensionless). Species-specific.}
   \item{dALK.dX}{Sensitivity of ALK to a change in an acid-base species (dimensionless). Species-specific.}
@@ -139,7 +139,7 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 }
 
 \references{
-Hagens M. and Middelburg J. J., 2016 Generalised expressions for the response of pH to changes in ocean chemistry. \emph{Geochimica et Cosmochimica Acta}.
+Hagens M. and Middelburg J. J., 2016 Generalised expressions for the response of pH to changes in ocean chemistry. \emph{Geochimica et Cosmochimica Acta} \bold{187} 334-349.
 }
 
 \author{
