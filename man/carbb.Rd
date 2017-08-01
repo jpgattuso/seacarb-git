@@ -2,8 +2,8 @@
 \name{carbb}
 \alias{carbb}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Parameters of the seawater carbonate system}
-\description{Returns parameters of the seawater carbonate system.}
+\title{Parameters of the seawater carbonate system with boron addition}
+\description{Returns parameters of the seawater carbonate system when boron is added.}
 \usage{carbb(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
   k1k2="x", kf="x", ks="d", pHscale="T", b="u74", gas="potential", badd=0, 
   warn="y", eos = "eos80", long = 1e+20, lat = 1e+20)}

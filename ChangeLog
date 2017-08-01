@@ -1,3 +1,8 @@
+version 3.2,1 2017-08-01
+-----------------------------------
+- Update: help file for carb now uses the right switches for eos (teos10 and eos80). Thanks to Abraham Passmore.
+- Update: help file for carbb now explains what it does (as carb but with boron addition). Thanks to Abraham Passmore.
+
 version 3.2, 2016-12-29
 -----------------------------------
 A series of additions from Mathilde Hagens (M.Hagens@uu.nl)
