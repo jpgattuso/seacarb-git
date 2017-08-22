@@ -5,8 +5,12 @@
 \title{Calibration coefficients for seaFET sensor}
 \description{Calibration coefficients E0INT,25, E0EXT,25}
 \usage{
+<<<<<<< HEAD
 pHCalib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, 
   calsal=35.6)
+=======
+pHCalib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, calsal=35.6)
+>>>>>>> bba50e2406373ed29b0b65cf61b805f5d8b69dea
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -35,10 +39,17 @@ This function returns a dataframe comprising 2 variables:
 
 }
 \references{
+<<<<<<< HEAD
 Bresnahan, P. J. J., Martz, T. R., Takeshita, Y., Johnson, K. S. & LaShomb, M., 2014. Best practices for autonomous measurement of seawater pH with the Honeywell Durafet. \emph{Methods Oceanogr.} \bold{9}, 44–60.
 
 Martz, T.R., Connery, J.G., Johnson, K.S., 2010. Testing the Honeywell Durafet for seawater pH applications. \emph{Limnol. Oceanogr. Meth.} \bold{8}, 172–184.
  }
+=======
+Martz, T.R., Connery, J.G., Johnson, K.S., 2010. Testing the Honeywell Durafet for seawater pH applications. Limnol. Oceanogr. Methods 8, 172–184. doi:10.4319/lom.2010.8.172
+ 
+Bresnahan, P. J. J., Martz, T. R., Takeshita, Y., Johnson, K. S. & LaShomb, M.,2014. Best practices for autonomous measurement of seawater pH with the Honeywell Durafet. Methods Oceangr. 9, 44–60.
+}
+>>>>>>> bba50e2406373ed29b0b65cf61b805f5d8b69dea
 
 \author{
 Samir Alliouane, Lydia Kapsenberg, Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
@@ -50,10 +61,16 @@ Samir Alliouane, Lydia Kapsenberg, Jean-Pierre Gattuso \email{gattuso@obs-vlfr.f
 
 \examples{
 pHCalib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, calsal=35.6)
+<<<<<<< HEAD
 
 ## Using the test file seaFET
 pHCalib(calEint=seaFET$Eint, calEext=seaFET$Eext, 
   calpH=seaFET$pHspectro, calT=seaFET$Temperature, 
   calsal=seaFET$Salinity)
+=======
+# There is a test file "seaFET".
+
+pHCalib(calEint=seaFET$Eint, calEext=seaFET$Eext, calpH=seaFET$pHspectro, calT=seaFET$Temperature, calsal=seaFET$Salinity)
+>>>>>>> bba50e2406373ed29b0b65cf61b805f5d8b69dea
 }
 \keyword{utilities}

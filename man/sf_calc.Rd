@@ -9,8 +9,12 @@ The function sf_calc() calculates pH time series (pHint_tot and pHext_tot) for S
 }
 
 \usage{
+<<<<<<< HEAD
 sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, 
 E0ext25=-1.46, calT=16.2, calSal=35.6)
+=======
+sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, E0ext25=-1.46, calT=16.2, calSal=35.6)
+>>>>>>> bba50e2406373ed29b0b65cf61b805f5d8b69dea
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -33,11 +37,19 @@ This function returns a dataframe comprising 2 variables:
 
 }
 \references{
+<<<<<<< HEAD
 Bresnahan, P. J. J., Martz, T. R., Takeshita, Y., Johnson, K. S., and LaShomb, M., 2014. Best practices for autonomous measurement of seawater pH with the Honeywell Durafet. \emph{Methods Oceangr.} \bold{9}, 44–60.
 
 Martz, T.R., Connery, J.G., and Johnson, K.S., 2010. Testing the Honeywell Durafet for seawater pH applications. \emph{Limnol. Oceanogr. Meth.} \bold{8}, 172–184.
 
 Rivest, E.B., O'Brien, M., Kapsenberg, L., Gotschalk, C.C., Blanchette, C.A., Hoshijima, U., Hofmann, G.E., 2016. Beyond the benchtop and the benthos: dataset management planning and design for time series of ocean carbonate chemistry associated with Durafet®-based pH sensors. \emph{Ecological Informatics} \bold{36}, 209–220.
+=======
+Bresnahan, P. J. J., Martz, T. R., Takeshita, Y., Johnson, K. S. & LaShomb, M.,2014. Best practices for autonomous measurement of seawater pH with the Honeywell Durafet. Methods Oceangr. 9, 44–60.
+
+Rivest, E.B., O'Brien, M., Kapsenberg, L., Gotschalk, C.C., Blanchette, C.A., Hoshijima, U., Hofmann, G.E., 2016. Beyond the benchtop and the benthos: dataset management planning and design for time series of ocean carbonate chemistry associated with Durafet®-based pH sensors. Ecological Informatics 36, 209–220.
+
+Martz, T.R., Connery, J.G., Johnson, K.S., 2010. Testing the Honeywell Durafet for seawater pH applications. Limnol. Oceanogr. Methods 8, 172–184. doi:10.4319/lom.2010.8.172
+>>>>>>> bba50e2406373ed29b0b65cf61b805f5d8b69dea
 }
 
 \author{
@@ -50,10 +62,16 @@ Samir Alliouane, Lydia Kapsenberg, Jean-Pierre Gattuso \email{gattuso@obs-vlfr.f
 
 \examples{
 sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, E0ext25=-1.46, calT=16.2, calSal=35.6)
+<<<<<<< HEAD
 
 ## Using the test file seaFET
 sf_calc(calEint=seaFET$Eint, calEext=seaFET$Eext, 
   E0int25=seaFET$E0int25, E0ext25=seaFET$E0ext25, 
   calT=seaFET$Temperature, calsal=seaFET$Salinity)
+=======
+# There is a test file "seaFET".
+
+sf_calc(calEint=seaFET$Eint, calEext=seaFET$Eext, E0int25=seaFET$E0int25, E0ext25=seaFET$E0ext25, calT=seaFET$Temperature, calsal=seaFET$Salinity)
+>>>>>>> bba50e2406373ed29b0b65cf61b805f5d8b69dea
 }
 \keyword{utilities}
