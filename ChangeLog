@@ -1,3 +1,7 @@
+version 3.2.2 2017-08-22
+-----------------------------------
+- New: two functions related to the use of SeaFET pH sensor. sf_calib to determine calibration coefficients and sf_calc to calculate pH. Thanks to Samir Alliouane and Lydia Kapsenberg.
+
 version 3.2.1 2017-08-01
 -----------------------------------
 - Update: help file for carb now uses the right switches for eos (teos10 and eos80). Thanks to Abraham Passmore.
