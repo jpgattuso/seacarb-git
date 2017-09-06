@@ -5,12 +5,9 @@
 \title{Calibration coefficients for seaFET sensor}
 \description{Calibration coefficients E0INT,25, E0EXT,25}
 \usage{
-<<<<<<< HEAD
-pHCalib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, 
-  calsal=35.6)
-=======
-pHCalib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, calsal=35.6)
->>>>>>> bba50e2406373ed29b0b65cf61b805f5d8b69dea
+pHCalib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, calSal=35.6)
+
+pHCalib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, calSal=35.6)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -18,18 +15,13 @@ pHCalib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, calsal=35.6)
   \item{calEext}{EEXT (V), default is -0.93}
   \item{calpH}{spectrophotometric pH in Total scale, default is 8.132}
   \item{calT}{Temperature in degrees Celsius, default is 16.2}
-  \item{calsal}{Salinity, default is 35.6}
+  \item{calSal}{Salinity, default is 35.6}
 }
 
 \details{
+Outputs E0INT25 and E0EXT2 must be calculated for each reference sample collected during a SeaFET deployment. Multiple E0INT25 and E0EXT2 may be calculated if there is more than one reference sample for a given deployment. As such, arguments can be given as unique numbers or as vectors (vectors should be of the same length).
 
-This function is adapted from Bresnahan et al........
-
-Samples for spectrophotometric measurements must be taken at the vicinity of the seaFET sensor and at the same time of a seaFET measurement itself. The accepted offset in the time between the seaFET measurement and the discrete sampling depends on the hydrology of the location. Strong currents could bring new seawater masses with different carbonate chemistry parameters.
-
-Talk about the different periodes of calibration and the fact that we use the mean of E0int25 and E0extt25 per periode of deployement for the next function.... 
-
-Note that the arguments can be given as a unique number or as vectors. If the lengths of the vectors are different, the longer vector is retained and only the first value of the other vectors is used. It can therefore be critical to use vectors of the same length.
+It is critical that Eint (calEint) and Eext (calEext) recorded by the SeaFET match reference sample measurements of temperature (calT), salinity (calSal), and spectrophotometric pH (calpH, total hydrogen ion scale) taken at the same time. Note that SeaFET temperature measurements may require calibration via an applied offset. When possible, calibrated CTD temperature and salinity measurements may be used, while spectrophotometric pH measurements always require discrete 'reference' water samples (unless in situ, certified, seawater-based, Tris pH buffer is used). The accepted time offset between collection of reference samples and SeaFET measurements depends on the hydrology and pH variability of the location. For detailed SeaFET calibration instructions and recommendations see Bresnahan et al. (2014) and Rivest et al. (2016).
 } 
 
 \value{
@@ -39,17 +31,12 @@ This function returns a dataframe comprising 2 variables:
 
 }
 \references{
-<<<<<<< HEAD
-Bresnahan, P. J. J., Martz, T. R., Takeshita, Y., Johnson, K. S. & LaShomb, M., 2014. Best practices for autonomous measurement of seawater pH with the Honeywell Durafet. \emph{Methods Oceanogr.} \bold{9}, 44–60.
+Bresnahan, P. J. J., Martz, T. R., Takeshita, Y., Johnson, K. S., and LaShomb, M., 2014. Best practices for autonomous measurement of seawater pH with the Honeywell Durafet. \emph{Methods Oceanogr.} \bold{9}, 44–60.
 
-Martz, T.R., Connery, J.G., Johnson, K.S., 2010. Testing the Honeywell Durafet for seawater pH applications. \emph{Limnol. Oceanogr. Meth.} \bold{8}, 172–184.
- }
-=======
-Martz, T.R., Connery, J.G., Johnson, K.S., 2010. Testing the Honeywell Durafet for seawater pH applications. Limnol. Oceanogr. Methods 8, 172–184. doi:10.4319/lom.2010.8.172
- 
-Bresnahan, P. J. J., Martz, T. R., Takeshita, Y., Johnson, K. S. & LaShomb, M.,2014. Best practices for autonomous measurement of seawater pH with the Honeywell Durafet. Methods Oceangr. 9, 44–60.
+Martz, T.R., Connery, J.G., and Johnson, K.S., 2010. Testing the Honeywell Durafet for seawater pH applications. \emph{Limnol. Oceanogr. Meth.} \bold{8}, 172–184.
+
+Rivest, E.B., O'Brien, M., Kapsenberg, L., Gotschalk, C.C., Blanchette, C.A., Hoshijima, U., and Hofmann, G.E., 2016. Beyond the benchtop and the benthos: dataset management planning and design for time series of ocean carbonate chemistry associated with Durafet®-based pH sensors. \emph{Ecological Informatics} \bold{36}, 209–220.
 }
->>>>>>> bba50e2406373ed29b0b65cf61b805f5d8b69dea
 
 \author{
 Samir Alliouane, Lydia Kapsenberg, Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
@@ -60,17 +47,18 @@ Samir Alliouane, Lydia Kapsenberg, Jean-Pierre Gattuso \email{gattuso@obs-vlfr.f
 }
 
 \examples{
-pHCalib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, calsal=35.6)
-<<<<<<< HEAD
+pHCalib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, calSal=35.6)
 
 ## Using the test file seaFET
 pHCalib(calEint=seaFET$Eint, calEext=seaFET$Eext, 
   calpH=seaFET$pHspectro, calT=seaFET$Temperature, 
-  calsal=seaFET$Salinity)
-=======
+  calSal=seaFET$Salinity)
+
 # There is a test file "seaFET".
 
-pHCalib(calEint=seaFET$Eint, calEext=seaFET$Eext, calpH=seaFET$pHspectro, calT=seaFET$Temperature, calsal=seaFET$Salinity)
->>>>>>> bba50e2406373ed29b0b65cf61b805f5d8b69dea
+pHCalib(calEint=seaFET$Eint, calEext=seaFET$Eext, 
+  calpH=seaFET$pHspectro, calT=seaFET$Temperature, 
+  calSal=seaFET$Salinity)
+
 }
 \keyword{utilities}
