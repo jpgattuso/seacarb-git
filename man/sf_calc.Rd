@@ -11,11 +11,6 @@ The function sf_calc() calculates pH time series (pHint_tot and pHext_tot) for S
 \usage{
 sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, 
   E0ext25=-1.46, calT=16.2, calSal=35.6)
-<<<<<<< HEAD
-=======
-sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, 
-  E0ext25=-1.46, calT=16.2, calSal=35.6)
->>>>>>> aa81c0e8cdcbe7d74e292e1017cca8ab7d17eaa1
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
