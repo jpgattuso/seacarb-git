@@ -10,8 +10,12 @@ The function sf_calc() calculates pH time series (pHint_tot and pHext_tot) for S
 
 \usage{
 sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, 
-E0ext25=-1.46, calT=16.2, calSal=35.6)
-sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, E0ext25=-1.46, calT=16.2, calSal=35.6)
+  E0ext25=-1.46, calT=16.2, calSal=35.6)
+<<<<<<< HEAD
+=======
+sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, 
+  E0ext25=-1.46, calT=16.2, calSal=35.6)
+>>>>>>> aa81c0e8cdcbe7d74e292e1017cca8ab7d17eaa1
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -34,11 +38,11 @@ This function returns a dataframe comprising 2 variables:
 
 }
 \references{
-Bresnahan, P. J. J., Martz, T. R., Takeshita, Y., Johnson, K. S., and LaShomb, M., 2014. Best practices for autonomous measurement of seawater pH with the Honeywell Durafet. \emph{Methods Oceanogr.} \bold{9}, 44–60.
+Bresnahan, P. J. J., Martz, T. R., Takeshita, Y., Johnson, K. S., and LaShomb, M., 2014. Best practices for autonomous measurement of seawater pH with the Honeywell Durafet. \emph{Methods Oceanogr.} \bold{9}, 44-60.
 
-Martz, T.R., Connery, J.G., and Johnson, K.S., 2010. Testing the Honeywell Durafet for seawater pH applications. \emph{Limnol. Oceanogr. Meth.} \bold{8}, 172–184.
+Martz, T.R., Connery, J.G., and Johnson, K.S., 2010. Testing the Honeywell Durafet for seawater pH applications. \emph{Limnol. Oceanogr. Meth.} \bold{8}, 172-184.
 
-Rivest, E.B., O'Brien, M., Kapsenberg, L., Gotschalk, C.C., Blanchette, C.A., Hoshijima, U., and Hofmann, G.E., 2016. Beyond the benchtop and the benthos: dataset management planning and design for time series of ocean carbonate chemistry associated with Durafet®-based pH sensors. \emph{Ecological Informatics} \bold{36}, 209–220.
+Rivest, E.B., O'Brien, M., Kapsenberg, L., Gotschalk, C.C., Blanchette, C.A., Hoshijima, U., and Hofmann, G.E., 2016. Beyond the benchtop and the benthos: dataset management planning and design for time series of ocean carbonate chemistry associated with Durafet(c)-based pH sensors. \emph{Ecological Informatics} \bold{36}, 209-220.
 }
 
 \author{
@@ -50,14 +54,10 @@ Samir Alliouane, Lydia Kapsenberg, Jean-Pierre Gattuso \email{gattuso@obs-vlfr.f
 }
 
 \examples{
-sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, E0ext25=-1.46, calT=16.2, calSal=35.6)
+sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, 
+  E0ext25=-1.46, calT=16.2, calSal=35.6)
 
 ## Using the test file seaFET
-sf_calc(calEint=seaFET$Eint, calEext=seaFET$Eext, 
-  E0int25=seaFET$E0int25, E0ext25=seaFET$E0ext25, 
-  calT=seaFET$Temperature, calSal=seaFET$Salinity)
-
-# There is a test file "seaFET".
 sf_calc(calEint=seaFET$Eint, calEext=seaFET$Eext, 
   E0int25=seaFET$E0int25, E0ext25=seaFET$E0ext25, 
   calT=seaFET$Temperature, calSal=seaFET$Salinity)
