@@ -1,13 +1,13 @@
 \encoding{latin1}
-\name{pHCalib}
-\alias{pHCalib}
+\name{sf_calib}
+\alias{sf_calib}
 
 \title{Calibration coefficients for seaFET sensor}
 \description{Calibration coefficients E0INT,25, E0EXT,25}
 \usage{
-pHCalib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, calSal=35.6)
+sf_calib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, calSal=35.6)
 
-pHCalib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, calSal=35.6)
+sf_calib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, calSal=35.6)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -47,16 +47,16 @@ Samir Alliouane, Lydia Kapsenberg, Jean-Pierre Gattuso \email{gattuso@obs-vlfr.f
 }
 
 \examples{
-pHCalib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, calSal=35.6)
+sf_calib(calEint=0.0865, calEext=-0.93, calpH=8.132, calT=16.2, calSal=35.6)
 
 ## Using the test file seaFET
-pHCalib(calEint=seaFET$Eint, calEext=seaFET$Eext, 
+sf_calib(calEint=seaFET$Eint, calEext=seaFET$Eext, 
   calpH=seaFET$pHspectro, calT=seaFET$Temperature, 
   calSal=seaFET$Salinity)
 
 # There is a test file "seaFET".
 
-pHCalib(calEint=seaFET$Eint, calEext=seaFET$Eext, 
+sf_calib(calEint=seaFET$Eint, calEext=seaFET$Eext, 
   calpH=seaFET$pHspectro, calT=seaFET$Temperature, 
   calSal=seaFET$Salinity)
 

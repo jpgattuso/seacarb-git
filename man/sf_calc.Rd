@@ -10,8 +10,9 @@ The function sf_calc() calculates pH time series (pHint_tot and pHext_tot) for S
 
 \usage{
 sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, 
-E0ext25=-1.46, calT=16.2, calSal=35.6)
-sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, E0ext25=-1.46, calT=16.2, calSal=35.6)
+  E0ext25=-1.46, calT=16.2, calSal=35.6)
+sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, 
+  E0ext25=-1.46, calT=16.2, calSal=35.6)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -50,7 +51,8 @@ Samir Alliouane, Lydia Kapsenberg, Jean-Pierre Gattuso \email{gattuso@obs-vlfr.f
 }
 
 \examples{
-sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, E0ext25=-1.46, calT=16.2, calSal=35.6)
+sf_calc(calEint=0.0865, calEext= -0.93, E0int25 =-0.39, 
+  E0ext25=-1.46, calT=16.2, calSal=35.6)
 
 ## Using the test file seaFET
 sf_calc(calEint=seaFET$Eint, calEext=seaFET$Eext, 
