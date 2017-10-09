@@ -2,7 +2,7 @@
 \name{derivnum}
 \alias{derivnum}
 \title{Numerical derivatives of seawater carbonate system variables}
-\description{Returns numerical derivatives  of the seawater carbonate system putput variables with respect to input variables.}
+\description{Returns numerical derivatives of the seawater carbonate system output variables with respect to input variables.}
 \usage{derivnum(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
        k1k2="x", kf="x", ks="d", pHscale="T", b="u74", gas="potential", warn="y", 
        eos = "eos80", long = 1e+20, lat = 1e+20)}
@@ -22,8 +22,13 @@ Possible values are:
 't', 'temp' or 'temperature' : temperature
 
 's', 'sal' or 'salinity'     : salinity
+
+'K0','K1','K2','Kb','Kw','Kspa' or 'Kspc' : one of the dissociation constants
+
+'bor' : total boron
 }
-\item{flag}{select the couple of variables available. The flags which can be used are:
+\item{flag}{select the input pair of carbonate-system variables
+  available by choosing the following flag:
 
 flag = 1      pH and CO2 given
 
