@@ -125,9 +125,12 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     neg_eSit <- eSit < 0
     eSit[neg_eSit] <- -eSit[neg_eSit]
     
+    # if eBt=NULL, set eBt equal to zero
+    if(is.null(eBt)) {eBt = 0.0}
+
     # if epK=NULL, set all pK errors to zero
     if(is.null(epK)) {epK = rep(0, 7)}
-
+  
     # Default value for epK
     if (missing(epK))
     {
