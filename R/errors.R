@@ -126,7 +126,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     eSit[neg_eSit] <- -eSit[neg_eSit]
     
     # if epK=NULL, set all pK errors to zero
-    if(is.null(epK)) {epK = c(0, 0, 0, 0, 0, 0, 0)}
+    if(is.null(epK)) {epK = rep(0, 7)}
 
     # Default value for epK
     if (missing(epK))
@@ -155,17 +155,17 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     {
         r0 <- r*0.0
         errs <- .errors_ga (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, r0, eS, eT, ePt, eSit,
-                epK, k1k2, kf, ks, pHscale, b, gas, warn, eos=eos, long=long, lat=lat)
+                epK, eBt, k1k2, kf, ks, pHscale, b, gas, warn, eos=eos, long=long, lat=lat)
     }
     else if (method == "mo")
     {
         errs <- .errors_ga (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, r, eS, eT, ePt, eSit,
-                epK, k1k2, kf, ks, pHscale, b, gas, warn, eos=eos, long=long, lat=lat)
+                epK, eBt, k1k2, kf, ks, pHscale, b, gas, warn, eos=eos, long=long, lat=lat)
     }
     else if (method == "mc")
     {
         errs <- .errors_mc (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, eS, eT, ePt, eSit,
-                epK, k1k2, kf, ks, pHscale, b, gas, runs, warn, eos=eos, long=long, lat=lat)
+                epK, eBt, k1k2, kf, ks, pHscale, b, gas, runs, warn, eos=eos, long=long, lat=lat)
     }
 
     return (errs)
@@ -223,7 +223,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
 
 .errors_ga <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, r=0, eS=0.01, eT=0.01,
-         ePt=0, eSit=0, epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y",
+         ePt=0, eSit=0, epK=NULL, eBt=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential",
+         warn="y",
          eos="eos80", long=1.e20, lat=1.e20)
 {
     # names of dissociation constants
@@ -362,25 +363,26 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     # Salinity and Temperature converted to EOS-80 (if necessary)
     SP    <- rep(NA, n)
     InsT  <- rep(NA, n)
+    
+    # if use of EOS-10 standard
+    if (eos == "teos10")
+    {
+        # Must convert temperature and salinity from TEOS-10 to EOS-80
+        # convert temperature: from Conservative (CT) to in-situ temperature
+        # and salinity from Absolute to Practical (SP)
+        STeos <- teos2eos_geo (S, T, P, long, lat)
+        InsT <- STeos$T
+        SP <- STeos$SP
+    }
+    else
+    {
+        InsT <- T
+        SP <- S
+    }
 
     # Preliminary calculations for dissociation constants
     if (any (epK != 0))
     {
-        # if use of EOS-10 standard
-        if (eos == "teos10")
-        {
-            # Must convert temperature and salinity from TEOS-10 to EOS-80
-            # convert temperature: from Conservative (CT) to in-situ temperature
-            # and salinity from Absolute to Practical (SP)
-            STeos <- teos2eos_geo (S, T, P, long, lat)
-            InsT <- STeos$T
-            SP <- STeos$SP
-        }
-        else
-        {
-            InsT <- T
-            SP <- S
-        }
 
         # Ks (free pH scale) at zero pressure and given pressure
         Ks_P0 <- Ks(S=SP, T=InsT, P=0, ks=ks, warn=warn)
@@ -615,7 +617,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 # It computes standard error on carbonate system output variables using Monte Carlo method.
 #
 # Input parameters :
-#   - evar1, evar2   :  standard error (or uncertainty) on var1 and var2 of input pair of carbonate system variables
+#   - evar0, evar2   :  standard error (or uncertainty) on var1 and var2 of input pair of carbonate system variables
 #   - eS, eT         :  standard error (or uncertainty) on Salinity and Temperature
 #   - ePt, eSit      :  standard error (or uncertainty) on Phosphorus and Silicon total inorganic concentrations
 #   - epK            :  standard error (or uncertainty) on all seven dissociation constants (a vector)
@@ -655,7 +657,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 #
 .errors_mc <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0,
-         epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", runs=10000, warn="y",
+         epK=NULL, eBt=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", runs=10000, warn="y",
          eos="eos80", long=1.e20, lat=1.e20)
 {
     # Constant table :  names of input pair variables sorted by flag number
