@@ -1,13 +1,13 @@
 # derivnum()
 # This subroutine computes partial derivatives of output carbonate variables 
-# with respect to input variables (two), plus nutrients (two), temperature and salinity
+# with respect to input variables (two), plus nutrients (two), temperature and salinity,
 # and dissociation constants.
 #
-# It uses the central difference method, which consists to : 
-# - introduce a small perturbation delta (plus or minus) in one input
-# - and compute the induced delta in output variables
+# It uses the central differences, which consists of  
+# - introducing a small perturbation delta (plus or minus) in one input
+# - and computing the induced delta in output variables
 #
-# The ratio between delta and input value is chosen so : 
+# The ratio between delta and input value is chosen as follows: 
 #    for perturbing input pair :  a constant which depends on the type of input pair of variables.
 #    for perturbing nutrients  :  1.e-6
 #    for perturbing T and S    :  1.e-3

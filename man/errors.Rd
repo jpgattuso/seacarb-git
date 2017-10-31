@@ -68,15 +68,16 @@ flag = 25     pCO2 and DIC given
 \item{P}{Hydrostatic pressure in bar (surface = 0)}
 \item{Pt}{Concentration of total dissolved inorganic phosphorus (mol/kg); set to 0 if NA}
 \item{Sit}{Concentration of total dissolved inorganic silicon (mol/kg); set to 0 if NA}
-\item{evar1}{Standard error (uncertainty) in var1 of input pair of carbonate system variables}
-\item{evar2}{Standard error (uncertainty) in var2 of input pair of carbonate system variables}
-\item{eS}{Standard error (uncertainty) in salinity; default is 0.01}
-\item{eT}{Standard error (uncertainty) in temperature (degree C); default is 0.01}
-\item{ePt}{Standard error (uncertainty) in total dissolved inorganic phosphorus concentration (mol/kg)}
-\item{eSit}{Standard error (uncertainty)in total dissolved inorganic silicon concentration (mol/kg)}
-\item{epK}{Standard error (uncertainty) in 7 key dissociation constants: pK0, pK1, pK2, pKb, pKw, pKspa and pKspc. This is a vector. The default is c(0.004, 0.015, 0.03, 0.01, 0.01, 0.02, 0.02).)
-\item{eBt}{Standard error (uncertainty)in total boron, given as a relative fractional error (0.01 is a 1\% error}
-\item{method}{Case insensitive character string : choice of error-propagation method: 1) Gaussian, 
+\item{evar1}{Error (uncertainty) in var1 of input pair of carbonate system variables}
+\item{evar2}{Error (uncertainty) in var2 of input pair of carbonate system variables}
+\item{eS}{Error (uncertainty) in salinity; default is 0.01}
+\item{eT}{Error (uncertainty) in temperature (degree C); default is 0.01}
+\item{ePt}{Error (uncertainty) in total dissolved inorganic phosphorus concentration (mol/kg)}
+\item{eSit}{Error (uncertainty) in total dissolved inorganic silicon concentration (mol/kg)}
+\item{epK}{Error (uncertainty) in 7 key dissociation constants: pK0, pK1, pK2, pKb, pKw, pKspa and pKspc. This is a vector. The default is c(0.004, 0.015, 0.03, 0.01, 0.01, 0.02, 0.02).)
+\item{eBt}{Error (uncertainty) in total boron, given as a
+  relative fractional error. The default is 0.01, which equates to a 1\% error}
+\item{method}{Case insensitive character string to choose the error-propagation method: 1) Gaussian, 
 2) Method of Moments, or 3) Monte Carlo).\cr
 These methods are specified using the 2-letter codes "ga", "mo", or "mc", respectively. The default is "ga" (Gaussian).}
 \item{r}{Correlation coefficient between uncertainties of var1 and var2 (only useful with method="mo",
@@ -89,13 +90,27 @@ i.e., ignored for the 2 other methods, the default is r=0.0}
 \item{b}{Concentration of total boron. "l10" for the Lee et al. (2010) formulation or "u74" for the Uppstrom (1974) formulation, default is "u74" }
 \item{gas}{used to indicate the convention for INPUT pCO2, i.e., when it is an input variable (flags 21 to 25): "insitu" indicates it is referenced to in situ pressure and in situ temperature; "potential" indicates it is referenced to 1 atm pressure and potential temperature; and "standard" indicates it is referenced to 1 atm pressure and in situ temperature. All three options should give identical results at surface pressure. This option is not used when pCO2 is not an input variable (flags 1 to 15). The default is "potential".}
 \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
-\item{eos}{"teos" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos" to specify T and S according to EOS-80.}
-\item{long}{longitude of data point, used when eos parameter is "teos" as a conversion parameter from absolute to practical salinity.}
-\item{lat}{latitude of data point, used when eos parameter is "teos".}
+\item{eos}{"teos10" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos80" to specify T and S according to EOS-80.}
+\item{long}{longitude of data point, used when eos parameter is "teos10" as a conversion parameter from absolute to practical salinity.}
+\item{lat}{latitude of data point, used when eos parameter is "teos10".}
 }
 
 \details{
-This function propagates error from input to output variables using one of three methods: 
+This function requires users to specify each input uncertainty as either
+the standard deviation or the standard error of the mean. The latter
+implies much smaller propagated uncertainties, but is appropriate only
+when interested in the error in the mean, not the error of a given
+measurement. Beware that it is easy to fool oneself when using the
+standard error of the mean rather than the standard deviation.
+
+This function requires different types of uncertainties:
+\itemize{
+\item absolute uncertainties for evar1, evar2, eS, eT, ePt, eSit (same units as the input data, e.g., mol/kg);
+\item uncertainties in pK units for epK; and
+\item uncertainties in relative fractional units (between 0.0 and 1.0) for eBt.
+}
+
+This function propagates uncertainties from input to output variables using one of three methods: 
 \itemize{
 \item Gaussian:
      The Gaussian method is the standard technique for estimating a
@@ -229,7 +244,7 @@ Jean-Marie Epitalon, James Orr, and Jean-Pierre Gattuso\email{gattuso@obs-vlfr.f
 
 ## 1) For the input pair ALK and DIC (var1 and var2 when flag=15),
 ## compute resulting uncertainty from given uncertainty on ALK and DIC (5 umol/kg)
-## and default uncertainty in dissociation constants
+## and default uncertainties in dissociation constants and total boron
 ## using the default method (Gaussian)
 errors(flag=15, var1=2300e-6, var2=2000e-6, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0, 
        evar1=5e-6, evar2=5e-6, eS=0, eT=0, ePt=0, eSit=0, 
@@ -261,7 +276,7 @@ errors(flag=8, var1=8.25, var2=2300e-6,  S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,
 ## nor in the dissociation constants BUT a perfect anticorrelation between pCO2 and pH,
 ## (the input pair) using the Method of moments:
 errors(flag=21, var1=400, var2=8.1,  S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0, 
-       evar1=2, evar2=0.005, eS=0, eT=0, ePt=0.0, eSit=0, epK=0, 
+       evar1=2, evar2=0.005, eS=0, eT=0, ePt=0.0, eSit=0, epK=0, eBt=0, 
        method="mo", r=-1.0, pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
 
 ## 5) Use vectors as arguments and compute errors on all output variables
@@ -278,7 +293,7 @@ Sit <- 0
 evar1 <- c(0.005, 2e-6, 0.005)
 evar2 <- c(2e-6, 2e-6, 2e-6)
 epKx <- c(0.002, 0.01, 0.02, 0.01, 0.01, 0.01, 0.01)
-eBtx = 0.02
+eBtx = 0.01
 method <- "mc"
 kf <- "pf"
 k1k2 <- "l"

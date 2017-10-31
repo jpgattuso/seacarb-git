@@ -366,8 +366,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     # Salinity and Temperature converted to EOS-80 (if necessary)
     SP    <- rep(NA, n)
     InsT  <- rep(NA, n)
-    
-    # if use of EOS-10 standard
+ 
+    # if use of TEOS-10 standard
     if (eos == "teos10")
     {
         # Must convert temperature and salinity from TEOS-10 to EOS-80
