@@ -1,10 +1,10 @@
 \encoding{latin1}
 \name{pHinsi}
 \alias{pHinsi}
-\title{pH at in situ temperature}
-\description{pH at in situ temperature}
+\title{pH at in situ temperature and pressure}
+\description{pH at in situ temperature and pressure}
 \usage{
-pHinsi(pH=8.2, ALK=2.4e-3, Tinsi=20, Tlab=25, S=35, Pt=0, Sit=0, 
+pHinsi(pH=8.2, ALK=2.4e-3, Tinsi=20, Tlab=25, Pinsi=0, S=35, Pt=0, Sit=0, 
   k1k2 = "x", kf = "x", ks="d", pHscale = "T", b="u74", eos = "eos80", 
   long = 1e+20, lat = 1e+20)
 }
@@ -14,6 +14,7 @@ pHinsi(pH=8.2, ALK=2.4e-3, Tinsi=20, Tlab=25, S=35, Pt=0, Sit=0,
   \item{ALK}{ALK, total alkalinity (mol/kg)}
   \item{Tinsi}{In situ temperature in degrees Celsius}
   \item{Tlab}{Measurement temperature in degrees Celsius}
+  \item{Pinsi}{In situ hydrostatic pressure in bar (surface = 0)}
   \item{S}{Salinity}
   \item{Pt}{value of the concentration of total phosphate in mol/kg}
   \item{Sit}{the value of the total silicate in mol/kg}
@@ -28,7 +29,7 @@ pHinsi(pH=8.2, ALK=2.4e-3, Tinsi=20, Tlab=25, S=35, Pt=0, Sit=0,
 }
 
 \value{
-  \item{pH}{pH at in situ temperature}
+  \item{pH}{pH at in situ temperature and pressure}
 }
 
 \details{The Lueker et al. (2000) constants for K1 and K2, the Perez and Fraga (1987) constant for Kf and the Dickson (1990) constant for Ks are recommended by Dickson et al. (2007). It is, however, critical to consider that each formulation is only valid for specific ranges of temperature and salinity:
@@ -98,7 +99,7 @@ Jean-Pierre Gattuso, \email{gattuso@obs-vlfr.fr}
 %\seealso{	\code{\link{carb}}}
 
 \examples{
-  pHinsi(pH=8.2,ALK=2.4e-3,Tinsi=25,Tlab=25,S=35,Pt=0,Sit=0)
+  pHinsi(pH=8.2,ALK=2.4e-3,Tinsi=25,Tlab=25,Pinsi=200,S=35,Pt=0,Sit=0)
 }
 
 \keyword{utilities}
