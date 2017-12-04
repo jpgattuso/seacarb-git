@@ -2,7 +2,7 @@
 \name{buffesm}
 \alias{buffesm}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Buffer capacities of the seawater carbonate system as defined by Egleston et al. (2010)}
+\title{Buffer capacities of the seawater carbonate system from Egleston et al. (2010), corrected and enhanced}
 \description{Returns the six buffer factors of the seawater carbonate system as defined by Egleston, Sabine and Morel (2010), denoted here as ESM. Also returns the classic Revelle factor (relative change in pCO2 over that for DIC). In ESM, there are errors in the equations in Table 1 for \eqn{S}, \eqn{\Omega_{DIC}}, and \eqn{\Omega_{Alk}}. These errors have been corrected here.  The results of this routine have been validated: when input concentrations of Pt and Sit are set to zero, they produce results that are identical to those shown in ESM's Fig. 2. But when Pt and Sit are nonzero, contributions from phosphoric and silicic acid systems are taken into account, an improvement to the Egleston et al. (2010) approach. This routine was inspired and adapted from seacarb's ``buffer'' function. Its input arguments are indentical to those in the ``buffer'' and ``carb'' functions of seacarb.}
 \usage{
 buffesm(flag, var1, var2, S = 35, T = 25, Patm = 1, P = 0, Pt = 0, Sit = 0, 
@@ -66,10 +66,10 @@ flag = 25     pCO2 and DIC given
 	\item{ks}{"d" for using Ks from Dickon (1990), "k" for using Ks from Khoo et al. (1977), default is "d"} 
 	\item{pHscale}{choice of pH scale: "T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
 	\item{b}{Concentration of total boron. "l10" for the Lee et al. (2010) formulation or "u74" for the Uppstrom (1974) formulation, default is "u74" }
-  \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
-    \item{eos}{"teos" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos" to specify T and S according to EOS-80.}
-  \item{long}{longitude of data point, used when eos parameter is "teos" as a conversion parameter from absolute to practical salinity.}
-  \item{lat}{latitude of data point, used when eos parameter is "teos".}
+        \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
+        \item{eos}{"teos10" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos80" to specify T and S according to EOS-80.}
+        \item{long}{longitude of data point, used when eos parameter is "teos10" as a conversion parameter from absolute to practical salinity.}
+        \item{lat}{latitude of data point, used when eos parameter is "teos10".}
 }
 
 
