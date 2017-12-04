@@ -2,7 +2,7 @@
 \name{derivnum}
 \alias{derivnum}
 \title{Numerical derivatives of seawater carbonate system variables}
-\description{Returns numerical derivatives  of the seawater carbonate system putput variables with respect to input variables.}
+\description{Returns numerical derivatives of the seawater carbonate system output variables with respect to input variables.}
 \usage{derivnum(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
        k1k2="x", kf="x", ks="d", pHscale="T", b="u74", gas="potential", warn="y", 
        eos = "eos80", long = 1e+20, lat = 1e+20)}
@@ -22,8 +22,13 @@ Possible values are:
 't', 'temp' or 'temperature' : temperature
 
 's', 'sal' or 'salinity'     : salinity
+
+'K0','K1','K2','Kb','Kw','Kspa' or 'Kspc' : one of the dissociation constants
+
+'bor' : total boron
 }
-\item{flag}{select the couple of variables available. The flags which can be used are:
+\item{flag}{select the input pair of carbonate-system variables
+  available by choosing the following flag:
 
 flag = 1      pH and CO2 given
 
@@ -80,9 +85,9 @@ flag = 25     pCO2 and DIC given
 \item{b}{Concentration of total boron. "l10" for the Lee et al. (2010) formulation or "u74" for the Uppstrom (1974) formulation, default is "u74" }
  \item{gas}{used to indicate the convention for INPUT pCO2, i.e., when it is an input variable (flags 21 to 25): "insitu" indicates it is referenced to in situ pressure and in situ temperature; "potential" indicates it is referenced to 1 atm pressure and potential temperature; and "standard" indicates it is referenced to 1 atm pressure and in situ temperature. All three options should give identical results at surface pressure. This option is not used when pCO2 is not an input variable (flags 1 to 15). The default is "potential".}
   \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
-    \item{eos}{"teos" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos" to specify T and S according to EOS-80.}
-  \item{long}{longitude of data point, used when eos parameter is "teos" as a conversion parameter from absolute to practical salinity.}
-  \item{lat}{latitude of data point, used when eos parameter is "teos".}
+    \item{eos}{"teos10" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos80" to specify T and S according to EOS-80.}
+  \item{long}{longitude of data point, used when eos parameter is "teos10" as a conversion parameter from absolute to practical salinity.}
+  \item{lat}{latitude of data point, used when eos parameter is "teos10".}
 }
 
 \details{

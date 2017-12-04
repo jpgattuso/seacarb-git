@@ -91,7 +91,7 @@ function(S=35,T=25,P=0, ks="d",warn="y"){
     ##------------Warnings
 
     is_w <- warn == "y"
-
+    
     if (any (is_w & is_k & (T<5 | T>40 | S<20 | S>45)))
         {warning("S and/or T is outside the range of validity of the formulation chosen for Ks.")}
 	
