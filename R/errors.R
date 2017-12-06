@@ -483,7 +483,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 }
 
 
-# Function that generates deviate values for dissoc. constants Kx from given error on pKx
+# Function that generates deviate values for dissoc. constants Kx from given error on pKx (and same for Bt from eBt)
 #
 # Special case for K0 :
 #    This function generates a set of small deltas departing from 0 whose distribution is close to normal
@@ -507,7 +507,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 #   each column contains deviate delta values of one dissociation constant
 #   column length is n * runs
 #
-.gen_delta_Kx <- function (epK, eBt, S, T, P, Patm, pHscale, k1k2, kf, ks, runs, warn="y")
+.gen_delta_Kx <- function (epK, eBt, S, T, P, Patm, pHscale, k1k2, kf, ks, b, runs, warn="y")
 {
     n <- length(S)
 
@@ -747,7 +747,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     # Generate deviate delta values for K0
     # Generate deviate values for other dissoc. constants Kx
     # Note : use of Salinity and Temperature converted to EOS-80 as they are when routine carb() computes dissociation constants  
-    spl_Kx <- .gen_delta_Kx (epK, eBt, S=SP, T=InsT, P, Patm, pHscale, k1k2, kf, ks, runs, warn=warn)
+    spl_Kx <- .gen_delta_Kx (epK, eBt, S=SP, T=InsT, P, Patm, pHscale, k1k2, kf, ks, b, runs, warn=warn)
 
     # All other parameters and variables
     spl_flag <- rep (flag, each=runs)
