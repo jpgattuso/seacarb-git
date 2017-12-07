@@ -1,3 +1,7 @@
+version 3.2.4 2017-12-07
+-----------------------------------
+- Update: errors.R and derivnum.R modified so that the user can specify the error on total boron (eBt) as a separate argument when calculating errors. Thanks to Jim Orr.
+
 version 3.2.3 2017-11-17
 -----------------------------------
 - Update: pHinsi modified in order to correct for both in situ temperature (as before) and pressure (newly added).

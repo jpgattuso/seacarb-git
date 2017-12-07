@@ -2,12 +2,14 @@
 \name{errors}
 \alias{errors}
 \title{Error propagation for computed marine carbonate system variables}
-\description{Estimates uncertainties in computed carbonate system variables by propagating standard error (uncertainty) in six input variables, including
-  * the input pair of carbonate system variables, 
-  * the 2 input nutrients (silicate and phosphate concentrations),
-  * temperature and salinity. It also accounts for
-  * the errors in the key dissociation constants pK0, pK1, pK2, pKb, pKw, pKspa and pKspc, as well as
-  * the error in total boron.
+\description{Estimates uncertainties in computed carbonate system variables by propagating standard error (uncertainty) in six input variables, including:
+\itemize{
+\item the input pair of carbonate system variables, 
+\item the 2 input nutrients (silicate and phosphate concentrations),
+\item temperature and salinity. It also accounts for
+\item the errors in the key dissociation constants pK0, pK1, pK2, pKb, pKw, pKspa and pKspc
+\item the error in total boron
+}
 }
 \usage{errors(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
               evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, 
