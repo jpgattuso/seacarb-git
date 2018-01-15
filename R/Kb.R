@@ -93,9 +93,8 @@ function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y"){
 
     
     ##------------Warnings
-
     is_w <- warn == "y"
-
+    
     if (any (is_w & (T>45 | S>45 | T<0 | S<5)) ) {warning("S and/or T is outside the range of validity of the formulation available for Kb in seacarb.")}
 
 

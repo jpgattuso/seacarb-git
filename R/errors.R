@@ -63,7 +63,8 @@
 #
 errors <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
-         evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=c(0.002, 0.01, 0.02, 0.01, 0.01, 0.02, 0.02), 
+         evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=c(0.004, 0.015, 0.03, 0.01, 0.01, 0.02, 0.02),
+         eBt=0.01,
          method="ga", r=0, runs=10000, 
          k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y", eos="eos80", long=1.e20, lat=1.e20)
 {
@@ -82,7 +83,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     if (eos != "teos10" && eos != "eos80")
         stop ("invalid parameter eos: ", eos)
 
-    # Input conditionning
+    # Input conditioning
     # -------------------
     
     n <- max(length(flag), length(var1), length(var2), length(S), length(T), length(P), length(Pt), length(Sit), 
@@ -96,6 +97,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     if(length(Patm)!=n){Patm <- rep(Patm[1],n)}
     if(length(P)!=n){P <- rep(P[1],n)}
     if(length(Pt)!=n){Pt <- rep(Pt[1],n)}
+    if(length(Sit)!=n){Sit <- rep(Sit[1],n)}
     if(length(evar1)!=n){evar1 <- rep(evar1[1],n)}
     if(length(evar2)!=n){evar2 <- rep(evar2[1],n)}
     if(length(r)!=n){r <- rep(r[1],n)}
@@ -123,13 +125,16 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     neg_eSit <- eSit < 0
     eSit[neg_eSit] <- -eSit[neg_eSit]
     
-    # if epK=NULL, set all pK errors to zero
-    if(is.null(epK)) {epK = c(0, 0, 0, 0, 0, 0, 0)}
+    # if eBt=NULL, set eBt equal to zero
+    if(is.null(eBt)) {eBt = 0.0}
 
+    # if epK=NULL, set all pK errors to zero
+    if(is.null(epK)) {epK = rep(0, 7)}
+  
     # Default value for epK
     if (missing(epK))
     {
-        epK <- c(0.002, 0.01, 0.02, 0.01, 0.01, 0.02, 0.02)
+        epK <- c(0.004, 0.015, 0.03, 0.01, 0.01, 0.02, 0.02)
     }
     else
     {
@@ -153,17 +158,17 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     {
         r0 <- r*0.0
         errs <- .errors_ga (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, r0, eS, eT, ePt, eSit,
-                epK, k1k2, kf, ks, pHscale, b, gas, warn, eos=eos, long=long, lat=lat)
+                epK, eBt, k1k2, kf, ks, pHscale, b, gas, warn, eos=eos, long=long, lat=lat)
     }
     else if (method == "mo")
     {
         errs <- .errors_ga (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, r, eS, eT, ePt, eSit,
-                epK, k1k2, kf, ks, pHscale, b, gas, warn, eos=eos, long=long, lat=lat)
+                epK, eBt, k1k2, kf, ks, pHscale, b, gas, warn, eos=eos, long=long, lat=lat)
     }
     else if (method == "mc")
     {
         errs <- .errors_mc (flag, var1, var2, S, T, Patm, P, Pt, Sit, evar1, evar2, eS, eT, ePt, eSit,
-                epK, k1k2, kf, ks, pHscale, b, gas, runs, warn, eos=eos, long=long, lat=lat)
+                epK, eBt, k1k2, kf, ks, pHscale, b, gas, runs, warn, eos=eos, long=long, lat=lat)
     }
 
     return (errs)
@@ -221,7 +226,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
 
 .errors_ga <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, r=0, eS=0.01, eT=0.01,
-         ePt=0, eSit=0, epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y",
+         ePt=0, eSit=0, epK=NULL, eBt=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential",
+         warn="y",
          eos="eos80", long=1.e20, lat=1.e20)
 {
     # names of dissociation constants
@@ -360,25 +366,26 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     # Salinity and Temperature converted to EOS-80 (if necessary)
     SP    <- rep(NA, n)
     InsT  <- rep(NA, n)
+ 
+    # if use of TEOS-10 standard
+    if (eos == "teos10")
+    {
+        # Must convert temperature and salinity from TEOS-10 to EOS-80
+        # convert temperature: from Conservative (CT) to in-situ temperature
+        # and salinity from Absolute to Practical (SP)
+        STeos <- teos2eos_geo (S, T, P, long, lat)
+        InsT <- STeos$T
+        SP <- STeos$SP
+    }
+    else
+    {
+        InsT <- T
+        SP <- S
+    }
 
     # Preliminary calculations for dissociation constants
     if (any (epK != 0))
     {
-        # if use of EOS-10 standard
-        if (eos == "teos10")
-        {
-            # Must convert temperature and salinity from TEOS-10 to EOS-80
-            # convert temperature: from Conservative (CT) to in-situ temperature
-            # and salinity from Absolute to Practical (SP)
-            STeos <- teos2eos_geo (S, T, P, long, lat)
-            InsT <- STeos$T
-            SP <- STeos$SP
-        }
-        else
-        {
-            InsT <- T
-            SP <- S
-        }
 
         # Ks (free pH scale) at zero pressure and given pressure
         Ks_P0 <- Ks(S=SP, T=InsT, P=0, ks=ks, warn=warn)
@@ -420,7 +427,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
             eKi <- - epK[i] * Ki * log(10)
 
             # Compute sensitivities (partial derivatives)
-            # No need to pass option "eos" since conversion to eos has been done
+            # No need to pass option "eos" since conversion to eos has been done already
             deriv <- derivnum (Knames[i], flag, var1, var2, S=SP, T=InsT, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
                 pHscale=pHscale, b=b, gas=gas, warn=warn)
             err <- deriv * eKi
@@ -428,6 +435,18 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         }
     }
 
+    # Contribution of Total Boron (computed from Bt/S ratio) to squared standard error
+    if (eBt != 0.0)
+    {
+        # Compute sensitivities (partial derivatives)
+        deriv <- derivnum ('bor', flag, var1, var2, S=SP, T=InsT, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
+                           pHscale=pHscale, b=b, gas=gas, warn=warn)
+        # err is derivative * absolute error in boron (i.e., eBt=0.01 is a 1% error)
+        err <- deriv * bor(S=S, b=b) * eBt  
+        sq_err <- sq_err + err * err
+    }
+
+    
     # Compute resulting total error (or uncertainty)
     error <- sqrt (sq_err)
 
@@ -464,7 +483,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 }
 
 
-# Function that generates deviate values for dissoc. constants Kx from given error on pKx
+# Function that generates deviate values for dissoc. constants Kx from given error on pKx (and same for Bt from eBt)
 #
 # Special case for K0 :
 #    This function generates a set of small deltas departing from 0 whose distribution is close to normal
@@ -488,11 +507,16 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 #   each column contains deviate delta values of one dissociation constant
 #   column length is n * runs
 #
-.gen_delta_Kx <- function (epK, S, T, P, Patm, pHscale, k1k2, kf, ks, runs, warn="y")
+.gen_delta_Kx <- function (epK, eBt, S, T, P, Patm, pHscale, k1k2, kf, ks, b, runs, warn="y")
 {
     n <- length(S)
+
+    # For convenience, add eBt (fractional absolute err in Bt) to
+    # end of epK vector (errors on K values in terms of pK)
+    epKplus <- c(epK, eBt)
+
     # names of dissociation constants
-    Knames <- c ('K0','K1','K2','Kb','Kw','Kspa', 'Kspc')
+    Kplusnames <- c ('K0','K1','K2','Kb','Kw','Kspa', 'Kspc', 'bor')
 
     # Initalise output data frame
     nrows <- n * runs
@@ -538,7 +562,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     kSWS2chosen [pHscale == "F"] <- conv$kSWS2free [pHscale == "F"]  
 
     # Convert error on pKi to error on Ki
-    for (i in 1:length(epK))
+    for (i in 1:length(epKplus))
     {
         # Compute Ki
         Ki <- switch (i,
@@ -548,7 +572,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
                       seacarb::Kb(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0),
                       seacarb::Kw(S=S, T=T, P=P, pHscale=pHscale, kSWS2chosen),
                       seacarb::Kspa(S=S, T=T, P=P),
-                      seacarb::Kspc(S=S, T=T, P=P)
+                      seacarb::Kspc(S=S, T=T, P=P),
+                      seacarb::bor(S=S, b=b)
                       )
         if (i == 1)
             center_value = 0.0    # special case for K0
@@ -556,10 +581,15 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
             center_value = Ki
 
         # if error on Ki is given
-        if (epK[i] != 0.0)
+        if (epKplus[i] != 0.0)
         {
             # compute error (not signed) on Ki from that on pKi
-            eKi <- epK[i] * Ki * log(10)
+            if ( i == 8 ) 
+            {
+                eKi <-  epKplus[i] * Ki
+            } else {
+                eKi <-  epKplus[i] * Ki * log(10)
+            }
             # Generate deviate values for Ki or deltas for K0
             spl_Ki <- mapply (gen_sim, center_value, eKi)
             # Reshape samples from 2D matrix to vector
@@ -572,7 +602,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         }
 
         # Store (deviate) values for Ki in a data frame column
-        Kname <- Knames[i]
+        Kname <- Kplusnames[i]
         delta_Kx[[Kname]] <- spl_Ki
     }
     return (delta_Kx)
@@ -590,21 +620,25 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 # It computes standard error on carbonate system output variables using Monte Carlo method.
 #
 # Input parameters :
-#   - evar1, evar2   :  standard error (or uncertainty) on var1 and var2 of input pair of carbonate system variables
+#   - evar0, evar2   :  standard error (or uncertainty) on var1 and var2 of input pair of carbonate system variables
 #   - eS, eT         :  standard error (or uncertainty) on Salinity and Temperature
 #   - ePt, eSit      :  standard error (or uncertainty) on Phosphorus and Silicon total inorganic concentrations
 #   - epK            :  standard error (or uncertainty) on all seven dissociation constants (a vector)
+#   - eBt            :  standard error (or uncertainty) on total boron (relative factional error, e.g. eBt=0.01 is a 1% error in total boron
+
 #   - runs           :  number of runs of Monte Carlo (= number of simulated samples)
 #                       default is 10000
 #   - others         :  same as input of subroutine  carb() : scalar or vectors
 #
-# All parameters may be scalars or vectors except epK, method, runs and gas.
-#   * runs and gas must be scalars
-#   * epK must be vector of seven values : errors of pK0, pK1, pK2, pKb, pKw, pKspa and pKspc
-#     these errors are assumed to be equal for all input data.
+# All parameters may be scalars or vectors except epK, eBt, method, runs, and gas.
+#   * runs must be a scalar
+#   * gas and method must each be a character string
+#   * epK must be a vector of seven values : errors of pK0, pK1, pK2, pKb, pKw, pKspa and pKspc
+#   * eBt must be a scalar : error in total boron, e.g. eBt=0.01 is a 1% error 
+#     These 3 types of errors are assumed to be the same for all input data.
 #
-# In constrast, for evar1, evar2, eS, eT, ePt and eSit,\cr
-#   - if they are vectors, they represent errors associated with each data point\cr
+# In constrast, for evar1, evar2, eS, eT, ePt and eSit:
+#   - if they are vectors, they represent errors associated with each data point
 #   - if they are scalars, they represent one error value each associated to all data points
 #
 # Returns a 2-dimensional data-frame, with the folowing columns :
@@ -626,7 +660,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 #
 .errors_mc <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0,
-         epK=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", runs=10000, warn="y",
+         epK=NULL, eBt=NULL, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", runs=10000, warn="y",
          eos="eos80", long=1.e20, lat=1.e20)
 {
     # Constant table :  names of input pair variables sorted by flag number
@@ -713,7 +747,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     # Generate deviate delta values for K0
     # Generate deviate values for other dissoc. constants Kx
     # Note : use of Salinity and Temperature converted to EOS-80 as they are when routine carb() computes dissociation constants  
-    spl_Kx <- .gen_delta_Kx (epK, S=SP, T=InsT, P, Patm, pHscale, k1k2, kf, ks, runs, warn=warn)
+    spl_Kx <- .gen_delta_Kx (epK, eBt, S=SP, T=InsT, P, Patm, pHscale, k1k2, kf, ks, b, runs, warn=warn)
 
     # All other parameters and variables
     spl_flag <- rep (flag, each=runs)
@@ -742,13 +776,14 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         return (out)
     }
     # General case : all other
-    # The function return precalculated deviate values
+    # 'function' returns precalculated deviate values
     K1 <- function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0, warn="y")  spl_Kx$K1
     K2 <- function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0, warn="y")  spl_Kx$K2
     Kw <- function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0, warn="y")  spl_Kx$Kw
     Kb <- function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0, warn="y")  spl_Kx$Kb
     Kspa <- function(S=35,T=25,P=0, warn="y")  spl_Kx$Kspa
     Kspc <- function(S=35,T=25,P=0, warn="y")  spl_Kx$Kspc
+    bor <- function(S=35,b="u74")  spl_Kx$bor
 
     # Note : in the general case (K1, K2,...) the function Kx is called once by the function carb()
     #        We can calculate in anticipation deviate values and substitute real values with deviate ones
