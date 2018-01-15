@@ -15,11 +15,11 @@ nK <- max(length(calEint), length(calEext), length(calpH), length(calT), length(
 
     ##-------- Creation de vecteur pour toutes les entrees (si vectorielles)
     
-    if(length(calEint)!=nK){S <- rep(S[1], nK)}
-    if(length(calEext)!=nK){T <- rep(T[1], nK)}
-    if(length(calpH)!=nK){P <- rep(P[1], nK)}
-    if(length(calT)!=nK){P <- rep(P[1], nK)}
-    if(length(calSal)!=nK){P <- rep(P[1], nK)}
+    if(length(calEint)!=nK){calEint <- rep(S[1], nK)}
+    if(length(calEext)!=nK){calEext <- rep(T[1], nK)}
+    if(length(calpH)!=nK){calpH <- rep(P[1], nK)}
+    if(length(calT)!=nK){calT <- rep(P[1], nK)}
+    if(length(calSal)!=nK){calSal <- rep(P[1], nK)}
     
     # --------------------- sf_calib ----------------------------
     
