@@ -28,7 +28,7 @@ buffergen <- function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1
   if(length(ks)!=n){ks <- rep(ks[1],n)}
   if(length(pHscale)!=n){pHscale <- rep(pHscale[1],n)}
   if(length(b)!=n){b <- rep(b[1],n)}
-  #if(length(gas)!=n){gas <- rep(gas[1],n)}
+  if(length(gas)!=n){gas <- rep(gas[1],n)}
   if(length(NH4t)!=n){NH4t <- rep(NH4t[1],n)}
   if(length(HSt)!=n){HSt <- rep(HSt[1],n)}
   
@@ -40,8 +40,7 @@ buffergen <- function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1
   HSt[is.na(HSt)] <- 0
   
   # Calculate acid-base speciation
-  Carbfull <- carbfull(flag=flag, var1=var1, var2=var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b,
-                   gas=gas, NH4t=NH4t, HSt=HSt)
+  Carbfull <- carbfull(flag=flag, var1=var1, var2=var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, NH4t=NH4t, HSt=HSt)
 
   #---------------------------------------------------------------------
   #--------------------    buffer effects    ---------------------------

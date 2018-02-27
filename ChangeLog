@@ -1,11 +1,16 @@
+version 3.2.6 2018-02-27
+-----------------------------------
+- Update: carbfull
+
 version 3.2.5 2018-02-09
 -----------------------------------
+version not released
 - Update: buffergen help file
 
 version 3.2.4 2017-12-07
 -----------------------------------
 - Update: errors.R and derivnum.R modified so that the user can specify the error on total boron (eBt) as a separate argument when calculating errors. Thanks to Jim Orr.
-- Update: sf_calib and sf_calc; bugs of length of input variables correction fixed. Thanks to Umihiko Hoshijima.  
+- Update: sf_calib and sf_calc; bugs of length of input variables correction fixed. Thanks to Umihiko Hoshijima.
 
 version 3.2.3 2017-11-17
 -----------------------------------
