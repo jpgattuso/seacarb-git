@@ -748,16 +748,14 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
 
     # ------------ Compute fCO2 for cases 21 to 25 (pCO2, pCO2pot or pCO2insitu is an input variable)
     # Indices of flag elements where 21 <= flag <= 25
-    i_flag <- which (flag >= 21 & flag <= 25)
 
+    # gas == "insitu"
+    i_flag <- which (flag >= 21 & flag <= 25)
     tk    <- TK[i_flag]     
     tkp   <- theta(S=S[i_flag], T=T[i_flag], P=P[i_flag], Pref=0) + 273.15       #Potential temperature in Kelvin
     B     <- -1636.75 + 12.0408*tk  - 0.0327957*(tk*tk)   + 0.0000316528*(tk*tk*tk);
-    Bpot  <- -1636.75 + 12.0408*tkp - 0.0327957*(tkp*tkp) + 0.0000316528*(tkp*tkp*tkp);
-
-    if(gas=="insitu")
-    {
-      # From in situ pCO2 (in situ T, atm + hydro P), compute potential and standard fCO2 and pCO2
+    Bpot  <- -1636.75 + 12.0408*tkp - 0.0327957*(tkp*tkp) + 0.0000316528*(tkp*tkp*tkp)
+    # From in situ pCO2 (in situ T, atm + hydro P), compute potential and standard fCO2 and pCO2
       # a) define input as pCO2insitu & compute fCO2insitu
       pCO2insitu[i_flag] <- var1[i_flag] * 1e-6
       # xCO2approx <- pCO2insitu[i_flag]  (this would be a very gross overestimate at say 5000 m)
@@ -772,9 +770,13 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
       fugfacpot    <- exp((Patm[i_flag])                  *(Bpot + 2*((1-fCO2pot[i_flag])^2)      *(57.7-0.118*tkp))/(82.05736*tkp))
       pCO2pot[i_flag] <- fCO2pot[i_flag] / fugfacpot
       pCO2[i_flag]    <- fCO2[i_flag]    / fugfac
-    }
-    else if(gas=="potential")
-    {
+
+      # gas == "potential"
+      i_flag <- which (flag >= 21 & flag <= 25)
+      tk    <- TK[i_flag]     
+      tkp   <- theta(S=S[i_flag], T=T[i_flag], P=P[i_flag], Pref=0) + 273.15       #Potential temperature in Kelvin
+      B     <- -1636.75 + 12.0408*tk  - 0.0327957*(tk*tk)   + 0.0000316528*(tk*tk*tk);
+      Bpot  <- -1636.75 + 12.0408*tkp - 0.0327957*(tkp*tkp) + 0.0000316528*(tkp*tkp*tkp)
       # From potential pCO2 (potential T, atm P), compute standard and in situ fCO2 and pCO2
       # a) define input as pCO2pot & compute fCO2pot
       pCO2pot[i_flag] <- var1[i_flag] * 1e-6
@@ -788,9 +790,13 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
       fugfacinsitu <- exp((Patm[i_flag]+P[i_flag]/1.01325)*(B    + 2*((1-fCO2[i_flag])^2)*(57.7-0.118*tk))/(82.05736*tk))
       pCO2[i_flag]      <- fCO2[i_flag]      / fugfac
       pCO2insitu[i_flag] <- fCO2insitu[i_flag] / fugfacinsitu
-    }
-    else if(gas=="standard")
-    {
+
+      # gas == "standard"
+      i_flag <- which (flag >= 21 & flag <= 25)
+      tk    <- TK[i_flag]     
+      tkp   <- theta(S=S[i_flag], T=T[i_flag], P=P[i_flag], Pref=0) + 273.15       #Potential temperature in Kelvin
+      B     <- -1636.75 + 12.0408*tk  - 0.0327957*(tk*tk)   + 0.0000316528*(tk*tk*tk);
+      Bpot  <- -1636.75 + 12.0408*tkp - 0.0327957*(tkp*tkp) + 0.0000316528*(tkp*tkp*tkp)
       # From standard pCO2 (in situ T, atm P), compute potential and in situ fCO2 and pCO2
       # a) define input as pCO2 & compute fCO2
       pCO2[i_flag] <- var1[i_flag] * 1e-6
@@ -804,7 +810,6 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x
       fugfacinsitu <- exp((Patm[i_flag]+P[i_flag]/1.01325)*(B    + 2*((1-pCO2[i_flag])^2)*(57.7-0.118*tk))/(82.05736*tk))
       pCO2pot[i_flag]   <- fCO2pot[i_flag]   / fugfacpot
       pCO2insitu[i_flag] <- fCO2insitu[i_flag] / fugfacinsitu
-    }
 
     # ------------ case 21.) PH and pCO2 given
     # Indices of flag elements where flag = 21
