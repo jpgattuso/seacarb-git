@@ -70,7 +70,7 @@ flag = 25     pCO2 and DIC given
 	\item{ks}{"d" for using Ks from Dickson (1990) and "k" for using Ks from Khoo et al. (1977), default is "d"} 
 	\item{pHscale}{"T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
 	\item{b}{Concentration of total boron. "l10" for the Lee et al. (2010) formulation or "u74" for the Uppstrom (1974) formulation, default is "u74" }
-  \item{gas}{used to indicate the convention for INPUT pCO2, i.e., when it is an input variable (flags 21 to 25): "insitu" indicates it is referenced to in situ pressure and in situ temperature; "potential" indicates it is referenced to 1 atm pressure and potential temperature; and "standard" indicates it is referenced to 1 atm pressure and in situ temperature. All three options should give identical results at surface pressure. This option is not used when pCO2 is not an input variable (flags 1 to 15). The default is "potential".}
+  \item{gas}{used to indicate the convention for INPUT pCO2, i.e., when it is an input variable (flags 21 to 25): "insitu" indicates it is referenced to in situ pressure and in situ temperature; "potential" indicates it is referenced to 1 atm pressure and potential temperature; and "standard" indicates it is referenced to 1 atm pressure and in situ temperature. All three options should give identical results at surface pressure. This option is not used when pCO2 is not an input variable (flags 1 to 15). The default is "potential" and should be a unique value..}
   \item{NH4t}{Concentration of total ammonium in mol/kg; set to 0 if NA}
   \item{HSt}{Concentration of total hydrogen sulfide in mol/kg; set to 0 if NA}
 }
@@ -169,7 +169,7 @@ kf <- c("pf", "pf", "pf")
 k1k2 <- c("l", "l", "l")
 pHscale <- c("T", "T", "T")
 b <- c("l10", "l10", "l10")
-gas <- c("potential", "potential", "potential")
+gas <- c("potential")
 NH4t <- c(0, 0, 0)
 HSt <- c(0, 0, 0)
 buffergen(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P, Pt=Pt, Sit=Sit, 
