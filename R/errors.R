@@ -63,8 +63,8 @@
 #
 errors <- 
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
-         evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=c(0.004, 0.015, 0.03, 0.01, 0.01, 0.02, 0.02),
-         eBt=0.01,
+         evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, epK=c(0.002, 0.0075, 0.015, 0.01, 0.01, 0.02, 0.02),
+         eBt=0.02,
          method="ga", r=0, runs=10000, 
          k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y", eos="eos80", long=1.e20, lat=1.e20)
 {
@@ -134,7 +134,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     # Default value for epK
     if (missing(epK))
     {
-        epK <- c(0.004, 0.015, 0.03, 0.01, 0.01, 0.02, 0.02)
+        epK <- c(0.002, 0.0075, 0.015, 0.01, 0.01, 0.02, 0.02)
     }
     else
     {
@@ -441,7 +441,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         # Compute sensitivities (partial derivatives)
         deriv <- derivnum ('bor', flag, var1, var2, S=SP, T=InsT, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, 
                            pHscale=pHscale, b=b, gas=gas, warn=warn)
-        # err is derivative * absolute error in boron (i.e., eBt=0.01 is a 1% error)
+        # err is derivative * absolute error in boron (i.e., eBt=0.02 is a 2% error)
         err <- deriv * bor(S=S, b=b) * eBt  
         sq_err <- sq_err + err * err
     }
@@ -624,7 +624,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 #   - eS, eT         :  standard error (or uncertainty) on Salinity and Temperature
 #   - ePt, eSit      :  standard error (or uncertainty) on Phosphorus and Silicon total inorganic concentrations
 #   - epK            :  standard error (or uncertainty) on all seven dissociation constants (a vector)
-#   - eBt            :  standard error (or uncertainty) on total boron (relative factional error, e.g. eBt=0.01 is a 1% error in total boron
+#   - eBt            :  standard error (or uncertainty) on total boron (relative factional error, e.g. eBt=0.02 is a 2% error in total boron
 
 #   - runs           :  number of runs of Monte Carlo (= number of simulated samples)
 #                       default is 10000
@@ -634,7 +634,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
 #   * runs must be a scalar
 #   * gas and method must each be a character string
 #   * epK must be a vector of seven values : errors of pK0, pK1, pK2, pKb, pKw, pKspa and pKspc
-#   * eBt must be a scalar : error in total boron, e.g. eBt=0.01 is a 1% error 
+#   * eBt must be a scalar : error in total boron, e.g. eBt=0.02 is a 2% error 
 #     These 3 types of errors are assumed to be the same for all input data.
 #
 # In constrast, for evar1, evar2, eS, eT, ePt and eSit:
