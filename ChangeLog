@@ -1,10 +1,6 @@
 version 3.2.7 2018-06-01
 -----------------------------------
-<<<<<<< HEAD
 - Update: bor.R, added the formulation of Kulinski et al. (2018). Thanks are due to Karol Kulinski for his help.
-=======
-- Update: bor.R, added the formulation of Kuliński et al. (2018). Thanks are due to Karol Kuliński for his help.
->>>>>>> 3d6ff456e542a36e93f7edc94e9028e2419678ac
 
 version 3.2.6 2018-02-27
 -----------------------------------
