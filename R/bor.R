@@ -27,6 +27,11 @@ if(b[i]=="u74"){
 bor[i] <- 0.1284*S[i] #boron in mg/kg
 method[i] <- "Uppstrom (1974)"
 }
+if(b[i]=="k18"){
+  bor[i] <- (11.405*S[i] + 11.869)*10.811*10^-3 #boron in mg/kg
+#  bor[i] <- 11.405*S[i] + 11.869 #boron in mg/kg
+  method[i] <- " Kuliński et al. (2018)"
+}
 }
 # conversion from mg/kg to mol/kg
 bor <- bor*10^(-3)/10.811
