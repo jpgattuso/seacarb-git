@@ -13,14 +13,13 @@ bor(S, b)
   \item{b}{"l10" for using the formulation of Lee et al. (2010), "u74" for using the Uppstrom (1974), or "k18" for using the Kuliński et al. (2018), default is "u74" }
   }
 
-<<<<<<< HEAD
 \details{Note that the formulation of Kulinski et al. (2018) is specifically designed for the Baltic Sea. Three formulations are described in their paper:
 \itemize{
   \item based on their measurements: TB = [μmol/kg] = 10.838 * S + 13.821
   \item based on Kremling (1970 and 1972): TB [μmol/kg] = 11.44 * S + 12.6; R2 = 0.95
   \item consensus regression (Kremling + their data): TB [μmol/kg] = 11.405 * S + 11.869; R2 = 0.97
 }
-=======
+
 \details{Note that the formulation of Kuliński et al. (2018) is specifically designed for the Baltic Sea. Three formulations are described in their paper:
   \item based on their measurements: TB = [μmol/kg] = 10.838 * S + 13.821
   \item based on Kremling (1970 and 1972): TB [μmol/kg] = 11.44 * S + 12.6; R2 = 0.95
