@@ -13,8 +13,8 @@
 }
 \usage{errors(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
               evar1=0, evar2=0, eS=0.01, eT=0.01, ePt=0, eSit=0, 
-              epK=c(0.004, 0.015, 0.03, 0.01, 0.01, 0.02, 0.02),
-              eBt=0.01, method = "ga", r=0.0, runs=10000,
+              epK=c(0.002, 0.0075, 0.015, 0.01, 0.01, 0.02, 0.02),
+              eBt=0.02, method = "ga", r=0.0, runs=10000,
               k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", 
               warn="y", eos = "eos80", long = 1e+20, lat = 1e+20)}
 %- maybe also 'usage' for other objects documented here.
@@ -75,9 +75,9 @@ flag = 25     pCO2 and DIC given
 \item{eT}{Error (uncertainty) in temperature (degree C); default is 0.01}
 \item{ePt}{Error (uncertainty) in total dissolved inorganic phosphorus concentration (mol/kg)}
 \item{eSit}{Error (uncertainty) in total dissolved inorganic silicon concentration (mol/kg)}
-\item{epK}{Error (uncertainty) in 7 key dissociation constants: pK0, pK1, pK2, pKb, pKw, pKspa and pKspc. This is a vector. The default is c(0.004, 0.015, 0.03, 0.01, 0.01, 0.02, 0.02).}
+\item{epK}{Error (uncertainty) in 7 key dissociation constants: pK0, pK1, pK2, pKb, pKw, pKspa and pKspc. This is a vector. The default is c(0.002, 0.0075, 0.015, 0.01, 0.01, 0.02, 0.02).}
 \item{eBt}{Error (uncertainty) in total boron, given as a
-  relative fractional error. The default is 0.01, which equates to a 1\% error}
+  relative fractional error. The default is 0.02, which equates to a 2\% error}
 \item{method}{Case insensitive character string to choose the error-propagation method: 1) Gaussian, 
 2) Method of Moments, or 3) Monte Carlo).\cr
 These methods are specified using the 2-letter codes "ga", "mo", or "mc", respectively. The default is "ga" (Gaussian).}
@@ -256,7 +256,7 @@ errors(flag=15, var1=2300e-6, var2=2000e-6, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit
 
 ## 2) Do the same as in one, but assign a 4% uncertainty to total boron
 ##    This uncertainty is the amount by which estimates from Lee et al (2010) and 
-##    Uppstrom (1974) differ. The default for the latter is eBt=0.01.
+##    Uppstrom (1974) differ. The default for the latter is eBt=0.02.
 errors(flag=15, var1=2300e-6, var2=2000e-6, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0, 
        evar1=5e-6, evar2=5e-6, eS=0, eT=0, ePt=0, eSit=0, eBt=0.04,
        pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
