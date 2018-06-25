@@ -1,6 +1,5 @@
 version 3.2.8 2018-06-25
 -----------------------------------
-
 - Update: halved default uncertainties for epK (pK0, pK1 and pK2) and doubled eBt in the errors.R function. Thanks to Jim Orr.
 
 version 3.2.7 2018-06-01
