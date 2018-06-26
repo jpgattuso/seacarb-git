@@ -1,5 +1,10 @@
-version 3.2.8 2018-06-25
+version 3.2.8 2018-06-26
 -----------------------------------
+- Fix (thanks to Mathilde Hagens for reporting the bug and to Jean-Marie Epitalon for identifying and fixing the bug): warnings and errors occurred when:
+  - input variables were provided in vectors of length exceeding 1
+  - P exceeded 0
+  - the selected pH scale was "F" or "T"
+  - "m10" or "w14" were chosen as flag for k1k2 (or "x" is chosen, but "w14" was used multiple times in a row because of prevailing S and/or T)
 - Update: halved default uncertainties for epK (pK0, pK1 and pK2) and doubled eBt in the errors.R function. Thanks to Jim Orr.
 
 version 3.2.7 2018-06-01

@@ -102,13 +102,13 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     #   Millero 2010 Marine and Fresh water research
     
     is_m10 <- k1k2=="m10"
-    pK2o <- 5143.692/TK[is_m10] + 14.613358*log(TK[is_m10]) -90.18333
     
     #   pH-scale: 'SWS scale'. mol/kg-soln
     is_m10_SWS <- is_m10 & (pHscale=="SWS" | P>0)
     A2 <- 21.3728*S[is_m10_SWS]^(0.5) + 0.1218*S[is_m10_SWS] - (3.688e-4)*S[is_m10_SWS]^2
     B2 <- -788.289*S[is_m10_SWS]^(0.5) - 19.189*S[is_m10_SWS]
     C2 <- -3.374*S[is_m10_SWS]^(0.5)
+    pK2o <- 5143.692/TK[is_m10_SWS] + 14.613358*log(TK[is_m10_SWS]) -90.18333
     pK2 <- pK2o + A2 + B2/TK[is_m10_SWS] + C2*log(TK[is_m10_SWS])
     K2[is_m10_SWS] <- 10^(-pK2)
     pHsc[is_m10_SWS] <- "SWS"
@@ -118,6 +118,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     A2 <- 21.5724*S[is_m10_T]^(0.5) + 0.1212*S[is_m10_T] - (3.714e-4)*S[is_m10_T]^2
     B2 <- -798.292*S[is_m10_T]^(0.5) - 18.951*S[is_m10_T]
     C2 <- -3.403*S[is_m10_T]^(0.5)
+    pK2o <- 5143.692/TK[is_m10_T] + 14.613358*log(TK[is_m10_T]) -90.18333
     pK2 <- pK2o + A2 + B2/TK[is_m10_T] + C2*log(TK[is_m10_T])
     K2[is_m10_T] <- 10^(-pK2)
     pHsc[is_m10_T] <- "T"
@@ -127,6 +128,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     A2 <- 11.0637*S[is_m10_F]^(0.5) + 0.1379*S[is_m10_F] - (3.688e-4)*S[is_m10_F]^2
     B2 <- -366.178*S[is_m10_F]^(0.5) - 23.288*S[is_m10_F]
     C2 <- -1.810*S[is_m10_F]^(0.5)
+    pK2o <- 5143.692/TK[is_m10_F] + 14.613358*log(TK[is_m10_F]) -90.18333
     pK2 <- pK2o + A2 + B2/TK[is_m10_F] + C2*log(TK[is_m10_F])
     K2[is_m10_F] <- 10^(-pK2)
     pHsc[is_m10_F] <- "F"
@@ -138,13 +140,13 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     #   Waters, Millero, Woosley (Mar. Chem., 165, 66-67, 2014)
     
     is_w14 <- k1k2=="w14"
-    pK2o <- 5143.692/TK[is_w14] + 14.613358*log(TK[is_w14]) -90.18333
     
     #   pH-scale: 'SWS scale'. mol/kg-soln
     is_w14_SWS <- is_w14 & (pHscale=="SWS" | P>0)
     A2 <- 21.225890*S[is_w14_SWS]^(0.5) + 0.12450870*S[is_w14_SWS] - (3.7243e-4)*S[is_w14_SWS]^2
     B2 <- -779.3444*S[is_w14_SWS]^(0.5) - 19.91739*S[is_w14_SWS]
     C2 <- -3.3534679*S[is_w14_SWS]^(0.5)
+    pK2o <- 5143.692/TK[is_w14_SWS] + 14.613358*log(TK[is_w14_SWS]) -90.18333
     pK2 <- pK2o + A2 + B2/TK[is_w14_SWS] + C2*log(TK[is_w14_SWS])
     K2[is_w14_SWS] <- 10^(-pK2)
     pHsc[is_w14_SWS] <- "SWS"
@@ -154,6 +156,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     A2 <- 21.389248*S[is_w14_T]^(0.5) + 0.12452358*S[is_w14_T] - (3.7447e-4)*S[is_w14_T]^2
     B2 <- -787.3736*S[is_w14_T]^(0.5) - 19.84233*S[is_w14_T]
     C2 <- -3.3773006*S[is_w14_T]^(0.5)
+    pK2o <- 5143.692/TK[is_w14_T] + 14.613358*log(TK[is_w14_T]) -90.18333
     pK2 <- pK2o + A2 + B2/TK[is_w14_T] + C2*log(TK[is_w14_T])
     K2[is_w14_T] <- 10^(-pK2)
     pHsc[is_w14_T] <- "T"
@@ -163,6 +166,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     A2 <- 13.396949*S[is_w14_F]^(0.5) + 0.12193009*S[is_w14_F] - (3.8362e-4)*S[is_w14_F]^2
     B2 <- -472.8633*S[is_w14_F]^(0.5) - 19.03634*S[is_w14_F]
     C2 <- -2.1563270*S[is_w14_F]^(0.5)
+    pK2o <- 5143.692/TK[is_w14_F] + 14.613358*log(TK[is_w14_F]) -90.18333
     pK2 <- pK2o + A2 + B2/TK[is_w14_F] + C2*log(TK[is_w14_F])
     K2[is_w14_F] <- 10^(-pK2)
     pHsc[is_w14_F] <- "F"
