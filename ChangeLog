@@ -1,3 +1,7 @@
+version 3.2.9 2018-06-29
+-----------------------------------
+- Update: minor change in the definition of the salinity argument in function rho.
+
 version 3.2.8 2018-06-26
 -----------------------------------
 - Fix (thanks to Mathilde Hagens for reporting the bug and to Jean-Marie Epitalon for identifying and fixing the bug): warnings and errors occurred when:
