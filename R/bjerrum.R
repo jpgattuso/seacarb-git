@@ -14,7 +14,7 @@
                     phmin=2, phmax=12, by=0.1, # the pH range and increment
                     conc=1,                    # the concentration, mol / kg
                     type="l",col="black",    # overruled default plotting options
-                    ylab="Concentration (mol/kg)",
+                    ylab="Relative concentration (%)",
                     add=FALSE,               # false:start new, true: add to current
                     ...)                     # plotting options passed to matplot
 

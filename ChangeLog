@@ -1,6 +1,7 @@
 version 3.2.9 2018-06-29
 -----------------------------------
 - Update: minor change in the definition of the salinity argument in function rho.
+- Update: changed label of Y-axis: "Relative concentration (%)" rather "Concentration (mol/kg)"
 
 version 3.2.8 2018-06-26
 -----------------------------------
