@@ -1,8 +1,8 @@
 \encoding{latin1}
 \name{errors}
 \alias{errors}
-\title{Error propagation for computed marine carbonate system variables}
-\description{Estimates combined standard uncertainties in computed carbonate system variables by propagating standard uncertainties (standard error) in six input variables, including (Orr et al., in press):
+\title{Uncertainty propagation for computed marine carbonate system variables}
+\description{Estimates combined standard uncertainties in computed carbonate system variables by propagating inout uncertainties (standard uncertainties) in six input variables, including (Orr et al., Mar. Chem., in press):
 \itemize{
 \item the input pair of carbonate system variables, 
 \item the 2 input nutrients (silicate and phosphate concentrations),
