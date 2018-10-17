@@ -1,3 +1,7 @@
+version 3.2.10 2018-10-17
+-----------------------------------
+- Update: errors help (use GUM terminology)
+
 version 3.2.9 2018-06-29
 -----------------------------------
 - Update: minor change in the definition of the salinity argument in function rho.

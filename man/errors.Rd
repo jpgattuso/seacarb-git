@@ -2,7 +2,7 @@
 \name{errors}
 \alias{errors}
 \title{Error propagation for computed marine carbonate system variables}
-\description{Estimates uncertainties in computed carbonate system variables by propagating standard error (uncertainty) in six input variables, including:
+\description{Estimates combined standard uncertainties in computed carbonate system variables by propagating standard uncertainties (standard error) in six input variables, including (Orr et al., in press):
 \itemize{
 \item the input pair of carbonate system variables, 
 \item the 2 input nutrients (silicate and phosphate concentrations),
@@ -69,19 +69,19 @@ flag = 25     pCO2 and DIC given
 \item{P}{Hydrostatic pressure in bar (surface = 0)}
 \item{Pt}{Concentration of total dissolved inorganic phosphorus (mol/kg); set to 0 if NA}
 \item{Sit}{Concentration of total dissolved inorganic silicon (mol/kg); set to 0 if NA}
-\item{evar1}{Error (uncertainty) in var1 of input pair of carbonate system variables}
-\item{evar2}{Error (uncertainty) in var2 of input pair of carbonate system variables}
-\item{eS}{Error (uncertainty) in salinity; default is 0.01}
-\item{eT}{Error (uncertainty) in temperature (degree C); default is 0.01}
-\item{ePt}{Error (uncertainty) in total dissolved inorganic phosphorus concentration (mol/kg)}
-\item{eSit}{Error (uncertainty) in total dissolved inorganic silicon concentration (mol/kg)}
-\item{epK}{Error (uncertainty) in 7 key dissociation constants: pK0, pK1, pK2, pKb, pKw, pKspa and pKspc. This is a vector. The default is c(0.002, 0.0075, 0.015, 0.01, 0.01, 0.02, 0.02).}
-\item{eBt}{Error (uncertainty) in total boron, given as a
+\item{evar1}{Standard uncertainty in var1 of input pair of carbonate system variables}
+\item{evar2}{Standard uncertainty in var2 of input pair of carbonate system variables}
+\item{eS}{Standard uncertainty in salinity; default is 0.01}
+\item{eT}{Standard uncertainty in temperature (degree C); default is 0.01}
+\item{ePt}{Standard uncertainty in total dissolved inorganic phosphorus concentration (mol/kg)}
+\item{eSit}{Standard uncertainty in total dissolved inorganic silicon concentration (mol/kg)}
+\item{epK}{Standard uncertainty) in 7 key dissociation constants: pK0, pK1, pK2, pKb, pKw, pKspa and pKspc. This is a vector. The default is c(0.002, 0.0075, 0.015, 0.01, 0.01, 0.02, 0.02).}
+\item{eBt}{Standard uncertainty in total boron, given as a
   relative fractional error. The default is 0.02, which equates to a 2\% error}
 \item{method}{Case insensitive character string to choose the error-propagation method: 1) Gaussian, 
 2) Method of Moments, or 3) Monte Carlo).\cr
 These methods are specified using the 2-letter codes "ga", "mo", or "mc", respectively. The default is "ga" (Gaussian).}
-\item{r}{Correlation coefficient between uncertainties of var1 and var2 (only useful with method="mo",
+\item{r}{Correlation coefficient between standard uncertainties of var1 and var2 (only useful with method="mo",
 i.e., ignored for the 2 other methods, the default is r=0.0}
 \item{runs}{Number of random samples (ignored unless method="mc"; the default is runs=10000}
 \item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "m06" from Millero et al. (2006), "m10" from Millero (2010), "w14" from Waters et al. (2014), and "r" from Roy et al. (1993). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "w14".}
@@ -97,21 +97,16 @@ i.e., ignored for the 2 other methods, the default is r=0.0}
 }
 
 \details{
-This function requires users to specify each input uncertainty as either
-the standard deviation or the standard error of the mean. The latter
-implies much smaller propagated uncertainties, but is appropriate only
-when interested in the error in the mean, not the error of a given
-measurement. Beware that it is easy to fool oneself when using the
-standard error of the mean rather than the standard deviation.
+Complete information on routine uncertainty propagation for the marine carbon dioxide system can be found in Orr et al. (in press). This function requires users to specify each input standard uncertainty as either the standard deviation or the standard error of the mean. The latter implies much smaller propagated uncertainties, but is appropriate only when interested in the error in the mean, not the error of a given measurement. Beware that it is easy to fool oneself when using the standard error of the mean rather than the standard deviation.
 
-This function requires different types of uncertainties:
+This function requires different types of standard uncertainties:
 \itemize{
-\item absolute uncertainties for evar1, evar2, eS, eT, ePt, eSit (same units as the input data, e.g., mol/kg);
-\item uncertainties in pK units for epK; and
-\item uncertainties in relative fractional units (between 0.0 and 1.0) for eBt.
+\item Standard uncertainties for evar1, evar2, eS, eT, ePt, eSit (same units as the input data, e.g., mol/kg);
+\item Standard uncertainties in pK units for epK; and
+\item Standard uncertainties in relative fractional units (between 0.0 and 1.0) for eBt.
 }
 
-This function propagates uncertainties from input to output variables using one of three methods: 
+This function propagates standard uncertainty from input to output variables using one of three methods: 
 \itemize{
 \item Gaussian:
      The Gaussian method is the standard technique for estimating a
@@ -127,8 +122,8 @@ This function propagates uncertainties from input to output variables using one 
      covariance between input variables.  In this case, the 'errors'
      routine allows the user to specify a value of the correlation
      coefficient 'r', having a value between -1.0 and 1.0, to indicate
-     the correlation between uncertainties of the input pair of
-     carbonate system variables. That correlation is used to comput
+     the correlation between standard uncertainties of the input pair of
+     carbonate system variables. That correlation is used to compute
      the covariance. But by default, it is assumed that there is no
      covariance (r=0.0).
 
@@ -140,8 +135,7 @@ This function propagates uncertainties from input to output variables using one 
      each output variables.
 }
 
-This function has many input parameters that are identical to those
-in the carb function. For their details, refer to the 'carb' documentation.
+This function has many input parameters that are identical to those in the carb function. For their details, refer to the 'carb' documentation.
 
 All parameters may be scalars or vectors except epK, eBt, method, runs, and gas.
 
@@ -157,8 +151,8 @@ All parameters may be scalars or vectors except epK, eBt, method, runs, and gas.
 In constrast, for evar1, evar2, r, eS, eT, ePt and eSit:
 
 \itemize{
-  \item  if they are vectors, they represent errors associated with each data point
-  \item  if they are scalars (single real numbers), they represent one error value each associated to all data points
+  \item  if they are vectors, they represent standard uncertainties associated with each data point
+  \item  if they are scalars (single real numbers), they represent one standard uncertainty value each associated to all data points
 }
 
 The same remark applies to parameter r (correlation coefficient).
@@ -169,7 +163,7 @@ long and lat are used as conversion parameters from absolute to practical salini
 \section{Correlation coefficient}{
 By default, 'r' is zero. However, for some pairs the user may want to specify a different value. For example, measurements of pCO2 and pH are often anti-correlated. The same goes for two other pairs: 'CO2 and CO3' and 'pCO2 and CO3'.  But even for these cases, care is needed before using non-zero values of 'r'.
 
-When the user wishes to propagate errors for an individual measurement, 'r' should ALWAYS be zero if each member of the input pair is measured independently. In this case, we are interested in the correlation between the uncertainties in those measurements, not in the correlation between the measurements themselves. Uncertainties from those measurements are probably not correlated if they come from different instruments. Conversely, if users are interested in the error in the mean of a distribution of measurements (i.e., if they are propagating standard errors instead of standard deviations), one should then also account for the correlation between the measurements of the two variables of the input pair.
+When the user wishes to propagate standard uncertainties for an individual measurement, 'r' should ALWAYS be zero if each member of the input pair is measured independently. In this case, we are interested in the correlation between the uncertainties in those measurements, not in the correlation between the measurements themselves. Uncertainties from those measurements are probably not correlated if they come from different instruments. Conversely, if users are interested in the error in the mean of a distribution of measurements (i.e., if they are propagating standard errors instead of standard deviations), one should then also account for the correlation between the measurements of the two variables of the input pair.
 
 For input pairs where one member is pH (flags 1, 6, 7, 8, 9, and 21), this 'errors' function automatically inverses the sign of 'r'. The reason for that is that the associated derivatives are computed in terms of the hydrogen ion concentration (H+), not pH. Therefore for each of these 6 flags, if the user wants to compute their own 'r' that should be done by (1) using the H+ concentration instead of pH, and (2) inversing the sign of that computed 'r' before passing it as an argument to this routine. Usually though (when not calculating r for pH), the user may just use the 'r' in the expected way.  For example, to include the covariance term when there is a perfect anticorrelation of pH with pCO2, one would use 'r=-1.0'.
 
@@ -183,20 +177,20 @@ Computation time also depends on the chosen pair of input variables. For example
 
 \value{The function returns a 2-dimensional dataframe, with the following columns:
  \itemize{
- \item{H}{total error in [H+] concentration (mol/kg)}
- \item{pH}{total error in pH}
- \item{CO2}{total error in CO2 concentration (mol/kg)}
- \item{pCO2}{total error in "standard" pCO2, CO2 partial pressure computed at in situ temperature and atmospheric pressure (\eqn{\mu}atm)}
- \item{fCO2}{total error in "standard" fCO2, CO2 fugacity computed at in situ temperature and atmospheric pressure (\eqn{\mu}atm)}
- \item{HCO3}{total error in HCO3 concentration (mol/kg)}
- \item{CO3}{total error in CO3 concentration (mol/kg)}
- \item{DIC}{total error in DIC concentration (mol/kg)}
- \item{ALK}{total error in ALK, total alkalinity (mol/kg)}
- \item{OmegaAragonite}{total error in Omega aragonite (aragonite saturation state)}
- \item{OmegaCalcite}{total error in Omega calcite   (calcite saturation state)}
+ \item{H} {combined standard uncertainty in [H+] concentration (mol/kg)}
+ \item{pH} {combined standard uncertainty in pH}
+ \item{CO2} {combined standard uncertainty in CO2 concentration (mol/kg)}
+ \item{pCO2}{combined standard uncertainty in "standard" pCO2, CO2 partial pressure computed at in situ temperature and atmospheric pressure (\eqn{\mu}atm)}
+ \item{fCO2}{combined standard uncertainty in "standard" fCO2, CO2 fugacity computed at in situ temperature and atmospheric pressure (\eqn{\mu}atm)}
+ \item{HCO3}{combined standard uncertainty in HCO3 concentration (mol/kg)}
+ \item{CO3}{combined standard uncertainty in CO3 concentration (mol/kg)}
+ \item{DIC}{combined standard uncertainty in DIC concentration (mol/kg)}
+ \item{ALK}{combined standard uncertainty in ALK, total alkalinity (mol/kg)}
+ \item{OmegaAragonite}{combined standard uncertainty in Omega aragonite (aragonite saturation state)}
+ \item{OmegaCalcite}{combined standard uncertainty in Omega calcite   (calcite saturation state)}
 }
  
-If all input data have the same 'flag' value, the returned data frame does not show errors on input pair of carbonate system variables. For example, if all input flags are 15, the input pair is DIC and ALK; hence, errors on DIC and ALK are not returned.
+If all input data have the same 'flag' value, the returned data frame does not show combined standard uncertainties on input pair of carbonate system variables. For example, if all input flags are 15, the input pair is DIC and ALK; hence, errors on DIC and ALK are not returned.
 }
 
 \references{
@@ -219,6 +213,8 @@ Millero F. J., 1995. Thermodynamics of the carbon dioxide system in the oceans. 
 Millero F. J., 2010. Carbonate constant for estuarine waters. \emph{Marine and Freshwater Research} \bold{61}: 139-142.
 
 Millero F. J., Graham T. B., Huang F., Bustos-Serrano H. and Pierrot D., 2006. Dissociation constants of carbonic acid in seawater as a function of salinity and temperature.  \emph{Marine Chemistry} \bold{100}, 80-84.
+
+Orr J. C., Epitalon J.-M., Dickson A. and Gattuso J.-P., in press. Routine uncertainty propagation for the marine carbon dioxide system. \emph{Marine Chemistry}. 
 
 Orr J. C., Epitalon J.-M. and Gattuso J.-P., 2015. Comparison of seven packages that compute ocean carbonate chemistry. \emph{Biogeosciences} \bold{12}, 1483-1510.
 
