@@ -5,7 +5,7 @@
 \description{Plot the concentration of the various ionic forms of a molecule as a function of pH}
 \usage{
 bjerrum(K1=K1(), K2=NULL, K3=NULL, phmin=2, phmax=12, by=0.1, conc=1, 
-     type="l", col="black",  ylab="Concentration (mol/kg)", add=FALSE, ...)
+     type="l", col="black",  ylab="Relative concentration (%)", add=FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
