@@ -123,7 +123,7 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 
 \item The addition of strong acid does not simulate well natural ocean acidification (higher concentration of dissolved inorganic carbon at constant total alkalinity) since it generates a decrease in total alkalinity while dissolved inorganic carbon is kept constant.
 
-\item Other important advice is provided in Gattuso and Lavigne (2009), Schulz et al. (2009) and in the \dQuote{Guide for Best Practices on Ocean Acidification Research and Data Reporting} (\url{https://www.iaea.org/ocean-acidification/page.php?page=2194})
+\item Other important advice is provided in Gattuso and Lavigne (2009), Schulz et al. (2009) and in the \dQuote{Guide for Best Practices on Ocean Acidification Research and Data Reporting} (\url{https://www.iaea.org/sites/default/files/18/06/oa-guide-to-best-practices.pdf})
 }
 long and lat are used as conversion parameters from absolute to practical salinity: when seawater is not of standard composition, practical salinity alone is not sufficient to compute absolute salinity and vice-versa. One needs to know the density. When long and lat are given, density is inferred from WOA silicate concentration at given location. When they are not, an arbitrary geographic point is chosen: mid equatorial Atlantic. Note that this implies an error on computed salinity up to 0.02 g/kg.
 }
