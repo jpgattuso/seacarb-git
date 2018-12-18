@@ -1,4 +1,5 @@
-# Copyright (C) 2009 Jean-Pierre Gattuso, 2018 updated by Jens Daniel Mueller
+# Copyright (C) 2009 Jean-Pierre Gattuso
+# Copyright (C) 2018 updated by Jens Daniel Mueller
 #
 # This file is part of seacarb.
 #
@@ -12,11 +13,10 @@
 
 "tris" <-
 function(S=35, T=25, k="m18", b=0.04, warn="y")
-  
+
   {
   
-  
-  #-------Harmonize input vectors to identical length-------
+  #-------Harmonize input vector length-----
   
   n <- max(length(S), length(T), length(k), length(b))
   
@@ -25,18 +25,13 @@ function(S=35, T=25, k="m18", b=0.04, warn="y")
   if(length(k)!=n){k <- rep(k[1],n)}
   if(length(b)!=n){b <- rep(b[1],n)}
 
-  
   #-------Initialise output vector------- 
   
   tris <- rep(NA, n)
   
+  #-------Change temperature scale from [°C] to [K] ----
   
-  #---- changing temperature scale from Celsius to Kelvin ----
-  
-  tk = 273.15;           # [K] (for conversion [deg C] <-> [K])
-  TK = T + tk;           # T [C]; TK [K]
-  
-  
+  TK = T + 273.15;           # T [C]; TK [K]; [K] (for conversion [deg C] <-> [K])
   
   #-------calculate tris buffer pH based on input-------
   
