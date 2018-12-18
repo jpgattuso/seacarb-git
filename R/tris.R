@@ -8,14 +8,11 @@
 # Seacarb is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with seacarb; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
-#
+
 
 "tris" <-
 function(S=35, T=25, k="m18", b=0.04, warn="y")
-
   {
-  
   #-------Harmonize input vector length-----
   
   n <- max(length(S), length(T), length(k), length(b))
@@ -29,40 +26,53 @@ function(S=35, T=25, k="m18", b=0.04, warn="y")
   
   tris <- rep(NA, n)
   
-  #-------Change temperature scale from [°C] to [K] ----
+  #-------Change temperature scale from [deg C] to [K] ----
   
-  TK = T + 273.15;           # T [C]; TK [K]; [K] (for conversion [deg C] <-> [K])
+  TK = T + 273.15;           # T [C]; TK [K]
   
-  #-------calculate tris buffer pH based on input-------
+  #-------Calculate tris buffer pH based on input values-------
   
-  
-  for(i in (1:n)){  
-  
-    
+  for(i in (1:n))
+    {  
     #--------------------------------------------------------------
-    #------------------ Ks ----------------------------------------
-    #       Khoo et al. 1977
-    #     
-    #       Equilibrium constant for HSO4- = H+ + SO4--
+    #-------tris characterization by DelValls and Dickson 1998----
     #
-    #       K_S  = [H+]free [SO4--] / [HSO4-]
-    #       pH-scale: free scale !!!
+    #       doi: 10.1016/S0967-0637(98)00019-3
+    #     
+    #       pH of TRIS buffered artifical seawater solutions
+    #
+    #       pH-scale: total scale
     #        
-    #      correct for T range : 5 - 40°C
-    #      correct for S range : 20 - 45  
+    #       correct for T range : 0 - 45 °C
+    #       correct for S range : 20 - 40
+    #       correct for equmolal TRIS/TRISH+ molality b: 0.04 mol/kg
+    #--------------------------------------------------------------  
     
     
-    
-	delvalls1998 = ((11911.08-18.2499*S-0.039336*S^2)*1/(TK))-
-	  366.27059+0.53993607*S+0.00016329*S^2+
-	  ((64.52243-0.084041*S)*log(TK))-
-	  (0.11149858*(TK))
+	  delvalls1998 = ((11911.08-18.2499*S-0.039336*S^2)*1/(TK))-
+	    366.27059+0.53993607*S+0.00016329*S^2+
+	    ((64.52243-0.084041*S)*log(TK))-
+	    (0.11149858*(TK))
 	
+	
+	  #--------------------------------------------------------------
+	  #-------tris characterization by Mueller et al 2018-----------
+	  #
+	  #       doi: 10.3389/fmars.2018.00176    
+	  #     
+	  #       pH of TRIS buffered artifical seawater solutions
+	  #       extend to low salinities and different TRIS/TRISH+ molalities
+	  #
+	  #       pH-scale: total scale
+	  #        
+	  #       correct for T range : 5 - 45 °C
+	  #       correct for S range : 5 - 40
+	  #       correct for equmolal TRIS/TRISH+ molalities b: 0.01 - 0.04 mol/kg for S in 5-20
+	  #       correct for equmolal TRIS/TRISH+ molalities b: 0.04 mol/kg for S in 20-40
+	  #--------------------------------------------------------------
 
-	#   stop ("TRIS/TRISH+ molality out of range: ", b)
-	
-	mueller2018 =
-	  -327.3307 -
+	  mueller2018 =
+	    -327.3307 -
 	    2.400270 * S +
 	    8.124630e-2 * S^2 -
 	    9.635344e-4 * S^3 -
@@ -89,34 +99,31 @@ function(S=35, T=25, k="m18", b=0.04, warn="y")
 	
 	
 
-	#-------------------------------------------------------------------
-	#--------------- choice between the formulations -------------------
-	is_d <- (k=='d98')    # everything that is not "k" is "d" by default
-	tris <- mueller2018
-	tris[is_d] <- delvalls1998[is_d]
+	  #-------------------------------------------------------------------
+	  #-------Choose between tris characterizations (=method)----------
 	
-	method <- rep(NA, nK)
-	method[!is_d] <- "Mueller et al. (2018)"
-	method[is_d] <- "DelValls and Dickson (1998)"
+	  is_d <- (k=='d98')    # everything that is not "k" is "d" by default
+	  tris <- mueller2018
+	  tris[is_d] <- delvalls1998[is_d]
 	
+	  #-------Assign method -------------------
 	
+	  method <- rep(NA, nK)
+	  method[!is_d] <- "Mueller et al. (2018)"
+	  method[is_d] <- "DelValls and Dickson (1998)"
 	
-		
+	  #-------Set warnings-----------
 	
-	##------------Warnings
+	  is_w <- warn == "y"
+	  
+	  # if (any(is_w & (T>35 | T<2 | S<19 | S>43))  || any(is_w & is_r & (T>45 | S<5 | S>45)) )
+	  #   warning("S and/or T is outside the range of validity of the formulation chosen for K1.")
+    
+	  if (any(is_w & (T>318.15 | S>40))) 
+	    warning("S and/or T is outside the range of validity of the formulations available for TRIS buffer pH in seacarb.")
+	  
+	  attr(tris,"unit") <- "mol/kg"
+	  return(tris)
 	
-	is_w <- warn == "y"
-	
-	# if (any(is_w & (T>35 | T<2 | S<19 | S>43))  || any(is_w & is_r & (T>45 | S<5 | S>45)) )
-	#   warning("S and/or T is outside the range of validity of the formulation chosen for K1.")
-
-	if (any(is_w & (T>318.15 | S>40))) 
-	  warning("S and/or T is outside the range of validity of the formulations available for TRIS buffer pH in seacarb.")
-	
-	attr(tris,"unit") <- "mol/kg"
-	return(tris)
-	
+    }
   }
-	
-	
-}
