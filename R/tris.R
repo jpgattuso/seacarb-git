@@ -108,19 +108,19 @@ function(S=35, T=25, k="m18", b=0.04, warn="y")
 	
 	  #-------Assign method -------------------
 	
-	  method <- rep(NA, nK)
+	  method <- rep(NA, n)
 	  method[!is_d] <- "Mueller et al. (2018)"
 	  method[is_d] <- "DelValls and Dickson (1998)"
 	
 	  #-------Set warnings-----------
 	
 	  is_w <- warn == "y"
-	  
-	  # if (any(is_w & (T>35 | T<2 | S<19 | S>43))  || any(is_w & is_r & (T>45 | S<5 | S>45)) )
-	  #   warning("S and/or T is outside the range of validity of the formulation chosen for K1.")
+
+	  if (any(is_w & is_d & (T>45 | T<0 | S>40 | S<20 | b!=0.04))) 
+	    {warning("S, T, and/or b is outside the range of validity for the TRIS buffer pH formulation by DelValls and Dickson (1998).")}
     
-	  if (any(is_w & (T>318.15 | S>40))) 
-	    warning("S and/or T is outside the range of validity of the formulations available for TRIS buffer pH in seacarb.")
+	  if (any(is_w & (T>45 | T<5 | S>40 | b>0.04 | b<0.01))) 
+	    {warning("S, T, and/or b is outside the range of validity for the TRIS buffer pH formulation by Mueller et al. (2018).")}
 	  
 	  attr(tris,"unit") <- "mol/kg"
 	  return(tris)
