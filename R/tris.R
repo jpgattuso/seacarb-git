@@ -1,5 +1,5 @@
 # Copyright (C) 2009 Jean-Pierre Gattuso
-# Copyright (C) 2018 updated by Jens Daniel Mueller
+# Copyright (C) 2018 Jens Daniel Mueller, update
 #
 # This file is part of seacarb.
 #
@@ -11,7 +11,7 @@
 
 
 "tris" <-
-function(S=35, T=25, k="m18", b=0.04, warn="y")
+function(S=35, T=25, b=0.04, k="m18", warn="y")
   {
   #-------Harmonize input vector length-----
   
@@ -19,8 +19,9 @@ function(S=35, T=25, k="m18", b=0.04, warn="y")
   
   if(length(S)!=n){S <- rep(S[1],n)}
   if(length(T)!=n){T <- rep(T[1],n)}
-  if(length(k)!=n){k <- rep(k[1],n)}
   if(length(b)!=n){b <- rep(b[1],n)}
+  if(length(k)!=n){k <- rep(k[1],n)}
+
 
   #-------Initialise output vector------- 
   
@@ -45,7 +46,7 @@ function(S=35, T=25, k="m18", b=0.04, warn="y")
     #        
     #       correct for T range : 0 - 45 °C
     #       correct for S range : 20 - 40
-    #       correct for equmolal TRIS/TRISH+ molality b: 0.04 mol/kg
+    #       correct for equmolal TRIS/TRISH+ molality b: 0.04 mol/kg-H20
     #--------------------------------------------------------------  
     
     
@@ -54,7 +55,7 @@ function(S=35, T=25, k="m18", b=0.04, warn="y")
 	    ((64.52243-0.084041*S)*log(TK))-
 	    (0.11149858*(TK))
 	
-	
+
 	  #--------------------------------------------------------------
 	  #-------tris characterization by Mueller et al 2018-----------
 	  #
@@ -67,15 +68,15 @@ function(S=35, T=25, k="m18", b=0.04, warn="y")
 	  #        
 	  #       correct for T range : 5 - 45 °C
 	  #       correct for S range : 5 - 40
-	  #       correct for equmolal TRIS/TRISH+ molalities b: 0.01 - 0.04 mol/kg for S in 5-20
-	  #       correct for equmolal TRIS/TRISH+ molalities b: 0.04 mol/kg for S in 20-40
+	  #       correct for equmolal TRIS/TRISH+ molalities b: 0.01 - 0.04 mol/kg-H20 for S in 5-20
+	  #       correct for equmolal TRIS/TRISH+ molalities b: 0.04 mol/kg-H20 for S in 20-40
 	  #--------------------------------------------------------------
 
 	  mueller2018 =
-	    -327.3307 -
-	    2.400270 * S +
-	    8.124630e-2 * S^2 -
-	    9.635344e-4 * S^3 -
+	    -327.3307 -                 
+	    2.400270 * S +    
+	    8.124630e-2 * S^2 -   
+	    9.635344e-4 * S^3 -   
 	    
 	    9.103207e-2 * TK -
 	    1.963311e-3 * S * TK +
@@ -97,8 +98,6 @@ function(S=35, T=25, k="m18", b=0.04, warn="y")
 	    4.161537 * b^2 +
 	    6.143395e-2 * b^2 * S
 	
-	
-
 	  #-------------------------------------------------------------------
 	  #-------Choose between tris characterizations (=method)----------
 	
@@ -111,7 +110,8 @@ function(S=35, T=25, k="m18", b=0.04, warn="y")
 	  method <- rep(NA, n)
 	  method[!is_d] <- "Mueller et al. (2018)"
 	  method[is_d] <- "DelValls and Dickson (1998)"
-	
+	  
+
 	  #-------Set warnings-----------
 	
 	  is_w <- warn == "y"
@@ -122,7 +122,11 @@ function(S=35, T=25, k="m18", b=0.04, warn="y")
 	  if (any(is_w & (T>45 | T<5 | S>40 | b>0.04 | b<0.01))) 
 	    {warning("S, T, and/or b is outside the range of validity for the TRIS buffer pH formulation by Mueller et al. (2018).")}
 	  
-	  attr(tris,"unit") <- "mol/kg"
+	  #-------Assign attributes and define return value-----------
+	  
+	  attr(tris, "method") = method
+	  attr(tris, "pH scale") = "total scale"
+	  attr(tris,"unit") <- "mol/kg-soln"
 	  return(tris)
 	
     }
