@@ -18,20 +18,30 @@ if(length(b)!=n){ b <- rep(b[1],n)}
 bor <- rep(NA, n)
 method <- rep(NA, n)
 
-if(b[i]=="l10"){
-  bor[i] <- 0.1336*S[i] #boron in mg/kg
-  method[i] <- "Lee et al. (2010)"
-}
+# Lee et al. (2010)
+  bor_l10 <- 0.1336*S #boron in mg/kg
+  method <- "Lee et al. (2010)"
 
-if(b[i]=="u74"){
-  bor[i] <- 0.1284*S[i] #boron in mg/kg
-  method[i] <- "Uppstrom (1974)"
-}
+# Uppstrom (1974)
+  bor_u74 <- 0.1284*S #boron in mg/kg
+  method <- "Uppstrom (1974)"
 
-if(b[i]=="k18"){
-  bor[i] <- (11.405*S[i] + 11.869)*10.811*10^-3 #boron in mg/kg
-  method[i] <- "Kulinski et al. (2018)"
-}
+# Kulinski et al. (2018)
+  bor_k18 <- (11.405*S + 11.869)*10.811*10^-3 #boron in mg/kg
+  method <- "Kulinski et al. (2018)"
+
+#--------------- choice between the formulations -------------------
+is_l10 <- (b=='l10')
+is_u74 <- (b=='u74')
+is_k18 <- (b=='k18')
+bor[is_l10] <- bor_l10[is_l10]
+bor[is_u74] <- bor_u74[is_u74]
+bor[is_k18] <- bor_k18[is_k18]
+
+method <- rep(NA, n)
+method[is_l10] <- "Lee et al. (2010)"
+method[is_u74] <- "Uppstrom (1974)"
+method[is_k18] <- "Kulinski et al. (2018)"
 
 # conversion from mg/kg to mol/kg
 bor <- bor*10^(-3)/10.811
