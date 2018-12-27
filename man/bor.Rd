@@ -31,7 +31,7 @@ DOE 1994 \emph{Handbook of methods for the analysis of the various parameters of
 
 Kulinski K., Szymczycha B., Koziorowska K., Hammer K. & Schneider B., 2018. Anomaly of total boron concentration in the brackish waters of the Baltic Sea and its consequence for the CO2 system calculations. \emph{Marine Chemistry}. doi:s10.1016/j.marchem.2018.05.007.
 
-Lee K., Tae-Wook K., Byrne R.H., Millero F.J., Feely R.A. and Liu Y-M, 2010 The universal ratio of the boron to chlorinity for the North Pacific and North Atlantoc oceans. \emph{Geochimica et Cosmochimica Acta} \bold{74} 1801-1811.
+Lee K., Tae-Wook K., Byrne R.H., Millero F.J., Feely R.A. and Liu Y-M, 2010 The universal ratio of the boron to chlorinity for the North Pacific and North Atlantic oceans. \emph{Geochimica et Cosmochimica Acta} \bold{74} 1801-1811.
 
 Uppstrom L.R., 1974 The boron/chlorinity ratio of the deep-sea water from the Pacific Ocean. \emph{Deep-Sea Research I} \bold{21} 161-162.
 }

@@ -1,3 +1,7 @@
+version 3.2.11 2018-12-27
+-----------------------------------
+- Update: removed (for ... next); function now vectorized
+
 version 3.2.10 2018-10-17
 -----------------------------------
 - Update: errors help (use GUM terminology)
