@@ -11,7 +11,7 @@
 
 
 "tris" <-
-function(S=35, T=25, b=0.04, k="m18", warn="y")
+function(S=35, T=25, b=0.04, k="d98", warn="y")
   {
   #-------Harmonize input vector length-----
   
@@ -38,7 +38,7 @@ function(S=35, T=25, b=0.04, k="m18", warn="y")
   #-------tris characterization by DelValls and Dickson 1998----
     #
     #       doi: 10.1016/S0967-0637(98)00019-3
-    #     
+    #       Also Dickson et al. (2007)
     #       pH of TRIS buffered artifical seawater solutions
     #
     #       pH-scale: total scale
@@ -110,12 +110,12 @@ function(S=35, T=25, b=0.04, k="m18", warn="y")
   method[is_m18] <- "Mueller et al. (2018)"
 	
 	#-------Set warnings-----------
-	is_w <- warn == "y"
-	if (any(is_w & is_d98 & (T>45 | T<0 | S>40 | S<20 | b!=0.04))) 
-	  {warning("S, T, and/or b is outside the range of validity for the TRIS buffer pH formulation by DelValls and Dickson (1998).")}
-
-	if (any(is_w & is_m18 & (T>45 | T<5 | S>40 | b>0.04 | b<0.01))) 
-	  {warning("S, T, and/or b is outside the range of validity for the TRIS buffer pH formulation by Mueller et al. (2018).")}
+	# is_w <- warn == "y"
+	# if (any(is_w & is_d98 & (T>45 | T<0 | S>40 | S<20 | b!=0.04))) 
+	#   {warning("S, T, and/or b is outside the range of validity for the TRIS buffer pH formulation by DelValls and Dickson (1998).")}
+	# 
+	# if (any(is_w & is_m18 & (T>45 | T<5 | S>40 | b>0.04 | b<0.01))) 
+	#   {warning("S, T, and/or b is outside the range of validity for the TRIS buffer pH formulation by Mueller et al. (2018).")}
 	
 	#-------Assign attributes and define return value-----------
 	
