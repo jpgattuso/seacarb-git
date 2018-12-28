@@ -3,7 +3,6 @@ version 3.2.11 2018-12-28
 - Update: bor.R removed (for ... next); function now vectorized
 - Update: tris.R added formulation by Mueller et al. (2018)
 
-
 version 3.2.10 2018-10-17
 -----------------------------------
 - Update: errors help (use GUM terminology)

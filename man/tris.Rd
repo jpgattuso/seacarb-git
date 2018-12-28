@@ -5,7 +5,7 @@
 \title{pH of TRIS buffer}
 \description{Calculates the pH value of TRIS buffered artificial seawater solutions (on the total scale in mol/kg-soln)}
 \usage{
-tris(S=35,T=25,b=0.04,k="m18",warn="y")
+tris(S=35,T=25,b=0.04,k="d98",warn="y")
 %- maybe also 'usage' for other objects documented here.
 }
 
