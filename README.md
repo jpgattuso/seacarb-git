@@ -13,7 +13,7 @@ In 2003, Aurélien Proye and I put together seacarb, an R package that calculate
 
 A portion of the code has been adapted, with permission from the authors, from the Matlab files mentioned above. I am grateful to Richard Zeebe and Dieter Wolf-Gladrow for that. Portions of code and/or corrections have also been contributed by Jean-Marie Epitalon (2004, 2018), Bernard Gentili (2006), Karline Soetaert (2007) and Jim Orr (2007, 2010, 2018). Héloïse Lavigne contributed a lot to seacarb in 2008 and 2009; this was critical to the launch of version 2.0 and subsequent updates. Jean-Marie Epitalon considerably improved the code, leading to much faster calculations in version 3.0.
 
-This program is provided free under the GNU General Public License (GNU GPL). The current version (3.0) will be improved using the comments that I will receive. If you are new to R, please check the manuals and FAQs available on the R-project web site to get information on how to install R and the seacarb package on your system. Please only report and comment on seacarb, not on general problems related to R.
+This program is provided free under the GNU General Public License (GNU GPL). It will be improved using the comments that I will receive. If you are new to R, please check the manuals and FAQs available on the R-project web site to get information on how to install R and the seacarb package on your system. Please only report and comment on seacarb, not on general problems related to R.
 
 Briefly, after installing R and if you have an Internet connection, here is the simplest way to install seacarb:
 
