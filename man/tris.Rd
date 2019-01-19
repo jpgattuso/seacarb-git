@@ -30,11 +30,11 @@ Note that the arguments can be given as a unique number or as vectors. If the le
 
 }
 \references{
-DelValls, T. A., and Dickson, A. G., 1998 The pH of buffers based on 2-amino-2-hydroxymethyl-1,3-propanediol (‘tris’) in synthetic sea water. \emph{Deep Sea Research Part I: Oceanographic Research Papers} \bold{45(9)}, 1541–1554. https://doi.org/10.1016/S0967-0637(98)00019-3
+DelValls, T. A., and Dickson, A. G., 1998 The pH of buffers based on 2-amino-2-hydroxymethyl-1,3-propanediol ('tris') in synthetic sea water. \emph{Deep Sea Research Part I: Oceanographic Research Papers} \bold{45(9)}, 1541-1554. https://doi.org/10.1016/S0967-0637(98)00019-3
 
 Dickson A. G., Sabine C. L. and Christian J. R., 2007 Guide to best practices for ocean CO2 measurements. \emph{PICES Special Publication} \bold{3}, 1-191.
 
-Mueller, J. D., Bastkowski, F., Sander, B., Seitz, S., Turner, D. R., Dickson, A. G., and Rehder, G., 2018 Metrology for pH measurements in brackish waters—Part 1: Extending electrochemical pHT measurements of TRIS buffers to salinities 5–20. \emph{Frontiers in Marine Science} \bold{5:176}, 1–12. https://doi.org/10.3389/fmars.2018.00176
+Mueller, J. D., Bastkowski, F., Sander, B., Seitz, S., Turner, D. R., Dickson, A. G., and Rehder, G., 2018 Metrology for pH measurements in brackish waters- Part 1: Extending electrochemical pHT measurements of TRIS buffers to salinities 5-20. \emph{Frontiers in Marine Science} \bold{5:176}, 1-12. https://doi.org/10.3389/fmars.2018.00176
 }
 
 \author{
