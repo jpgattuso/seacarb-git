@@ -13,7 +13,7 @@ tris(S=35,T=25,b=0.04,k="d98",warn="y")
   \item{S}{Salinity, default is 35}
   \item{T}{Temperature in degrees Celsius, default is 25oC}
   \item{b}{Molality if TRIS/TRISH+ in moles per kg of water, default is 0.04 mol/kg-H20}
-  \item{k}{"m18" for using tris characterization by Mueller et al (2018), "d98" for DelValls and Dickson 1998, default is "d98"} 
+  \item{k}{"d98" for DelValls and Dickson 1998, "m18" for using tris characterization by Mueller et al (2018), default is "d98"} 
   \item{warn}{"y" to show warnings when S,T and/or b go beyond the valid range for the chosen k; "n" to supress warnings. The default is "y".}
 }
 
@@ -38,7 +38,7 @@ Mueller, J. D., Bastkowski, F., Sander, B., Seitz, S., Turner, D. R., Dickson, A
 }
 
 \author{
-Jens Daniel Mueller \email{jens.mueller@io-warnemuende.de} and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr} and Jens Daniel Mueller \email{jens.mueller@io-warnemuende.de} 
 }
 
 \seealso{
