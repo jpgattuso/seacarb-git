@@ -38,7 +38,6 @@ Mueller, J. D. and Rehder, G., 2018 Metrology for pH Measurements in Brackish Wa
 
 \author{
 Jens Daniel Mueller \email{jens.mueller@io-warnemuende.de}
-
 Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
 }
 
