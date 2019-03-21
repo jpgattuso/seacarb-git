@@ -111,23 +111,15 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     if(length(pHscale)!=n){pHscale <- rep(pHscale[1],n)}
     if(length(b)!=n){b <- rep(b[1],n)}
 
-    # Check sign of all input errors
-    neg_evar1 <- evar1 < 0
-    evar1[neg_evar1] <- -evar1[neg_evar1]
-    neg_evar2 <- evar2 < 0
-    evar2[neg_evar2] <- -evar2[neg_evar2]
-    neg_eS <- eS < 0
-    eS[neg_eS] <- -eS[neg_eS]
-    neg_eT <- eT < 0
-    eT[neg_eT] <- -eT[neg_eT]
-    neg_ePt <- ePt < 0
-    ePt[neg_ePt] <- -ePt[neg_ePt]
-    neg_eSit <- eSit < 0
-    eSit[neg_eSit] <- -eSit[neg_eSit]
+    # Correct sign of all input errors
+    evar1 <- abs(evar1)
+    evar2 <- abs(evar2)
+    eS    <- abs(eS)
+    eT    <- abs(eT)
+    ePt   <- abs(ePt)
+    eSit  <- abs(eSit)
+    eBt   <- abs(eBt)
     
-    # if eBt=NULL, set eBt equal to zero
-    if(is.null(eBt)) {eBt = 0.0}
-
     # if epK=NULL, set all pK errors to zero
     if(is.null(epK)) {epK = rep(0, 7)}
   
@@ -147,9 +139,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
             stop ("invalid parameter epK: ", epK)
         else
         {
-            # Check sign of given epK
-            neg_epK <- epK < 0
-            epK[neg_epK] <- -epK[neg_epK] 
+            # Correct sign of given epK
+            epK <- abs(epK)
         }
     }
     
