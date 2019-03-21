@@ -54,11 +54,11 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
 
     ##
     ## 1)
-    ## Process  Ktype %in% c("K1", "K2", "K1p", "K2p", "K3p", "Kb", "Khs", "Kn", "Ksi", "Kw")
+    ## Process  Ktype %in% c("K1", "K2", "K1p", "K2p", "K3p", "Kb", "Khs", "Kn", "Ksi", "K2si", "Kw")
     ## 
 
 	# Indices of Kvalue elements where pressure correction to apply on seawater scale
-    i_SWscale <- which (P > 0.0 & Ktype %in% c("K1", "K2", "K1p", "K2p", "K3p", "Kb", "Khs", "Kn", "Ksi", "Kw"))     
+    i_SWscale <- which (P > 0.0 & Ktype %in% c("K1", "K2", "K1p", "K2p", "K3p", "Kb", "Khs", "Kn", "Ksi", "K2si", "Kw"))     
     # if there is any such element
     if (length(i_SWscale) > 0)
     {
@@ -107,7 +107,8 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
         deltak  <-  Pcoeffs$b0[l]  + Pcoeffs$b1[l] *T[i_SWscale] + Pcoeffs$b2[l] *T[i_SWscale]*T[i_SWscale]
         lnkpok0 <-  -(deltav /(R*TK[i_SWscale]))*P[i_SWscale] + (0.5*deltak /(R*TK[i_SWscale]))*P[i_SWscale]*P[i_SWscale];
         Kvalue[i_SWscale] = Kvalue[i_SWscale]*exp(lnkpok0);
-
+    
+    
         # If conversion factor at given pressure is not given 
         if (missing(kconv2Scale))
         {
@@ -229,9 +230,8 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
         deltav  <-  Pcoeffs$a0[l] + Pcoeffs$a1[l] *T[i_Fscale] + Pcoeffs$a2[l] *T[i_Fscale]*T[i_Fscale]
         deltak  <-  Pcoeffs$b0[l]  + Pcoeffs$b1[l] *T[i_Fscale] + Pcoeffs$b2[l] *T[i_Fscale]*T[i_Fscale]
         lnkpok0 <-  -(deltav /(R*TK[i_Fscale]))*P[i_Fscale] + (0.5*deltak /(R*TK[i_Fscale]))*P[i_Fscale]*P[i_Fscale];
-
+        
         Kvalue[i_Fscale] = Kvalue[i_Fscale]*exp(lnkpok0);
-
     }
     
     # Update pH scale information

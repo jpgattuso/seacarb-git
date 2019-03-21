@@ -1,7 +1,86 @@
+version 3.2.11 2018-12-28
+-----------------------------------
+- New: function pHspec to calculate pHT from spectrophotometric measurements (thanks to Jens Mueller)
+- Update: bor removed (for ... next); function now vectorized
+- Update: tris, added formulation by Mueller et al. (2018) (thanks to Jens Mueller)
+
+version 3.2.10 2018-10-17
+-----------------------------------
+- Update: errors help (use GUM terminology)
+
+version 3.2.9 2018-06-29
+-----------------------------------
+- Update: minor change in the definition of the salinity argument in function rho.
+- Update: changed label of Y-axis: "Relative concentration (%)" rather "Concentration (mol/kg)"
+
+version 3.2.8 2018-06-26
+-----------------------------------
+- Fix (thanks to Mathilde Hagens for reporting the bug and to Jean-Marie Epitalon for identifying and fixing the bug): warnings and errors occurred when:
+  - input variables were provided in vectors of length exceeding 1
+  - P exceeded 0
+  - the selected pH scale was "F" or "T"
+  - "m10" or "w14" were chosen as flag for k1k2 (or "x" is chosen, but "w14" was used multiple times in a row because of prevailing S and/or T)
+- Update: halved default uncertainties for epK (pK0, pK1 and pK2) and doubled eBt in the errors.R function. Thanks to Jim Orr.
+
+version 3.2.7 2018-06-01
+-----------------------------------
+- Update: bor.R, added the formulation of Kulinski et al. (2018). Thanks are due to Karol Kulinski for his help.
+
+version 3.2.6 2018-02-27
+-----------------------------------
+- Update: carbfull
+
+version 3.2.5 2018-02-09
+-----------------------------------
+version not released
+- Update: buffergen help file
+
+version 3.2.4 2017-12-07
+-----------------------------------
+- Update: errors.R and derivnum.R modified so that the user can specify the error on total boron (eBt) as a separate argument when calculating errors. Thanks to Jim Orr.
+- Update: sf_calib and sf_calc; bugs of length of input variables correction fixed. Thanks to Umihiko Hoshijima.
+
+version 3.2.3 2017-11-17
+-----------------------------------
+- Update: pHinsi modified in order to correct for both in situ temperature (as before) and pressure (newly added).
+
+version 3.2.2 2017-09-06
+-----------------------------------
+- New: two functions related to the use of SeaFET pH sensor. sf_calib to determine calibration coefficients and sf_calc to calculate pH. Thanks to Samir Alliouane and Lydia Kapsenberg.
+
+version 3.2.1 2017-08-01
+-----------------------------------
+- Update: help file for carb now uses the right switches for eos (teos10 and eos80). Thanks to Abraham Passmore.
+- Update: help file for carbb now explains what it does (as carb but with boron addition). Thanks to Abraham Passmore.
+
+version 3.2, 2016-12-29
+-----------------------------------
+A series of additions from Mathilde Hagens (M.Hagens@uu.nl)
+
+- New: carbfull, an extension of carb. Returns parameters of the seawater carbonate system, including the ammonium and sulfide acid-base systems, as well as full acid-base speciation. This function has not been tested very extensively.
+- New: buffgen which returns the buffer factors of the seawater carbonate system as defined by Hagens and Middelburg (2016), the proton concentration buffer factor (beta.H of Hofmann et al, 2010) as well as the classic Revelle factor. This function has not been tested very extensively.
+- New: K2si to calculate the second dissociation constant of Si(OH)4.
+- Update: Pcoeffs and its help file now include K2si.
+- Update: Pcorrect and its help file now include K2si.
+- Update: kconv help file now lists the 6 conversion factors that the function returns (rather than only 3 before).
+- Update: in Oa, the link to the "Guide to Best Practices for Ocean Acidification Research and Data Reporting" is to the OA-ICC instead of the EPOCA web site.
+
+version 3.1.2, 2017-04-30
+-----------------------------------
+- New: added support of the Thermodynamic Equation of Seawater 2010 (TEOS-10). Added three optional parameters to functions carb, errors, derivnum, and all high-level routines that call carb: TEOS-10 option, longitude and latitude. Added functions eos2teos, teos2eos, sa2sp and sp2sa, all in one source file eos.R and one manual file (.Rd) for each. These additions are from Jean-Marie Epitalon.
+- New eos2teos_chem function: Converts in situ temperature to conservative temperature and practical to absolute salinity based on total alkalinity as well as the concentrations of dissolved inorganic carbon, nitrate and silicate
+- New eos2teos_geo function: Converts in situ temperature to conservative temperature and practical to absolute salinity based on depth and geographic location. 
+- New teos2eos_chem function: Converts conservative temperature to in situ temperature and absolute salinity to practical salinity based on total alkalinity as well as on the concentrations of dissolved inorganic carbon, nitrate and silicate.
+- New teos2eos_geo function: Converts conservative temperature to in situ temperature and absolute salinity to practical salinity based on depth and geographic location.
+- New sa2sp_chem function: Converts from absolute to practical salinity based on total alkalinity as well as the concentrations of dissolved inorganic carbon, nitrate and silicate
+- New sa2sp_geo function: Converts from absolute (SA) to practical salinity (SP) based on depth and geographic location.
+- New sp2sa_chem function: Converts from practical to absolute salinity based on total alkalinity as well as on the concentrations of dissolved inorganic carbon, nitrate and silicate.
+- New sp2sa_geo function: Converts from practical to absolute salinity based on depth and geographic location
+- Fixed: following an alert message sent to all CRAN-package maintainers, fixed a bug related to vector "Pt" compared to scalar 0 in a "if" statement.
+
 version 3.1.1, 2016-11-22
 -----------------------------------
 - Fixed: buffesm was returning NaNs when Pt=0 
-
 
 version 3.1, 2016-11-18
 -----------------------------------

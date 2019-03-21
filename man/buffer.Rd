@@ -5,8 +5,9 @@
 \title{Buffer parameters of the seawater carbonate system}
 \description{Returns buffer parameters of the seawater carbonate system.}
 \usage{
-buffer(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2="x", 
-	kf="x", ks="d", pHscale="T", b="u74", warn="y")
+buffer(flag, var1, var2, S = 35, T = 25, Patm = 1, P = 0, Pt = 0, Sit = 0, 
+  k1k2 = "x", kf = "x", ks = "d", pHscale = "T", b = "u74", warn = "y", 
+  eos = "eos80", long = 1e+20, lat = 1e+20)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -65,7 +66,10 @@ flag = 25     pCO2 and DIC given
 	\item{ks}{"d" for using Ks from Dickon (1990), "k" for using Ks from Khoo et al. (1977), default is "d"} 
 	\item{pHscale}{choice of pH scale: "T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
  	\item{b}{Concentration of total boron. "l10" for the Lee et al. (2010) formulation or "u74" for the Uppstrom (1974) formulation, default is "u74" }
-        \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
+  \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
+    \item{eos}{"teos10" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos80" to specify T and S according to EOS-80.}
+  \item{long}{longitude of data point, used when eos parameter is "teos10" as a conversion parameter from absolute to practical salinity.}
+  \item{lat}{latitude of data point, used when eos parameter is "teos10".}
 }
 
 
@@ -111,6 +115,7 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 
 \item For Kn, The pressure correction was applied on the seawater scale. The pressure correction was applied as described by Millero (1995), and the value was transformed back to the required scale (T, F or SWS).
 }
+long and lat are used as conversion parameters from absolute to practical salinity: when seawater is not of standard composition, practical salinity alone is not sufficient to compute absolute salinity and vice-versa. One needs to know the density. When long and lat are given, density is inferred from WOA silicate concentration at given location. When they are not, an arbitrary geographic point is chosen: mid equatorial Atlantic. Note that this implies an error on computed salinity up to 0.02 g/kg.
 }
 
 \value{The function returns a data frame containing the following columns:

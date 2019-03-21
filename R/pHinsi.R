@@ -9,17 +9,34 @@
 # You should have received a copy of the GNU General Public License along with seacarb; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 #
-"pHinsi" <- function(pH=8.2, ALK=2.4e-3, Tinsi=20, Tlab=25, S=35, Pt = 0, Sit = 0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74") {
+"pHinsi" <- function(pH=8.2, ALK=2.4e-3, Tinsi=20, Tlab=25, Pinsi=0, S=35, Pt = 0, Sit = 0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", eos="eos80", long=1.e20, lat=1.e20) {
   # if the concentrations of total silicate and total phosphate are NA
   # they are set at 0
   Sit[is.na(Sit)] <- 0
   Pt[is.na(Pt)] <- 0
   
+  # Only two options for eos
+  if (eos != "teos10" && eos != "eos80")
+      stop ("invalid parameter eos: ", eos)
+  
+  # if use of EOS-10 standard
+  if (eos == "teos10")
+  {
+      # Must convert salinity from TEOS-10 to EOS-80
+      # convert salinity from Absolute to Practical (SP)
+      STeos <- teos2eos_geo (S, Tlab, P=0, long, lat)
+      SP <- STeos$SP
+  }
+  else
+  {
+      SP <- S
+  }
+
   # according to Hunter (1998)
 	#si TA=0 alors calculer TA: TA=660+47.6 * S
-	dat1 <- carb(flag = 8, var1 = pH, var2 = ALK, S = S, T = Tlab, P = 0, Pt = Pt, Sit = Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)
+	dat1 <- carb(flag = 8, var1 = pH, var2 = ALK, S = SP, T = Tlab, P = 0, Pt = Pt, Sit = Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)
 	DIC <- dat1$DIC
-	dat2 <- carb(flag = 15, var1 = ALK, var2 = DIC, S = S, T = Tinsi, P = 0, Pt = Pt, Sit = Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)
+	dat2 <- carb(flag = 15, var1 = ALK, var2 = DIC, S = SP, T = Tinsi, P = Pinsi, Pt = Pt, Sit = Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)
 	ph_insi <- dat2$pH
 	#utiliser DIC et TA pour calculer pH in situ (flag=15)
 	#attr(bor,"unit") <- "mol/kg"

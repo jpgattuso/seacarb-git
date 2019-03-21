@@ -1,11 +1,12 @@
 \encoding{latin1}
 \name{pHinsi}
 \alias{pHinsi}
-\title{pH at in situ temperature}
-\description{pH at in situ temperature}
+\title{pH at in situ temperature and pressure}
+\description{pH at in situ temperature and pressure}
 \usage{
-pHinsi(pH=8.2, ALK=2.4e-3, Tinsi=20, Tlab=25, S=35, Pt=0, Sit=0, k1k2 = "x", 
-	kf = "x", ks="d", pHscale = "T", b="u74")
+pHinsi(pH=8.2, ALK=2.4e-3, Tinsi=20, Tlab=25, Pinsi=0, S=35, Pt=0, Sit=0, 
+  k1k2 = "x", kf = "x", ks="d", pHscale = "T", b="u74", eos = "eos80", 
+  long = 1e+20, lat = 1e+20)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -13,6 +14,7 @@ pHinsi(pH=8.2, ALK=2.4e-3, Tinsi=20, Tlab=25, S=35, Pt=0, Sit=0, k1k2 = "x",
   \item{ALK}{ALK, total alkalinity (mol/kg)}
   \item{Tinsi}{In situ temperature in degrees Celsius}
   \item{Tlab}{Measurement temperature in degrees Celsius}
+  \item{Pinsi}{In situ hydrostatic pressure in bar (surface = 0)}
   \item{S}{Salinity}
   \item{Pt}{value of the concentration of total phosphate in mol/kg}
   \item{Sit}{the value of the total silicate in mol/kg}
@@ -21,10 +23,13 @@ pHinsi(pH=8.2, ALK=2.4e-3, Tinsi=20, Tlab=25, S=35, Pt=0, Sit=0, k1k2 = "x",
   \item{ks}{"d" for using Ks from Dickon (1990), "k" for using Ks from Khoo et al. (1977), default is "d"} 
   \item{pHscale}{choice of pH scale: "T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
   \item{b}{"l10" for computing boron total from the Lee et al. (2010) formulation or "u74" for using the Uppstrom (1974) formulation, default is "u74" }
+    \item{eos}{"teos10" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos80" to specify T and S according to EOS-80.}
+  \item{long}{longitude of data point, used when eos parameter is "teos10" as a conversion parameter from absolute to practical salinity.}
+  \item{lat}{latitude of data point, used when eos parameter is "teos10".}
 }
 
 \value{
-  \item{pH}{pH at in situ temperature}
+  \item{pH}{pH at in situ temperature and pressure}
 }
 
 \details{The Lueker et al. (2000) constants for K1 and K2, the Perez and Fraga (1987) constant for Kf and the Dickson (1990) constant for Ks are recommended by Dickson et al. (2007). It is, however, critical to consider that each formulation is only valid for specific ranges of temperature and salinity:
@@ -69,6 +74,8 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 
 \item For Kn, The pressure correction was applied on the seawater scale. The pressure correction was applied as described by Millero (1995), and the value was transformed back to the required scale (T, F or SWS).
 }
+
+long and lat are used as conversion parameters from absolute to practical salinity: when seawater is not of standard composition, practical salinity alone is not sufficient to compute absolute salinity and vice-versa. One needs to know the density. When long and lat are given, density is inferred from WOA silicate concentration at given location. When they are not, an arbitrary geographic point is chosen: mid equatorial Atlantic. Note that this implies an error on computed salinity up to 0.02 g/kg.
 }
 
 \references{
@@ -92,7 +99,7 @@ Jean-Pierre Gattuso, \email{gattuso@obs-vlfr.fr}
 %\seealso{	\code{\link{carb}}}
 
 \examples{
-  pHinsi(pH=8.2,ALK=2.4e-3,Tinsi=25,Tlab=25,S=35,Pt=0,Sit=0)
+  pHinsi(pH=8.2,ALK=2.4e-3,Tinsi=25,Tlab=25,Pinsi=200,S=35,Pt=0,Sit=0)
 }
 
 \keyword{utilities}

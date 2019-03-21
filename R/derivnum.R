@@ -1,13 +1,13 @@
 # derivnum()
 # This subroutine computes partial derivatives of output carbonate variables 
-# with respect to input variables (two), plus nutrients (two), temperature and salinity
+# with respect to input variables (two), plus nutrients (two), temperature and salinity,
 # and dissociation constants.
 #
-# It uses the central difference method, which consists to : 
-# - introduce a small perturbation delta (plus or minus) in one input
-# - and compute the induced delta in output variables
+# It uses the central differences, which consists of  
+# - introducing a small perturbation delta (plus or minus) in one input
+# - and computing the induced delta in output variables
 #
-# The ratio between delta and input value is chosen so : 
+# The ratio between delta and input value is chosen as follows: 
 #    for perturbing input pair :  a constant which depends on the type of input pair of variables.
 #    for perturbing nutrients  :  1.e-6
 #    for perturbing T and S    :  1.e-3
@@ -22,13 +22,14 @@
 #                  case 't', 'temp' or 'temperature' : temperature
 #                  case 's', 'sal' or 'salinity'     : salinity
 #                  case 'K0','K1','K2','Kb','Kw','Kspa' or 'Kspc' : dissociation constant
+#                  case 'bor' : total boron
 #
 #   - others     :  same à input of subroutine  carb() : scalar or vectors
 #
 # Returns one set of partial derivatives
 derivnum <- 
 function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
-         k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y")
+         k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y",  eos="eos80", long=1.e20, lat=1.e20)
 {
     # Input conditionning
     # -------------------
@@ -48,6 +49,10 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     if(length(ks)!=n){ks <- rep(ks[1],n)}
     if(length(pHscale)!=n){pHscale <- rep(pHscale[1],n)}
     if(length(b)!=n){b <- rep(b[1],n)}
+
+    # Only two options for eos
+    if (eos != "teos10" && eos != "eos80")
+        stop ("invalid parameter eos: ", eos)
 
     varid <-toupper(varid)
     
@@ -187,7 +192,7 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     # Initialise absolute deltas
     abs_dx <- rep(NA, n)
 
-    # Uppercase names of dissociation constants
+    # Uppercase names of dissociation constants and 'total boron'
     K_id <- c('K0', 'K1', 'K2', 'KB', 'KW', 'KSPA', 'KSPC', 'BOR')
     # Flag for dissociation constant as perturbed variable 
     flag_dissoc_K = varid %in% K_id
@@ -434,11 +439,11 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         
         # Point 1: (one dissociation constant is somewhat smaller)
         sign_factor = -1.0
-        cdel1 <- carb(flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn)
+        cdel1 <- carb(flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn, eos=eos, long=long, lat=lat)
 
         # Point 2: (one dissociation constant is somewhat bigger)
         sign_factor = 1.0
-        cdel2 <- carb(flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn)
+        cdel2 <- carb(flag, var1, var2, S=S, T=T, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn, eos=eos, long=long, lat=lat)
 
         # Restore environment of carb()
         environment(carb) <- saved_env
@@ -446,10 +451,10 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     else
     {
         # Point 1: (one of var1, var2, T or S is somewhat smaller)
-        cdel1 <- carb(flag, var11, var21, S=S1, T=T1, Patm=Patm, P=P, Pt=Pt1, Sit=Sit1, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn)
+        cdel1 <- carb(flag, var11, var21, S=S1, T=T1, Patm=Patm, P=P, Pt=Pt1, Sit=Sit1, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn, eos=eos, long=long, lat=lat)
 
         # Point 2: (one of var1, var2, T or S is somewhat bigger)
-        cdel2 <- carb(flag, var12, var22, S=S2, T=T2, Patm=Patm, P=P, Pt=Pt2, Sit=Sit2, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn)
+        cdel2 <- carb(flag, var12, var22, S=S2, T=T2, Patm=Patm, P=P, Pt=Pt2, Sit=Sit2, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b, gas=gas, warn=warn, eos=eos, long=long, lat=lat)
     }
 
     # Compute [H+] concentration and add it to data-frame

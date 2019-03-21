@@ -95,13 +95,13 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     #   Millero 2010 Marine and Fresh water research
 
     is_m10 <- k1k2 == "m10"
-    pK1o <- 6320.813/TK[is_m10] + 19.568224*log(TK[is_m10]) -126.34048
-
+    
     #   pH-scale: 'SWS scale'. mol/kg-soln
     is_m10_SWS <- is_m10 & (pHscale=="SWS" | P>0)
     A1 <- 13.4038*S[is_m10_SWS]^(0.5) + 0.03206*S[is_m10_SWS] - (5.242e-5)*S[is_m10_SWS]^2
     B1 <- -530.659*S[is_m10_SWS]^(0.5) - 5.8210*S[is_m10_SWS]
     C1 <- -2.0664*S[is_m10_SWS]^(0.5)
+    pK1o <- 6320.813/TK[is_m10_SWS] + 19.568224*log(TK[is_m10_SWS]) -126.34048
     pK1 <- pK1o + A1 + B1/TK[is_m10_SWS] + C1*log(TK[is_m10_SWS])
     K1[is_m10_SWS] <- 10^(-pK1)   # K1 according to Millero et al. 2010 at Seawater scale
     pHsc[is_m10_SWS] <- "SWS" 
@@ -111,6 +111,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     A1 <- 13.4051*S[is_m10_T]^(0.5) + 0.03185*S[is_m10_T] - (5.218e-5)*S[is_m10_T]^2
     B1 <- -531.095*S[is_m10_T]^(0.5) - 5.7789*S[is_m10_T]
     C1 <- -2.0663*S[is_m10_T]^(0.5)
+    pK1o <- 6320.813/TK[is_m10_T] + 19.568224*log(TK[is_m10_T]) -126.34048
     pK1 <- pK1o + A1 + B1/TK[is_m10_T] + C1*log(TK[is_m10_T])
     K1[is_m10_T] <- 10^(-pK1)   # K1 according to Millero et al. 2010 at Total scale 
     pHsc[is_m10_T] <- "T"
@@ -120,6 +121,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     A1 <- 5.09247*S[is_m10_F]^(0.5) + 0.05574*S[is_m10_F] - (9.279e-5)*S[is_m10_F]^2
     B1 <- -189.879*S[is_m10_F]^(0.5) - 11.3108*S[is_m10_F]
     C1 <- -0.8080*S[is_m10_F]^(0.5)
+    pK1o <- 6320.813/TK[is_m10_F] + 19.568224*log(TK[is_m10_F]) -126.34048
     pK1 <- pK1o + A1 + B1/TK[is_m10_F] + C1*log(TK[is_m10_F])
     K1[is_m10_F] <- 10^(-pK1)  # K1 according to Millero et al. 2010 at Total scale
     pHsc[is_m10_F] <- "F"
@@ -131,13 +133,13 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     #   Waters, Millero, Woosley (Mar. Chem., 165, 66-67, 2014)
 
     is_w14 <- k1k2 == "w14"
-    pK1o <- 6320.813/TK[is_w14] + 19.568224*log(TK[is_w14]) -126.34048
 
     #   pH-scale: 'SWS scale'. mol/kg-soln
     is_w14_SWS <- is_w14 & (pHscale=="SWS" | P>0)
     A1 <- 13.409160*S[is_w14_SWS]^(0.5) + 0.031646*S[is_w14_SWS] - (5.1895e-5)*S[is_w14_SWS]^2
     B1 <- -531.3642*S[is_w14_SWS]^(0.5) - 5.713*S[is_w14_SWS]
     C1 <- -2.0669166*S[is_w14_SWS]^(0.5)
+    pK1o <- 6320.813/TK[is_w14_SWS] + 19.568224*log(TK[is_w14_SWS]) -126.34048
     pK1 <- pK1o + A1 + B1/TK[is_w14_SWS] + C1*log(TK[is_w14_SWS])
     K1[is_w14_SWS] <- 10^(-pK1)   # K1 according to Millero et al. 2010 at Seawater scale
     pHsc[is_w14_SWS] <- "SWS" 
@@ -147,6 +149,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     A1 <- 13.568513*S[is_w14_T]^(0.5) + 0.031645*S[is_w14_T] - (5.3834e-5)*S[is_w14_T]^2
     B1 <- -539.2304*S[is_w14_T]^(0.5) - 5.635*S[is_w14_T]
     C1 <- -2.0901396*S[is_w14_T]^(0.5)
+    pK1o <- 6320.813/TK[is_w14_T] + 19.568224*log(TK[is_w14_T]) -126.34048
     pK1 <- pK1o + A1 + B1/TK[is_w14_T] + C1*log(TK[is_w14_T])
     K1[is_w14_T] <- 10^(-pK1)   # K1 according to Millero et al. 2010 at Total scale 
     pHsc[is_w14_T] <- "T"
@@ -156,6 +159,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     A1 <- 5.592953*S[is_w14_F]^(0.5) + 0.028845*S[is_w14_F] - (6.388e-5)*S[is_w14_F]^2
     B1 <- -225.7489*S[is_w14_F]^(0.5) - 4.761*S[is_w14_F]
     C1 <- -0.8715109*S[is_w14_F]^(0.5)
+    pK1o <- 6320.813/TK[is_w14_F] + 19.568224*log(TK[is_w14_F]) -126.34048
     pK1 <- pK1o + A1 + B1/TK[is_w14_F] + C1*log(TK[is_w14_F])
     K1[is_w14_F] <- 10^(-pK1)  # K1 according to Millero et al. 2010 at Total scale
     pHsc[is_w14_F] <- "F"
