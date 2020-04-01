@@ -1,14 +1,14 @@
-\name{SIR}
-\alias{SIR}
+\name{sir}
+\alias{sir}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Parameters of the seawater carbonate system including the substrate-inhibitor-ratio (SIR)
 }
 \description{
-This function is a modification of \emph{carb}. It returns parameters of the seawater carbonate system, as well as additional parameters relevant to the SIR.
+This function is a modification of \emph{carb}. It returns parameters of the seawater carbonate system, as well as additional parameters relevant to the substrate-inhibitor-ratio (SIR).
 }
 \usage{
-SIR(flag, var1, var2, S = 35, T = 25, Patm = 1, P = 0, 
+sir(flag, var1, var2, S = 35, T = 25, Patm = 1, P = 0, 
                Pt = 0, Sit = 0, k1k2 = "x", kf = "x", ks = "d", pHscale = "T", 
                b = "u74", gas = "potential", warn = "y", eos = "eos80", 
                long = 1e+20, lat = 1e+20)
@@ -207,7 +207,7 @@ Zeebe R. E. and Wolf-Gladrow D. A., 2001 \emph{CO2 in seawater: equilibrium, kin
 }
 \examples{
 ## With a couple of variables
-SIR(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,
+sir(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,
 	pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
 
 ## Using vectors as arguments
@@ -223,7 +223,7 @@ kf <- c("pf", "pf", "pf")
 k1k2 <- c("l", "l", "l")
 pHscale <- c("T", "T", "T")
 b <- c("l10", "l10", "l10")
-SIR(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P,
+sir(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P,
   Pt=Pt, Sit=Sit, kf=kf, k1k2=k1k2, pHscale=pHscale, b=b)
 
 ## Test with all flags 
@@ -235,18 +235,18 @@ var2 <- c(7.308171e-06, 0.001646857, 0.0002822957, 0.00234, 0.001936461,
 	0.001646857, 0.0002822957, 0.00234, 0.001936461, 0.0002822957, 
 	0.00234, 0.001936461,  0.00234, 0.001936461, 0.001936461, 8.2, 
 	0.001646857, 0.0002822957, 0.00234, 0.001936461)
-SIR(flag=flag, var1=var1, var2=var2)
+sir(flag=flag, var1=var1, var2=var2)
 
 ## Test using a data frame 
 data(seacarb_test_P0)	#test data set for P=0 (surface)
 tab <- seacarb_test_P0[14:19,]
 
 ## method 1 using the column numbers
-SIR(flag=tab[[1]], var1=tab[[2]], var2=tab[[3]], S=tab[[4]], T=tab[[5]], 
+sir(flag=tab[[1]], var1=tab[[2]], var2=tab[[3]], S=tab[[4]], T=tab[[5]], 
 P=tab[[6]], Sit=tab[[8]], Pt=tab[[7]])
 
 ## method 2 using the column names
-SIR(flag=tab$flag, var1=tab$var1, var2=tab$var2, S=tab$S, T=tab$T, 
+sir(flag=tab$flag, var1=tab$var1, var2=tab$var2, S=tab$S, T=tab$T, 
 P=tab$P, Sit=tab$Sit, Pt=tab$Pt)
 }
 \keyword{utilities}

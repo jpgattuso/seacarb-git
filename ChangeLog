@@ -1,3 +1,7 @@
+version 3.2.13 2020-04-01
+-----------------------------------
+- New: functions sir, sir_b and sir_full to add the substrate-inhibitor-ratio and related variables to the output of the carb family of functions (thanks to Kimberlee Baldry)
+
 version 3.2.12 2019-03-22
 -----------------------------------
 - Update: function error to avoid errors when input values were missing

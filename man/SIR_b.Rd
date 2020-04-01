@@ -1,5 +1,5 @@
-\name{SIR_b}
-\alias{SIR_b}
+\name{sir_b}
+\alias{sir_b}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Parameters of the seawater carbonate system with boron addition, including the substrate-inhibitor-ratio (SIR)
@@ -8,7 +8,7 @@ Parameters of the seawater carbonate system with boron addition, including the s
 This function is a modification of \emph{carbb}. It returns parameters of the seawater carbonate system when boron is added, as well as additional parameters relevant to the SIR.
 }
 \usage{
-SIR_b(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
+sir_b(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, 
   k1k2="x", kf="x", ks="d", pHscale="T", b="u74", gas="potential", badd=0, 
   warn="y", eos = "eos80", long = 1e+20, lat = 1e+20)
 }
@@ -203,7 +203,8 @@ Zeebe R. E. and Wolf-Gladrow D. A., 2001 \emph{CO2 in seawater: equilibrium, kin
 }
 \examples{
 ## With a couple of variables
-SIR_b(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,pHscale="T", kf="pf", k1k2="l", ks="d", b="u74", badd=0)
+sir_b(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, 
+  Pt=0, Sit=0,pHscale="T", kf="pf", k1k2="l", ks="d", b="u74", badd=0)
 
 }
 \keyword{utilities}

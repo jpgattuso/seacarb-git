@@ -1,5 +1,5 @@
-\name{SIR_full}
-\alias{SIR_full}
+\name{sir_full}
+\alias{sir_full}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Parameters of the seawater carbonate system including the substrate-inhibitor-ratio (SIR) - extension of carb
@@ -8,7 +8,7 @@ Parameters of the seawater carbonate system including the substrate-inhibitor-ra
 This function is a modification of carb. It returns parameters of the seawater carbonate system, including the ammonium and sulfide acid-base systems, as well as full acid-base speciation and additional parameters relevant to the SIR.
 }
 \usage{
-SIR_full(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
+sir_full(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         k1k2="x", kf="x", ks="d", pHscale="T", b="u74", gas="potential",
         NH4t=0, HSt=0)
 }
@@ -229,11 +229,11 @@ Zeebe R. E. and Wolf-Gladrow D. A., 2001 \emph{CO2 in seawater: equilibrium, kin
 
 \examples{
 ## With a couple of variables
-SIR_full(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,
+sir_full(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,
 	pHscale="T", kf="pf", k1k2="l", ks="d", b="u74", gas="potential", NH4t=0, HSt=0)
 
 ## With a couple of variables and non-zero nutrient concentrations
-SIR_full(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=5e-6, Sit=2e-6,
+sir_full(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=5e-6, Sit=2e-6,
 	pHscale="T", kf="pf", k1k2="l", ks="d", b="u74", gas="potential", NH4t=10e-6, HSt=0.1e-6)
 
 ## Using vectors as arguments
@@ -252,7 +252,7 @@ b <- c("l10", "l10", "l10")
 gas <- c("potential", "potential", "potential")
 NH4t <- c(0, 0, 0)
 HSt <- c(0, 0, 0)
-SIR_full(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P, Pt=Pt, Sit=Sit, 
+sir_full(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P, Pt=Pt, Sit=Sit, 
   kf=kf, k1k2=k1k2, pHscale=pHscale, b=b, gas=gas, NH4t=NH4t, HSt=HSt)
 
 ## Test with all flags 
@@ -264,7 +264,7 @@ var2 <- c(7.308171e-06, 0.001646857, 0.0002822957, 0.00234, 0.001936461,
 	0.001646857, 0.0002822957, 0.00234, 0.001936461, 0.0002822957, 
 	0.00234, 0.001936461,  0.00234, 0.001936461, 0.001936461, 8.2, 
 	0.001646857, 0.0002822957, 0.00234, 0.001936461)
-SIR_full(flag=flag, var1=var1, var2=var2)
+sir_full(flag=flag, var1=var1, var2=var2)
 }
 \keyword{utilities}
 
