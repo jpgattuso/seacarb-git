@@ -54,8 +54,8 @@ flag = 24     pCO2 and ALK given
 flag = 25     pCO2 and DIC given
 }
 	\item{sys}{0 if the manipulation is carried out in a system closed to the atmosphere or 1 if its is carried out in a system open to the atmosphere}
-	\item{var1}{Value of the first  variable in mol/kg, except for pH and for pCO2 in \eqn{\mu}atm}
-	\item{var2}{Value of the second  variable in mol/kg, except for pH}
+	\item{var1}{Value of the first variable in mol/kg, except for pH and for pCO2 in \eqn{\mu}atm}
+	\item{var2}{Value of the second variable in mol/kg, except for pH}
 	\item{pCO2a}{CO2 partial pressure in the atmosphere pCO2 in \eqn{\mu}atm. It is only used in systems open to the atmosphere (i.e. when sys=1)}
 	\item{vol}{Volume of acid or base added in liter. By convention, it is given a negative sign for acid additions and a positive sign for base additions. The acid must be fortified with NaCl in order to have the same salinity than seawater.}
 	\item{N}{Normality of the acid or base in mol/kg}
