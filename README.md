@@ -11,7 +11,12 @@ In 2003, Aurélien Proye and I put together seacarb, an R package that calculate
 - Orr J. C., Epitalon J.-M., Dickson A. G. & Gattuso J.-P., 2018. Routine uncertainty propagation for the marine carbon dioxide system. Marine Chemistry 207:84-107.
 - Zeebe R. E. & Wolf-Gladrow D. A., 2001. CO2 in seawater: equilibrium, kinetics, isotopes. Amsterdam: Elsevier, 346 pp.
 
-A portion of the code has been adapted, with permission from the authors, from the Matlab files mentioned above. I am grateful to Richard Zeebe and Dieter Wolf-Gladrow for that. Portions of code and/or corrections have also been contributed by Jean-Marie Epitalon (2004, 2018), Bernard Gentili (2006), Karline Soetaert (2007) and Jim Orr (2007, 2010, 2018). Héloïse Lavigne contributed a lot to seacarb in 2008 and 2009; this was critical to the launch of version 2.0 and subsequent updates. Jean-Marie Epitalon considerably improved the code, leading to much faster calculations in version 3.0.
+A portion of the code has been adapted, with permission from the authors, from the Matlab files mentioned above. I am grateful to Richard Zeebe and Dieter Wolf-Gladrow for that. Héloïse Lavigne contributed a lot to seacarb in 2008 and 2009; this was critical to the launch of version 2.0 and subsequent updates. Portions of code and/or corrections have also been contributed by Jean-Marie Epitalon (2004, 2018), Bernard Gentili (2006), Karline Soetaert (2007) and Jim Orr (2007, 2010, 2018). Jean-Marie Epitalon considerably improved the code, leading to much faster calculations in version 3.0.
+
+Orr et al. (2015) assessed seacarb together with other packages which calculate the seawater carbonate chemistry. In 2018, option to calculate uncertainty propagation was added (Orr et al., 2018).
+
+- Orr J. C., Epitalon J.-M., Dickson A. G. & Gattuso J.-P., 2018. Routine uncertainty propagation for the marine carbon dioxide system. Marine Chemistry 207:84-107. http://dx.doi.org/10.1016/j.marchem.2018.10.006
+- Orr J. C., Epitalon J.-M. & Gattuso J.-P., 2015. Comparison of ten packages that compute ocean carbonate chemistry. Biogeosciences 12:1483-1510. http://www.biogeosciences.net/12/1483/2015/
 
 This program is provided free under the GNU General Public License (GNU GPL). It will be improved using the comments that I will receive. If you are new to R, please check the manuals and FAQs available on the R-project web site to get information on how to install R and the seacarb package on your system. Please only report and comment on seacarb, not on general problems related to R.
 
@@ -21,7 +26,7 @@ Briefly, after installing R and if you have an Internet connection, here is the 
 - To install seacarb (to be done only once), type the following command: install.packages("seacarb")
 - To load the seacarb package into memory in order to use it (to be done each time R is launched), type the following command: library(seacarb)
 
-The seacarb package can be downloaded from the Comprehensive R Archive Network (CRAN). The documentation is included in the package and is accessible using standard R commands. Please give due credit to the publications mentioned above and cite seacarb as follows:
+The seacarb package can be downloaded from the Comprehensive R Archive Network (CRAN; see link below). The documentation is included in the package and is accessible using standard R commands. Please give due credit to the publications mentioned above and cite seacarb as follows:
 
-Gattuso J.-P., Epitalon J.-M., Lavigne H. & Orr J., 2018. seacarb: seawater carbonate chemistry. R package version 3.2.10. http://CRAN.R-project.org/package=seacarb
+Gattuso J.-P., Epitalon J.-M., Lavigne H. & Orr J., 2020. seacarb: seawater carbonate chemistry. R package version 3.2.13. http://CRAN.R-project.org/package=seacarb
 
