@@ -12,7 +12,7 @@
 # co3 and hco3 are the   amount added in mol/kg
 
 
-# One adds a certain volume (vol) of HCl (vol  is then negative) or NaOH (vol is then positive) to 1 kg of seawater. 
+# One adds a certain volume (vol) of HCl (vol is then negative) or NaOH (vol is then positive) to 1 kg of seawater. 
 # vol is in liter
 # N is the normality of the HCl or NaOH
 # HCl or NaOH are, respectively, a strong acid and a strong base which are therefore fully dissociated. The concentration of H+ or OH- is N mole/l
