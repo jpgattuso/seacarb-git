@@ -60,6 +60,35 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     #   first acidity constant:
     #   [H^+] [HCO_3^-] / [CO2] = K_1
     #
+    #     Papadimitriou et al (2018)  in Geochimica et Cosmochimica Acta 220 (2018) 55–70
+    #
+    #   pH-scale: 'total'. mol/kg-soln
+    is_p18 <- k1k2 == "p18"
+    Sp18 <- S[is_p18]
+    pK1 <- -176.48 + 6.14528*sqrt(Sp18) - 0.127714*Sp18 + 7.396e-5*Sp18*Sp18 +
+            (9914.37 - 622.886*sqrt(Sp18) + 29.714*Sp18)/TK[is_p18] +
+            (26.05129 - 0.666812*sqrt(Sp18)) * log(TK[is_p18])
+    K1[is_p18]<- 10^(-pK1)
+    pHsc[is_p18] <- "T"
+
+
+    # --------------------- K1 ---------------------------------------
+    #   first acidity constant:
+    #   [H^+] [HCO_3^-] / [CO2] = K_1
+    #
+    #     Sulpis et al (2020)  in Ocean Science, 16, 847–862, 2020
+    #
+    #   pH-scale: 'total'. mol/kg-soln
+    is_s20 <- k1k2 == "s20"
+    pK1 <- 8510.63/TK[is_s20] - 172.4493 + 26.32996*log(TK[is_s20]) - 0.011555*S[is_s20] + 0.0001152*S[is_s20]*S[is_s20]
+    K1[is_s20]<- 10^(-pK1)
+    pHsc[is_s20] <- "T"
+
+
+    # --------------------- K1 ---------------------------------------
+    #   first acidity constant:
+    #   [H^+] [HCO_3^-] / [CO2] = K_1
+    #
     #   (Roy et al., 1993 in Dickson and Goyet, 1994, Chapter 5, p. 14)
     #   pH-scale: 'total'. mol/kg-soln
     is_r <- k1k2 == "r"
@@ -71,6 +100,20 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     K1[is_r] <- exp(lnK1roy)
     pHsc[is_r] <- "T"
 
+
+    # --------------------- K1 ---------------------------------------
+    #   first acidity constant:
+    #   [H^+] [HCO_3^-] / [CO2] = K_1
+    #
+    #   Mojica Prieto and Millero (2002)
+    #   (from Millero  et al., 2002 in Deep-Sea Research I 49 (2002) 1705–1723)
+    #
+    #   pH-scale: 'seawater'. mol/kg-soln
+    is_m02 <- k1k2 == "m02"
+    pK1 <- -43.6977 - 0.0129037 * S[is_m02] + 1.364e-4 * S[is_m02]*S[is_m02] + 2885.378/TK[is_m02] + 7.045159 * log(TK[is_m02])
+    K1[is_m02]<- 10^(-pK1)
+    pHsc[is_m02] <- "SWS"
+    
         
     # --------------------- K1 ---------------------------------------
     #   first acidity constant:
@@ -256,11 +299,14 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
 
     ##---------------Attributes
     method <- rep(NA, nK)
+    method[is_m02] <- "Millero et al. (2002)"
     method[is_m06] <- "Millero et al. (2006)"
     method[is_m10] <- "Millero (2010)"
     method[is_w14] <- "Waters et al. (2014)"
     method[is_r]   <- "Roy et al. (1993)"
-    method[! (is_m06 | is_m10 | is_w14 | is_r) ] <- "Luecker et al. (2000)"
+    method[is_p18] <- "Papadimitriou et al. (2018)"
+    method[is_s20] <- "Sulpis et al. (2020)"
+    method[! (is_m02 | is_m06 | is_m10 | is_w14 | is_r | is_p18 | is_s20) ] <- "Luecker et al. (2000)"
 
     attr(K1,"unit") <- "mol/kg-soln"
     attr(K1,"pH scale") <- pHlabel

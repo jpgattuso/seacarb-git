@@ -58,9 +58,36 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     K2[is_l]<- 10^logK2lue
     pHsc[is_l] <- "T"
 
-    logK2lue <- -471.78/TK[is_l] - 25.9290 + 3.16967*log(TK[is_l]) + 0.01781*S[is_l] - 0.0001122*S[is_l]*S[is_l]
-    K2[is_l] <- 10^(logK2lue)
-    pHsc[is_l] <- "T"
+    
+    # --------------------- K2 Sulpis et al. 2020----------------------------------------
+    #
+    #   second acidity constant:
+    #   [H^+] [CO_3^--] / [HCO_3^-] = K_2
+    #
+    #     Papadimitriou et al (2018)  in Geochimica et Cosmochimica Acta 220 (2018) 55–70
+    #
+    #   pH-scale: 'total'. mol/kg-soln
+    is_p18 <- k1k2 == "p18"
+    Sp18 <- S[is_p18]
+    pK2 <- -323.52692 + 27.557655*sqrt(Sp18) + 0.154922*Sp18 - 2.48396e-4*Sp18*Sp18 +
+           (14763.287 - 1014.819*sqrt(Sp18) - 14.35223*Sp18)/TK[is_p18] +
+           (50.385807 - 4.4630415*sqrt(Sp18)) * log(TK[is_p18])
+    K2[is_p18]<- 10^(-pK2)
+    pHsc[is_p18] <- "T"
+
+    # --------------------- K2 Sulpis et al. 2020----------------------------------------
+    #
+    #   second acidity constant:
+    #   [H^+] [CO_3^--] / [HCO_3^-] = K_2
+    #
+    #     Sulpis et al (2020)  in Ocean Science, 16, 847–862, 2020
+    #
+    #   pH-scale: 'total'. mol/kg-soln
+    is_s20 <- k1k2 == "s20"
+    pK2 <- 4226.23/TK[is_s20] - 59.4636 + 9.60817*log(TK[is_s20]) - 0.01781*S[is_s20] + 0.0001122*S[is_s20]*S[is_s20]
+    K2[is_s20]<- 10^(-pK2)
+    pHsc[is_s20] <- "T"
+
 
     # --------------------- K2 Roy et al. 1993----------------------------------------
     #
@@ -79,7 +106,23 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     pHsc[is_r] <- "T"
 
     # --------------------- K2 ---------------------------------------
-    #   first acidity constant:
+    #   second acidity constant:
+    #   [H^+] [CO_3^--] / [HCO_3^-] = K_2
+    #
+    #   Mojica Prieto and Millero (2002)
+    #   (from Millero  et al., 2002 in Deep-Sea Research I 49 (2002) 1705–1723)
+    #
+    #   pH-scale: 'seawater'. mol/kg-soln
+    is_m02 <- k1k2 == "m02"
+    Sm02 <- S[is_m02] 
+    pK2 <- -452.0940 + 13.142162 * Sm02 - 8.101e-4 * Sm02*Sm02 + 21263.61/TK[is_m02] + 68.483143 * log(TK[is_m02]) +
+           (-581.4428 * Sm02 + 0.259601 * Sm02*Sm02) / TK[is_m02] - 1.967035 * Sm02 * log(TK[is_m02])
+    K2[is_m02]<- 10^(-pK2)
+    pHsc[is_m02] <- "SWS"
+    
+        
+    # --------------------- K2 ---------------------------------------
+    #   second acidity constant:
     #   [H^+] [CO_3^--] / [HCO_3^-] = K_2
     #
     #   Millero et al. 2006 Marine Chemistry
@@ -96,7 +139,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     pHsc[is_m06] <- "SWS"
     
     # --------------------- K2 ---------------------------------------
-    #   first acidity constant:
+    #   second acidity constant:
     #   [H^+] [CO_3^--] / [HCO_3^-] = K_2
     #
     #   Millero 2010 Marine and Fresh water research
@@ -134,7 +177,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     pHsc[is_m10_F] <- "F"
 
     # --------------------- K2 ---------------------------------------
-    #   first acidity constant:
+    #   second acidity constant:
     #   [H^+] [CO_3^--] / [HCO_3^-] = K_2
     #
     #   Waters, Millero, Woosley (Mar. Chem., 165, 66-67, 2014)
@@ -256,11 +299,14 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
 
     ##---------------Attributes
     method <- rep(NA, nK)
+    method[is_m02] <- "Millero et al. (2002)"
     method[is_m06] <- "Millero et al. (2006)"
     method[is_m10] <- "Millero (2010)"
     method[is_w14] <- "Waters et al. (2014)"
     method[is_r]   <- "Roy et al. (1993)"
-    method[! (is_m06 | is_m10 | is_w14 | is_r) ] <- "Luecker et al. (2000)"
+    method[is_p18] <- "Papadimitriou et al. (2018)"
+    method[is_s20] <- "Sulpis et al. (2020)"
+    method[! (is_m02 | is_m06 | is_m10 | is_w14 | is_r | is_p18 | is_s20) ] <- "Luecker et al. (2000)"
     
     attr(K2,"unit")     = "mol/kg-soln"
     attr(K2,"pH scale") = pHlabel
