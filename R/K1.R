@@ -9,7 +9,7 @@
 # You should have received a copy of the GNU General Public License along with seacarb; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 "K1" <-
-function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y")
+function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",warn="y")
 {
 
     nK <- max(length(S), length(T), length(P), length(k1k2), length(pHscale), length(kSWS2scale) ,length(ktotal2SWS_P0))
@@ -216,7 +216,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     {
         ##------------- Convert from total to SWS scale
         # if correction factor (from Total scale to seawater at P=0) not given
-        if (missing(ktotal2SWS_P0))
+        if (missing(ktotal2SWS_P0) || ktotal2SWS_P0 == "x")
         {
             # Compute it
             ktotal2SWS_P0  <- rep(1.0,nK)
@@ -243,11 +243,9 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     if (length(i_press) > 0)
     {
         # Call Pcorrect() on SWS scale
-	# issue (Orr): Why are the last 2 argupments set to one here?
+	# last 2 argupments are conversion factors: they are set to one since no PH scale conversion needed
         K1[i_press] <- Pcorrect(Kvalue=K1[i_press], Ktype="K1", T=T[i_press], 
              S=S[i_press], P=P[i_press], pHscale=pHsc[i_press], 1., 1., warn=warn)
-        #K1[i_press] <- Pcorrect(Kvalue=K1[i_press], Ktype="K1", T=T[i_press], 
-        #    S=S[i_press], P=P[i_press], pHscale=pHsc[i_press], warn=warn)
     }
 
 
@@ -263,7 +261,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale=0,ktotal2SWS_P0=0,warn="y
     if (any(convert))
     {
         # if pH scale correction factor not given
-        if (missing(kSWS2scale))
+        if (missing(kSWS2scale) || kSWS2scale == "x")
         {
             # Compute it
             kSWS2scale <- rep(1.0,nK)
