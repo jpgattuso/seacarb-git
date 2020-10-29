@@ -106,11 +106,25 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
     #   [H^+] [HCO_3^-] / [CO2] = K_1
     #
     #   Mojica Prieto and Millero (2002)
-    #   (from Millero  et al., 2002 in Deep-Sea Research I 49 (2002) 1705–1723)
+    #
+    #   pH-scale: 'seawater'. mol/kg-soln
+    is_mp2 <- k1k2 == "mp2"
+    pK1 <- -43.6977 - 0.0129037 * S[is_mp2] + 1.364e-4 * S[is_mp2]*S[is_mp2] + 2885.378/TK[is_mp2] + 7.045159 * log(TK[is_mp2])
+    K1[is_mp2]<- 10^(-pK1)
+    pHsc[is_mp2] <- "SWS"
+
+    
+    # --------------------- K1 ---------------------------------------
+    #   first acidity constant:
+    #   [H^+] [HCO_3^-] / [CO2] = K_1
+    #
+    # Millero et al., 2002. Deep-Sea Res. I (49) 1705-1723.
+    # Calculated from overdetermined WOCE-era field measurements
+    # This is from page 1715
     #
     #   pH-scale: 'seawater'. mol/kg-soln
     is_m02 <- k1k2 == "m02"
-    pK1 <- -43.6977 - 0.0129037 * S[is_m02] + 1.364e-4 * S[is_m02]*S[is_m02] + 2885.378/TK[is_m02] + 7.045159 * log(TK[is_m02])
+    pK1 =  6.359 - 0.00664 * S[is_m02] - 0.01322 * T[is_m02] + 4.989e-5 * T[is_m02]*T[is_m02]
     K1[is_m02]<- 10^(-pK1)
     pHsc[is_m02] <- "SWS"
     
@@ -289,7 +303,11 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
 
     is_w <- warn == "y"
 
-    if (any(is_w & is_l & (T>35 | T<2 | S<19 | S>43))  || any(is_w & is_r & (T>45 | S<5 | S>45)) )
+    if (   any (is_w & is_l & (T>35 | T<2 | S<19 | S>43))  || any (is_w & is_r & (T<0 | T>45 | S<5 | S>45)) 
+        || any (is_w & is_mp2 & (T<0 | T>45 | S<5 | S>42)) || any (is_w & is_m02 & (T<(-1.6) | T>35 | S<34 | S>37))
+        || any (is_w & is_m06 & (T<1 | T>50 | S<0.1 | S>50)) 
+        || any (is_w & (is_m10 | is_w14) & (T<0 | T>50 | S<1 | S>50))
+        || any (is_w & is_p18 & (T<(-6) | T>25 | S<33 | S>100)) || any (is_w & is_s20 & (T<(-1.7) | T>31.8 | S<30.7 | S>37.6)) )
         warning("S and/or T is outside the range of validity of the formulation chosen for K1.")
 
     if (any(is_w & (T>50 | S>50))) 
@@ -297,6 +315,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
 
     ##---------------Attributes
     method <- rep(NA, nK)
+    method[is_mp2] <- "Mojica Prieto et al. (2002)"
     method[is_m02] <- "Millero et al. (2002)"
     method[is_m06] <- "Millero et al. (2006)"
     method[is_m10] <- "Millero (2010)"
@@ -304,7 +323,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
     method[is_r]   <- "Roy et al. (1993)"
     method[is_p18] <- "Papadimitriou et al. (2018)"
     method[is_s20] <- "Sulpis et al. (2020)"
-    method[! (is_m02 | is_m06 | is_m10 | is_w14 | is_r | is_p18 | is_s20) ] <- "Luecker et al. (2000)"
+    method[! (is_mp2 | is_m02 | is_m06 | is_m10 | is_w14 | is_r | is_p18 | is_s20) ] <- "Luecker et al. (2000)"
 
     attr(K1,"unit") <- "mol/kg-soln"
     attr(K1,"pH scale") <- pHlabel
