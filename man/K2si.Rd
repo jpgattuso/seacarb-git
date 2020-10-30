@@ -13,7 +13,7 @@ K2si(S=35, T=25, P=0, pHscale="T", kSWS2scale="x", ktotal2SWS_P0="x")
   \item{P}{Hydrostatic pressure in bar (surface = 0), default is 0}
   \item{pHscale}{choice of pH scale: "T" for using the total scale, "F" for using the free scale and "SWS" for using the seawater scale, default is total scale}
   \item{kSWS2scale}{Conversion factor from the seawater scale (SWS) to the pH scale selected at the hydrostatic pressure value indicated. It is advised to use default value "x", in which case it is computed when required.}
-  \item{ktotal2SWS_P0}{Conversion factor from the total scale to the SWS at an hydrostatic pressure of 0. It is advised to use default value “x”, in which case it is computed when required.}
+  \item{ktotal2SWS_P0}{Conversion factor from the total scale to the SWS at an hydrostatic pressure of 0. It is advised to use default value "x", in which case it is computed when required.}
 }
 
 \details{This equation is modified from Wischmeyer et al. (2003), who fitted the temperature-dependent K2si from Nordstrom et al. (1990) for freshwater to a value of 12.56 for T=25 and an ionic strength of 0.5 mol/kg. The temperature and salinity ranges in which it is valid are not well constrained.
