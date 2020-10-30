@@ -5,7 +5,7 @@
 \description{Computes the pressure correction of the equilibrium constants}
 \usage{
 Pcorrect(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", 
-  kconv2ScaleP0=0, kconv2Scale=, warn="y")
+  kconv2ScaleP0="x", kconv2Scale="x", warn="y")
 }
 
 \arguments{
@@ -32,8 +32,8 @@ Pcorrect(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T",
   \item{S}{Salinity, default is 35}
   \item{P}{Hydrostatic pressure in bar (surface = 0), default is 0}
   \item{pHscale}{pHscale of the constant given in Kvalue}
-  \item{kconv2ScaleP0}{Conversion factor from the pH scale selected to the SWS (or free for Kf) scale at pressure zero. It is computed if it is not given, which significantly slows down the computation}
-  \item{kconv2Scale}{Conversion factor from the pH scale selected to the SWS (or free for Kf) scale at the hydrostatic pressure value indicated. It is computed if it is not given, which significantly slows down the computation}
+  \item{kconv2ScaleP0}{Conversion factor from the pH scale selected to the SWS (or free for Kf) scale at pressure zero. It is advised to use default value "x", in which case it is computed when required. (may slow down the computation)}
+  \item{kconv2Scale}{Conversion factor from the pH scale selected to the SWS (or free for Kf) scale at the hydrostatic pressure value indicated. It is advised to use default value "x", in which case it is computed when required. (may slow down the computation)}
   \item{warn}{"y" to show warnings when T or S go beyond the valid range for constants; "n" to supress warnings. The default is "y".}
 }    
 

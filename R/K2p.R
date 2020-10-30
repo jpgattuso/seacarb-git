@@ -11,7 +11,7 @@
 #
 #
 "K2p" <-
-function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,warn="y"){
+function(S=35,T=25,P=0,pHscale="T",kSWS2scale="x",warn="y"){
 
     nK <- max(length(S), length(T), length(P), length(pHscale), length(kSWS2scale))
 
@@ -75,7 +75,7 @@ function(S=35,T=25,P=0,pHscale="T",kSWS2scale=0,warn="y"){
     if (any(is_total) || any(is_free))
     {
         # if pH scale correction factor not given
-        if (missing(kSWS2scale))
+        if (missing(kSWS2scale) || kSWS2scale == "x")
         {
             # Compute it
             kSWS2scale <- rep(1.0,nK)

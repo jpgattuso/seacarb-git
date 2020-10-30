@@ -11,7 +11,7 @@
 #
 #
 "Kf" <-
-function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0=0,Ks_p=0,warn="y"){
+function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0="x",Ks_p="x",warn="y"){
 
     nK <- max(length(S), length(T), length(P), length(kf), length(pHscale), length(Ks_p0), length(Ks_p))
 
@@ -65,7 +65,7 @@ function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0=0,Ks_p=0,warn="y"){
     # --------------- Conversion to free scale for pressure corrections
     
     # if Ks at zero pressure is not given
-    if (missing(Ks_p0))
+    if (missing(Ks_p0) || Ks_p0 == "x")
         # Ks at zero pressure NOT given --> compute it
     	Ks = Ks(S=S, T=T, P=rep(0,nK))                 # on free pH scale
     else
@@ -117,7 +117,7 @@ function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0=0,Ks_p=0,warn="y"){
     if (any(is_total) || any(is_SWS))
     {
         # If Ks at given pressure is not given 
-        if (missing(Ks_p))
+        if (missing(Ks_p) || Ks_p == "x")
             # compute Ks
             Ks = Ks(S=S, T=T, P=P)                 # on free pH scale
         else

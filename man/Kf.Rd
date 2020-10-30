@@ -5,7 +5,7 @@
 \title{Equilibrium constant of hydrogen fluoride (mol/kg)}
 \description{Stability constant of hydrogen fluoride (mol/kg)}
 \usage{
-Kf(S=35, T=25, P=0, kf="x", pHscale="T", Ks_p0=0, Ks_p=0, warn="y")
+Kf(S=35, T=25, P=0, kf="x", pHscale="T", Ks_p0="x", Ks_p="x", warn="y")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -15,9 +15,9 @@ Kf(S=35, T=25, P=0, kf="x", pHscale="T", Ks_p0=0, Ks_p=0, warn="y")
   \item{kf}{"pf" for using Kf from Perez and Fraga (1987) "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994), default is "pf". Attention do not use a vector for this argument.}
   \item{pHscale}{choice of pH scale: "T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
   \item{Ks_p0}{Stability constant of hydrogen sulfate (mol/kg) at pressure zero;
-needed if kf = "pf" ; if needed and not given, it is computed; if given, computation speed is increased}
-  \item{Ks_p}{Stability constant of hydrogen sulfate (mol/kg) at chosen pressure
-if not given, it is computed; if given, computation speed is increased}
+needed if kf = "pf" ; if needed and not given or set to "x", it is computed; if given, computation speed is increased}
+  \item{Ks_p}{Stability constant of hydrogen sulfate (mol/kg) at chosen pressure;
+if not given or set to "x", it is computed; if given, computation speed is increased}
   \item{warn}{"y" to show warnings when T or S go beyond the valid range for Kf; "n" to supress warnings. The default is "y".}
 }
 

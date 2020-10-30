@@ -10,7 +10,7 @@
 #
 
 "Pcorrect" <-
-function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Scale=0, warn="y")
+function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0="x", kconv2Scale="x", warn="y")
 {
   #Pcoeffs <- get("Pcoeffs", envir  = environment()) # added to silence the CRAN note "Pcorrect: no visible binding for global variable ‘Pcoeffs’"
   nK <- max(length(Kvalue), length(Ktype), length(P), length(T), length(pHscale), length(S), length(kconv2ScaleP0), length(kconv2Scale))
@@ -63,7 +63,7 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
     if (length(i_SWscale) > 0)
     {
         # If conversion factor at zero pressure is not given 
-        if (missing(kconv2ScaleP0))
+        if (missing(kconv2ScaleP0) || kconv2ScaleP0 == "x")
         {
             ## ---------------- Compute this factor where pressure correction to apply on seawater scale
             
@@ -110,7 +110,7 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
     
     
         # If conversion factor at given pressure is not given 
-        if (missing(kconv2Scale))
+        if (missing(kconv2Scale) || kconv2Scale == "x")
         {
             ## ---------------  Compute this factor where pressure correction is applied on seawater scale
             ##
@@ -175,7 +175,7 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0=0, kconv2Sca
         if (length(i_Kf_to_free) > 0)
         {                 
             # If conversion factor at zero pressure is not given 
-            if (missing(kconv2ScaleP0))
+            if (missing(kconv2ScaleP0) || kconv2ScaleP0 == "x")
             {
                 ## ---------------- Compute this factor where applying to Kf where P > 0.0
                 
