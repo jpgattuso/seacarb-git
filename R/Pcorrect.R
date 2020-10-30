@@ -63,7 +63,7 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0="x", kconv2S
     if (length(i_SWscale) > 0)
     {
         # If conversion factor at zero pressure is not given 
-        if (missing(kconv2ScaleP0) || kconv2ScaleP0 == "x")
+        if (missing(kconv2ScaleP0) || kconv2ScaleP0[1] == "x")
         {
             ## ---------------- Compute this factor where pressure correction to apply on seawater scale
             
@@ -110,7 +110,7 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0="x", kconv2S
     
     
         # If conversion factor at given pressure is not given 
-        if (missing(kconv2Scale) || kconv2Scale == "x")
+        if (missing(kconv2Scale) || kconv2Scale[1] == "x")
         {
             ## ---------------  Compute this factor where pressure correction is applied on seawater scale
             ##
@@ -175,7 +175,7 @@ function(Kvalue, Ktype, T=25, S=35, P=0, pHscale="T", kconv2ScaleP0="x", kconv2S
         if (length(i_Kf_to_free) > 0)
         {                 
             # If conversion factor at zero pressure is not given 
-            if (missing(kconv2ScaleP0) || kconv2ScaleP0 == "x")
+            if (missing(kconv2ScaleP0) || kconv2ScaleP0[1] == "x")
             {
                 ## ---------------- Compute this factor where applying to Kf where P > 0.0
                 

@@ -230,7 +230,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
     {
         ##------------- Convert from total to SWS scale
         # if correction factor (from Total scale to seawater at P=0) not given
-        if (missing(ktotal2SWS_P0) || ktotal2SWS_P0 == "x")
+        if (missing(ktotal2SWS_P0) || ktotal2SWS_P0[1] == "x")
         {
             # Compute it
             ktotal2SWS_P0  <- rep(1.0,nK)
@@ -275,7 +275,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
     if (any(convert))
     {
         # if pH scale correction factor not given
-        if (missing(kSWS2scale) || kSWS2scale == "x")
+        if (missing(kSWS2scale) || kSWS2scale[1] == "x")
         {
             # Compute it
             kSWS2scale <- rep(1.0,nK)
