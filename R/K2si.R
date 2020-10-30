@@ -40,7 +40,7 @@ K2si <- function (S=35, T=25, P=0, pHscale="T",
   ## ---- Conversion from Total scale to seawater scale before pressure corrections
   
   # if correction factor (from Total scale to seawater at P=0) not given
-  if (missing(ktotal2SWS_P0) || ktotal2SWS_P0 == "x")
+  if (missing(ktotal2SWS_P0) || ktotal2SWS_P0[1] == "x")
   {
     # Compute it
     ktotal2SWS_P0 <- kconv(S=S, T=T, P=0)$ktotal2SWS
@@ -67,7 +67,7 @@ K2si <- function (S=35, T=25, P=0, pHscale="T",
   if (any(is_total) || any(is_free))
   {
     # if pH scale correction factor not given
-    if (missing(kSWS2scale) || kSWS2scale == "x")
+    if (missing(kSWS2scale) || kSWS2scale[1] == "x")
     {
       # Compute it
       kSWS2scale <- rep(1.0,nK)

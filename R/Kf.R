@@ -65,7 +65,7 @@ function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0="x",Ks_p="x",warn="y"){
     # --------------- Conversion to free scale for pressure corrections
     
     # if Ks at zero pressure is not given
-    if (missing(Ks_p0) || Ks_p0 == "x")
+    if (missing(Ks_p0) || Ks_p0[1] == "x")
         # Ks at zero pressure NOT given --> compute it
     	Ks = Ks(S=S, T=T, P=rep(0,nK))                 # on free pH scale
     else
@@ -117,7 +117,7 @@ function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0="x",Ks_p="x",warn="y"){
     if (any(is_total) || any(is_SWS))
     {
         # If Ks at given pressure is not given 
-        if (missing(Ks_p) || Ks_p == "x")
+        if (missing(Ks_p) || Ks_p[1] == "x")
             # compute Ks
             Ks = Ks(S=S, T=T, P=P)                 # on free pH scale
         else

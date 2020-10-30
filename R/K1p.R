@@ -74,7 +74,7 @@ function(S=35,T=25,P=0,pHscale="T",kSWS2scale="x",warn="y"){
     if (any(is_total) || any(is_free))
     {
         # if pH scale correction factor not given
-        if (missing(kSWS2scale) || kSWS2scale == "x")
+        if (missing(kSWS2scale) || kSWS2scale[1] == "x")
         {
             # Compute it
             kSWS2scale <- rep(1.0,nK)
