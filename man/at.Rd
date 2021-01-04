@@ -33,7 +33,9 @@ at(S=35, T=25, C=0.1, d=1, pHTris=NULL, ETris=NULL, weight, E, volume)
 Steeve Comeau, Heloise Lavigne and Jean-Pierre Gattuso
 }
 
-\seealso{alkalinity}
+\seealso{
+  \code{\link{alkalinity}}.
+  }
 
 \examples{
 data(alkalinity)
