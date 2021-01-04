@@ -1,3 +1,7 @@
+version 3.2.15 2021-01-04
+-----------------------------------
+- New: function fCO2insi to express fCO2 measured in the lab at in situ temperature.
+
 version 3.2.14 2020-10-30
 -----------------------------------
 - Update: all functions using K1 and K2 now provide 3 additional formulations to calculate these constants: Millero et al. (2002), Papadimitriou et al. (2018) and Sulpis et al. (2020). This is useful at low temperatures.
