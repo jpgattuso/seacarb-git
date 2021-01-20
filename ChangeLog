@@ -1,6 +1,7 @@
-version 3.2.15 2021-01-04
+version 3.2.15 2021-01-20
 -----------------------------------
 - New: function fCO2insi to express fCO2 measured in the lab at in situ temperature.
+- removed function at due to issues identified by Lennart Bach
 
 version 3.2.14 2020-10-30
 -----------------------------------
