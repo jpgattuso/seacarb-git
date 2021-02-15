@@ -279,16 +279,16 @@ errors(flag=21, var1=400, var2=8.1,  S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,
 ## 5) Use vectors as arguments and compute errors on all output variables
 ## using Monte Carlo method taking into account input errors on pH, ALK, DIC
 ## and dissociation constants (pKx)
-flag <- c(8, 15, 8)
+flag <- c(8, 15)
 var1 <- c(8.2, 0.002394, 8.25)
-var2 <- c(0.002343955, 0.002017, 2400e-6)
-S <- c(35, 35, 30)
-T <- c(25, 25, 22)
+var2 <- c(0.002343955, 0.002017)
+S <- c(35, 35)
+T <- c(25, 25)
 P <- 0
 Pt <- 0
 Sit <- 0
-evar1 <- c(0.005, 2e-6, 0.005)
-evar2 <- c(2e-6, 2e-6, 2e-6)
+evar1 <- c(0.005, 2e-6)
+evar2 <- c(2e-6, 2e-6)
 epKx <- c(0.002, 0.01, 0.02, 0.01, 0.01, 0.01, 0.01)
 eBtx = 0.01
 method <- "mc"

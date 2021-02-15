@@ -54,7 +54,7 @@ Perez F. F. and Fraga F., 1987 Association constant of fluoride and hydrogen ion
 }
 
 \author{
-Jean-Marie Epitalon and Heloise Lavigne, Aurelien Proye and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Jean-Marie Epitalon, Heloise Lavigne, Aurelien Proye and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
 }
 
 
