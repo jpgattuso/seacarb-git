@@ -189,7 +189,8 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
     #
     #   Waters, Millero, Woosley (Mar. Chem., 165, 66-67, 2014)
 
-    is_w14 <- k1k2 == "w14"
+    # Option k1k2= "sb21" refers to Shockman & Byrne (2021) for K2  and Waters et al.(2014) for K1
+    is_w14 <- (k1k2 == "w14") | (k1k2 == "sb21")
 
     #   pH-scale: 'SWS scale'. mol/kg-soln
     is_w14_SWS <- is_w14 & (pHscale=="SWS" | P>0)

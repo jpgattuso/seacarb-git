@@ -11,7 +11,7 @@ K1(S=35, T=25, P=0, k1k2="x", pHscale="T", kSWS2scale="x", ktotal2SWS_P0="x", wa
   \item{S}{Salinity, default is 35}
   \item{T}{Temperature in degrees Celsius, default is 25oC}
   \item{P}{Hydrostatic pressure in bar (surface = 0), default is 0}
-  \item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "m02" from Millero et al. (2002), "m06" from Millero et al. (2006), "m10" from Millero (2010), "mp2" from Mojica Prieto et al. (2002), "p18" from Papadimitriou et al. (2018), "r" from Roy et al. (1993), "s20" from Sulpis et al. (2020), and "w14" from Waters et al. (2014),. "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "w14".}
+  \item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "m02" from Millero et al. (2002), "m06" from Millero et al. (2006), "m10" from Millero (2010), "mp2" from Mojica Prieto et al. (2002), "p18" from Papadimitriou et al. (2018), "r" from Roy et al. (1993), "s20" from Sulpis et al. (2020), "sb21" from Shockman & Byrne (2021), and "w14" from Waters et al. (2014),. "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "w14".}
   \item{pHscale}{choice of pH scale: "T" for using the total scale, "F" for using the free scale and "SWS" for using the seawater scale, default is total scale}
   \item{kSWS2scale}{Conversion factor from the seawater scale (SWS) to the pH scale selected at the hydrostatic pressure value indicated. It is not required for all formulations of K1 and K2, nor when the hydrostatic pressure is 0. It is advised to use default value "x", in  which case it is computed when required.}
   \item{ktotal2SWS_P0}{Conversion factor from the total scale to the SWS at an hydrostatic pressure of 0. It is not required for all formulations of K1 and K2. It is advised to use default value "x", in  which case it is computed when required.}
@@ -38,6 +38,8 @@ K1(S=35, T=25, P=0, k1k2="x", pHscale="T", kSWS2scale="x", ktotal2SWS_P0="x", wa
 \item Papadimitriou et al. (2018): S ranging from 33 to 100 and T ranging between -6 to 25oC.
 
 \item Sulpis et al. (2020): S ranging from 30.7 to 37.6 and T ranging between -1.7 to 31.8oC.
+
+\item Shockman & Byrne (2021): formulation is that of Waters et al (2014).
 }
 
 The arguments can be given as a unique number or as vectors. If the lengths of the vectors are different, the longer vector is retained and only the first value of the other vectors is used. It can therefore be critical to use vectors of the same length. 
@@ -68,6 +70,8 @@ Mojica Prieto F. J. and Millero F. J., 2002. The values of pK1 + pK2 for the dis
 Papadimitriou S., Loucaides S., Rérolle V. M. C., Kennedy P., Achterberg E. P., Dickson A. G., Mowlem M. and Kennedy H., 2018. The stoichiometric dissociation constants of carbonic acid in seawater brines from 298 to 267 K. \emph{Geochimica et Cosmochimica Acta} \bold{220}, 55-70.
 
 Roy R. N., Roy L. N., Vogel K. M., Porter-Moore C., Pearson T., Good C. E., Millero F. J. and Campbell D. M., 1993. The dissociation constants of carbonic acid in seawater at salinities 5 to 45 and temperatures 0 to 45oC. \emph{Marine Chemistry} \bold{44}, 249-267.
+
+Schockman, K.M., Byrne, R.H., 2021. Spectrophotometric Determination of the Bicarbonate Dissociation Constant in Seawater, \emph{Geochimica et Cosmochimica Acta}
 
 Sulpis O., Lauvset S. K. and Hagens M., 2020. Current estimates of K1* and K2* appear inconsistent with measured CO2 system parameters in cold oceanic regions. \emph{Ocean Science} \bold{16}, 847-862.
 

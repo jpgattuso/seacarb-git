@@ -64,7 +64,7 @@ flag = 25     pCO2 and DIC given
 	\item{P}{Hydrostatic pressure in bar (surface = 0)}
 	\item{Pt}{Concentration of total phosphate in mol/kg}
 	\item{Sit}{Concentration of total silicate in mol/kg}
-        \item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "mp2" from Mojica Prieto et al. (2002), "m02" from Millero et al. (2002), "m06" from Millero et al. (2006), "m10" from Millero (2010), "w14" from Waters et al. (2014), "p18" from Papadimitriou et al. (2018), "s20" from Sulpis et al. (2020), and "r" from Roy et al. (1993). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "w14".}
+        \item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "mp2" from Mojica Prieto et al. (2002), "m02" from Millero et al. (2002), "m06" from Millero et al. (2006), "m10" from Millero (2010), "w14" from Waters et al. (2014), "p18" from Papadimitriou et al. (2018), "s20" from Sulpis et al. (2020), "sb21" from Shockman & Byrne (2021), and "r" from Roy et al. (1993). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "w14".}
   	\item{kf}{"pf" for using Kf from Perez and Fraga (1987) and "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994). "x" is the default flag; the default value is then "pf", except if T is outside the range 9 to 33oC and/or S is outside the range 10 to 40. In these cases, the default is "dg".}
 	\item{ks}{"d" for using Ks from Dickon (1990), "k" for using Ks from Khoo et al. (1977), default is "d"} 
 	\item{pHscale}{"T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
@@ -96,6 +96,8 @@ flag = 25     pCO2 and DIC given
 \item Papadimitriou et al. (2018): S ranging from 33 to 100 and T ranging between -6 to 25oC.
 
 \item Sulpis et al. (2020): S ranging from 30.7 to 37.6 and T ranging between -1.7 to 31.8oC.
+
+\item Shockman & Byrne (2021): for K2, S ranging from 19.6 to 41 and T ranging between 15 to 35oC. For K1, formulation is that of Waters et al.
 }
 
 \emph{For K0:}

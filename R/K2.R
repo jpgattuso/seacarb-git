@@ -75,6 +75,22 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
     K2[is_p18]<- 10^(-pK2)
     pHsc[is_p18] <- "T"
 
+    # --------------------- K2 Shockman & Byrne 2020----------------------------------------
+    #
+    #   second acidity constant:
+    #   [H^+] [CO_3^--] / [HCO_3^-] = K_2
+    #
+    #     Shockman & Byrne (2020)  in Geochimica et Cosmochimica Acta, 2020
+    #
+    #   pH-scale: 'total'. mol/kg-soln
+    is_sb21 <- k1k2 == "sb21"
+    Ssb21 <- S[is_sb21]
+    pK2 <- 116.8067 - 3655.02/TK[is_sb21] - 16.45817*log(TK[is_sb21]) + 0.04523*Ssb21 - 0.615*sqrt(Ssb21) -
+                0.0002799*Ssb21*Ssb21 + 4.969*Ssb21/TK[is_sb21]
+    K2[is_sb21]<- 10^(-pK2)
+    pHsc[is_sb21] <- "T"
+
+
     # --------------------- K2 Sulpis et al. 2020----------------------------------------
     #
     #   second acidity constant:
@@ -305,11 +321,15 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
 
     is_w <- warn == "y"
 
-    if (   any (is_w & is_l & (T>35 | T<2 | S<19 | S>43))  || any (is_w & is_r & (T<0 | T>45 | S<5 | S>45)) 
-        || any (is_w & is_mp2 & (T<0 | T>45 | S<5 | S>42)) || any (is_w & is_m02 & (T<(-1.6) | T>35 | S<34 | S>37))
+    if (   any (is_w & is_l & (T>35 | T<2 | S<19 | S>43))  
+        || any (is_w & is_r & (T<0 | T>45 | S<5 | S>45)) 
+        || any (is_w & is_mp2 & (T<0 | T>45 | S<5 | S>42)) 
+        || any (is_w & is_m02 & (T<(-1.6) | T>35 | S<34 | S>37))
         || any (is_w & is_m06 & (T<1 | T>50 | S<0.1 | S>50)) 
         || any (is_w & (is_m10 | is_w14) & (T<0 | T>50 | S<1 | S>50))
-        || any (is_w & is_p18 & (T<(-6) | T>25 | S<33 | S>100)) || any (is_w & is_s20 & (T<(-1.7) | T>31.8 | S<30.7 | S>37.6)) )
+        || any (is_w & is_p18 & (T<(-6) | T>25 | S<33 | S>100)) 
+        || any (is_w & is_s20 & (T<(-1.7) | T>31.8 | S<30.7 | S>37.6)) 
+        || any (is_w & is_sb21 & (T<15 | T>35 | S<19.6 | S>41)) )
         warning("S and/or T is outside the range of validity of the formulation chosen for K2.")
 
     if (any (is_w & (T>50 | S>50))) 
@@ -317,15 +337,16 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
 
     ##---------------Attributes
     method <- rep(NA, nK)
-    method[is_mp2] <- "Mojica Prieto et al. (2002)"
-    method[is_m02] <- "Millero et al. (2002)"
-    method[is_m06] <- "Millero et al. (2006)"
-    method[is_m10] <- "Millero (2010)"
-    method[is_w14] <- "Waters et al. (2014)"
-    method[is_r]   <- "Roy et al. (1993)"
-    method[is_p18] <- "Papadimitriou et al. (2018)"
-    method[is_s20] <- "Sulpis et al. (2020)"
-    method[! (is_mp2 | is_m02 | is_m06 | is_m10 | is_w14 | is_r | is_p18 | is_s20) ] <- "Luecker et al. (2000)"
+    method[is_mp2]  <- "Mojica Prieto et al. (2002)"
+    method[is_m02]  <- "Millero et al. (2002)"
+    method[is_m06]  <- "Millero et al. (2006)"
+    method[is_m10]  <- "Millero (2010)"
+    method[is_w14]  <- "Waters et al. (2014)"
+    method[is_r]    <- "Roy et al. (1993)"
+    method[is_p18]  <- "Papadimitriou et al. (2018)"
+    method[is_s20]  <- "Sulpis et al. (2020)"
+    method[is_sb21] <- "Shockman & Byrne (2021)"
+    method[! (is_mp2 | is_m02 | is_m06 | is_m10 | is_w14 | is_r | is_p18 | is_s20 | is_sb21) ] <- "Luecker et al. (2000)"
     
     attr(K2,"unit")     = "mol/kg-soln"
     attr(K2,"pH scale") = pHlabel
