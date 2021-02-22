@@ -61,12 +61,12 @@ flag = 25     pCO2 and DIC given
 	\item{P}{Hydrostatic pressure in bar (surface = 0)}
 	\item{Pt}{Concentration of total phosphate in mol/kg}
 	\item{Sit}{Concentration of total silicate in mol/kg}
-        \item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "mp2" from Mojica Prieto et al. (2002), "m02" from Millero et al. (2002), "m06" from Millero et al. (2006), "m10" from Millero (2010), "w14" from Waters et al. (2014), "p18" from Papadimitriou et al. (2018), "s20" from Sulpis et al. (2020), "sb21" from Shockman & Byrne (2021), and "r" from Roy et al. (1993). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "w14".}
-  	\item{kf}{"pf" for using Kf from Perez and Fraga (1987) and "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994). "x" is the default flag; the default value is then "pf", except if T is outside the range 9 to 33oC and/or S is outside the range 10 to 40. In these cases, the default is "dg".}
+  \item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "m02" from Millero et al. (2002), "m06" from Millero et al. (2006), "m10" from Millero (2010), "mp2" from Mojica Prieto et al. (2002), "p18" from Papadimitriou et al. (2018), "r" from Roy et al. (1993), "sb21" from Shockman & Byrne (2021), "s20" from Sulpis et al. (2020), and "w14" from Waters et al. (2014). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "w14".}
+  \item{kf}{"pf" for using Kf from Perez and Fraga (1987) and "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994). "x" is the default flag; the default value is then "pf", except if T is outside the range 9 to 33oC and/or S is outside the range 10 to 40. In these cases, the default is "dg".}
 	\item{ks}{"d" for using Ks from Dickon (1990), "k" for using Ks from Khoo et al. (1977), default is "d"} 
 	\item{pHscale}{choice of pH scale: "T" for using the total scale, "F" for using the free scale and "SWS" for using the seawater scale, default is total scale}
 	\item{b}{Concentration of total boron. "l10" for the Lee et al. (2010) formulation or "u74" for the Uppstrom (1974) formulation, default is "u74".}
-	  \item{eos}{"teos10" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos80" to specify T and S according to EOS-80.}
+	\item{eos}{"teos10" to specify T and S according to Thermodynamic Equation Of Seawater - 2010 (TEOS-10); "eos80" to specify T and S according to EOS-80.}
   \item{long}{longitude of data point, used when eos parameter is "teos10" as a conversion parameter from absolute to practical salinity.}
   \item{lat}{latitude of data point, used when eos parameter is "teos10".}
 }
@@ -75,11 +75,7 @@ flag = 25     pCO2 and DIC given
 
 \emph{For K1 and K2:}
 \itemize{
-\item Roy et al. (1993): S ranging between 5 and 45 and T ranging between 0 and 45oC.
-
 \item Lueker et al. (2000): S ranging between 19 and 43 and T ranging between 2 and 35oC.
-
-\item Mojica Prieto et al. (2002): S ranging from 5 to 42 and T ranging between 0 and 45oC.
 
 \item Millero et al. (2002): S ranging from 34 to 37 and T ranging between -1.6 and 35oC.
 
@@ -87,13 +83,17 @@ flag = 25     pCO2 and DIC given
 
 \item Millero (2010): S ranging between 1 and 50 and T ranging between 0 and 50oC. Millero (2010) provides a K1 and K2 formulation for the seawater, total and free pH scales. Therefore, when this method is used and if P=0, K1 and K2 are computed with the formulation corresponding to the pH scale given in the flag "pHscale". 
 
-\item Waters et al.(2014): S ranging between 1 and 50 and T ranging between 0 and 50oC. Waters (2014) provides a K1 and K2 formulation for the seawater, total and free pH scales. Therefore, when this method is used and if P=0, K1 and K2 are computed with the formulation corresponding to the pH scale given in the flag "pHscale".
+\item Mojica Prieto et al. (2002): S ranging from 5 to 42 and T ranging between 0 and 45oC.
 
 \item Papadimitriou et al. (2018): S ranging from 33 to 100 and T ranging between -6 to 25oC.
 
-\item Sulpis et al. (2020): S ranging from 30.7 to 37.6 and T ranging between -1.7 to 31.8oC.
+\item Roy et al. (1993): S ranging between 5 and 45 and T ranging between 0 and 45oC.
 
 \item Shockman & Byrne (2021): for K2, S ranging from 19.6 to 41 and T ranging between 15 to 35oC. For K1, formulation is that of Waters et al.
+
+\item Sulpis et al. (2020): S ranging from 30.7 to 37.6 and T ranging between -1.7 to 31.8oC.
+
+\item Waters et al.(2014): S ranging between 1 and 50 and T ranging between 0 and 50oC. Waters (2014) provides a K1 and K2 formulation for the seawater, total and free pH scales. Therefore, when this method is used and if P=0, K1 and K2 are computed with the formulation corresponding to the pH scale given in the flag "pHscale".
 }
 
 \emph{For Kf:}
