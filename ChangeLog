@@ -1,3 +1,7 @@
+version 3.2.16 2021-02-22
+-----------------------------------
+- Update: all functions using K1 and K2 now provide the additional formulation of Shockman & Byrne (2021) to calculate these constants.
+
 version 3.2.15 2021-01-20
 -----------------------------------
 - New: function fCO2insi to express fCO2 measured in the lab at in situ temperature.
