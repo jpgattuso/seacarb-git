@@ -12,16 +12,28 @@
 function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",warn="y")
 {
 
-    nK <- max(length(S), length(T), length(P), length(k1k2), length(pHscale), length(kSWS2scale) ,length(ktotal2SWS_P0))
-
+    ##---------- check k1k2 parameter
+    k1k2_valid_options <- c("l", "m02", "m06", "m10", "mp2", "p18", "r", "s20", "sb21", "w14", "x")
+    test_valid <- is.element(k1k2, k1k2_valid_options)
+    
+    if (! all (test_valid))
+    {
+        # If k1k2 is a vector, find indexes of all invalid values in it
+        invalids <- which(test_valid == FALSE)
+        # Display the first invalid value
+        stop ("Invalid parameter k1k2 = ", k1k2[invalids[1]])
+    }
+    
     ##-------- Create vectors for all input (if vectorial)
+
+    nK <- max(length(S), length(T), length(P), length(k1k2), length(pHscale), length(kSWS2scale) ,length(ktotal2SWS_P0))
 
     if(length(S)!=nK){S <- rep(S[1], nK)}
     if(length(T)!=nK){T <- rep(T[1], nK)}
     if(length(P)!=nK){P <- rep(P[1], nK)}
     if(length(k1k2)!=nK){k1k2 <- rep(k1k2[1], nK)}
     if(length(pHscale)!=nK){pHscale <- rep(pHscale[1], nK)}
-
+    
     ##---------- pHsc : this vector is not the actual pHscale because it can change during processing
     pHsc <- rep(NA,nK)
     pHlabel <- rep(NA,nK)
