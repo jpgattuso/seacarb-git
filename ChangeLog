@@ -1,3 +1,7 @@
+version 3.3 2021-04-08
+-----------------------------------
+- solveSAPHE
+
 version 3.2.16 2021-02-22
 -----------------------------------
 - Update: all functions using K1 and K2 now provide the additional formulation of Shockman & Byrne (2021) to calculate these constants.

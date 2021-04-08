@@ -1,4 +1,4 @@
-# Copyright (C) 2008 Jean-Marie Epitalon and Heloise Lavigne and Aurelien Proye and Jean-Pierre Gattuso  
+# Copyright (C) 2008 Jean-Marie Epitalon and Heloise Lavigne and Aurelien Proye and Mathilde Hagens Jean-Pierre Gattuso  
 # with a most valuable contribution of Bernard Gentili
 #
 # This file is part of seacarb.
