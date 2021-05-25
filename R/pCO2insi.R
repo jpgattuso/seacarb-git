@@ -12,8 +12,8 @@
 #
 #
 #
-fCO2insi <- function(fCO2lab = 400, Tlab = 20, SST = 19){
+pCO2insi <- function(pCO2lab = 400, Tlab = 20, SST = 19){
   #Takahashi (1993) recommended by Pierrot et al. (2009)
-  fCO2_insi <- fCO2lab * exp(0.0423 * (SST - Tlab))
-return(fCO2_insi)
+  pCO2_insi <- pCO2lab * exp(0.0423 * (SST - Tlab))
+return(pCO2_insi)
 }
