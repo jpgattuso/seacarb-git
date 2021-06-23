@@ -53,7 +53,7 @@
     options(digits=9)
 
     #convert from weight to mass using sample and HCl density
-    dSample <- gsw_rho(S,T[1],0)/1000
+    dSample <- seacarb::rho(S,T[1],0)/1000
     MMHCl <- 35.45+1.01 # molar mass of HCl
     if(HClunit == 'mol/L' | HClunit == 'mol L-1' | HClunit == 'mol/l' | HClunit == 'mol l-1'){
       C <- C/(1000+C*MMHCl)*1000 }# converting from mol/L to mol/kg-sol
