@@ -215,8 +215,8 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, NH4t=0, HSt=0, 
     {
         # Create a list containing all the dissociation constants
         dissoc = list(K1_DIC=K1[i], K2_DIC=K2[i], K_BT=Kb[i], 
-                        K1_PO4 = K1p[i], K2_PO4 = K2p[i], K3_PO4 = K3p[i], K_Sil = Ksi[i], 
-                        K_NH4 = Kn[i], K_H2S = Khs[i],
+                        K1_PO4 = K1p[i], K2_PO4 = K2p[i], K3_PO4 = K3p[i], K_Sil = Ksi[i],
+                        K2_Sil = K2si[i], K_NH4 = Kn[i], K_H2S = Khs[i],
                         K_HSO4 = Ks[i], K_HF = Kff[i], K_H2O = Kw[i])
 
         # use SolveSAPHE v2.0
@@ -387,7 +387,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, NH4t=0, HSt=0, 
         # Create a list containing all the dissociation constants
         dissoc = list(K1_DIC=K1[i], K2_DIC=K2[i], K_BT=Kb[i], 
                         K1_PO4 = K1p[i], K2_PO4 = K2p[i], K3_PO4 = K3p[i], K_Sil = Ksi[i], 
-                        K_NH4 = Kn[i], K_H2S = Khs[i],
+                        K2_Sil = K2si[i], K_NH4 = Kn[i], K_H2S = Khs[i],
                         K_HSO4 = Ks[i], K_HF = Kff[i], K_H2O = Kw[i])
 
         # Use SolveSAPHE PACKAGE
@@ -433,7 +433,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, NH4t=0, HSt=0, 
         # Create a list containing all the dissociation constants
         dissoc = list(K1_DIC=K1[i], K2_DIC=K2[i], K_BT=Kb[i], 
                         K1_PO4 = K1p[i], K2_PO4 = K2p[i], K3_PO4 = K3p[i], K_Sil = Ksi[i], 
-                        K_NH4 = Kn[i], K_H2S = Khs[i],
+                        K2_Sil = K2si[i], K_NH4 = Kn[i], K_H2S = Khs[i],
                         K_HSO4 = Ks[i], K_HF = Kff[i], K_H2O = Kw[i])
 
         # Use solveSAPHE package
@@ -497,7 +497,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, NH4t=0, HSt=0, 
         # Create a list containing all the dissociation constants
         dissoc = list(K1_DIC=K1[i], K2_DIC=K2[i], K_BT=Kb[i], 
                         K1_PO4 = K1p[i], K2_PO4 = K2p[i], K3_PO4 = K3p[i], K_Sil = Ksi[i], 
-                        K_NH4 = Kn[i], K_H2S = Khs[i],
+                        K2_Sil = K2si[i], K_NH4 = Kn[i], K_H2S = Khs[i],
                         K_HSO4 = Ks[i], K_HF = Kff[i], K_H2O = Kw[i])
 
         # use SolveSAPHE v2.0
@@ -649,7 +649,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, NH4t=0, HSt=0, 
         # Create a list containing all the dissociation constants
         dissoc = list(K1_DIC=K1[i], K2_DIC=K2[i], K_BT=Kb[i], 
                         K1_PO4 = K1p[i], K2_PO4 = K2p[i], K3_PO4 = K3p[i], K_Sil = Ksi[i], 
-                        K_NH4 = Kn[i], K_H2S = Khs[i],
+                        K2_Sil = K2si[i], K_NH4 = Kn[i], K_H2S = Khs[i],
                         K_HSO4 = Ks[i], K_HF = Kff[i], K_H2O = Kw[i])
 
         # use SolveSAPHE v2.0
