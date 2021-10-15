@@ -1,8 +1,17 @@
+# Export all names exept "caculate_carb", which is internal
+
+export(amp, bjerrum, bor, buffergen, buffer, buffesm, carbb, carbfull, carb, d2p, derivnum)
+export(eos2teos_chem, eos2teos_geo, errors, f2pCO2, fCO2insi, K0, K1p, K1, K2p, K2, K2si, K3p, Kb)
+export(kconv, Kf, Khs, Kn, Ksi, Kspa, Kspc, Ks, Kw, oa, Om, p2d, p2fCO2, p2xCO2, pCa)
+export(pCO2insi, Pcoeffs, Pcorrect, pgas, pHconv, pHinsi, pH, pHslope, pHspec, pmix, ppH, psi, pTA)
+export(rho, sa2sp_chem, sa2sp_geo, sf_calc, sf_calib)
+export(sir_b, sir_full, sir, sp2sa_chem, sp2sa_geo, speciation, teos2eos_chem, teos2eos_geo)
+export(theta, tris, vapress, x2pCO2)
+
 importFrom(utils, data)
-# Export all names
-exportPattern(".")
 importFrom("graphics", "arrows", "contour", "matlines", "matplot",
              "mtext", "par")
 importFrom("stats", "lm", "nls", "uniroot", "rnorm")
 importFrom(oce, swTheta)
 importFrom(gsw, gsw_CT_from_t, gsw_SA_from_SP, gsw_SP_from_SA, gsw_t_from_CT)
+importFrom(SolveSAPHE, solve_pH_from_AT)
