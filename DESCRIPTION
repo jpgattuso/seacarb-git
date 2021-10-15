@@ -1,6 +1,6 @@
 Package: seacarb
 Title: Seawater Carbonate Chemistry
-Version: 3.3
+Version: 3.3.0
 Date: 2021-10-15
 LazyData: true
 Authors@R: c(person("Jean-Pierre", "Gattuso", role = c("aut", "cre", "cph"), email = "jean-pierre.gattuso@imev-mer.fr"),
