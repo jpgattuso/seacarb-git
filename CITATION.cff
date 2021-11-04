@@ -19,3 +19,12 @@ authors:
     family-names: Lavigne
   - given-names: James
     family-names: Orr
+identifiers:
+  - type: url
+    value: 'https://cran.r-project.org/package=seacarb'
+abstract: >-
+  Calculates parameters of the seawater carbonate
+  system and assists the design of ocean
+  acidification perturbation experiments.
+version: 3.3.0
+date-released: '2021-10-18'
