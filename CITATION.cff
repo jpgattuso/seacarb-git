@@ -1,0 +1,21 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: 'seacarb: Seawater Carbonate Chemistry'
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Jean-Pierre
+    family-names: Gattuso
+    email: jean-pierre.gattuso@imev-mer.fr
+    affiliation: CNRS-Sorbonne University-Iddri
+    orcid: 'https://orcid.org/0000-0002-4533-4114'
+  - given-names: Jean-Marie
+    family-names: Epitalon
+  - given-names: Héloïse
+    family-names: Lavigne
+  - given-names: James
+    family-names: Orr
