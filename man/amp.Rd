@@ -24,7 +24,7 @@ Dickson A. G., Sabine C. L. and Christian J. R., 2007 Guide to best practices fo
 }
 
 \author{
-Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \seealso{

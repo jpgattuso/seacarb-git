@@ -31,7 +31,7 @@ Weiss, R. F. and Price, B. A., 1980. Nitrous oxide solubility in water and seawa
 }
              
 \author{
-Heloise Lavigne, Jean-Pierre Gattuso, and James Orr \email{gattuso@obs-vlfr.fr}
+Heloise Lavigne, Jean-Pierre Gattuso, and James Orr \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \seealso{

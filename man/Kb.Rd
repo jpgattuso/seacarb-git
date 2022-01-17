@@ -44,7 +44,7 @@ DOE 1994 \emph{Handbook of methods for the analysis of the various parameters of
 Millero F. J., 1995 Thermodynamics of the carbon dioxide system in the oceans. \emph{Geochimica Cosmochimica Acta} \bold{59}: 661-677.}
 
 \author{
-Jean-Marie Epitalon, Heloise Lavigne, Aurelien Proye and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Jean-Marie Epitalon, Heloise Lavigne, Aurelien Proye and Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 

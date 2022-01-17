@@ -48,7 +48,7 @@ Khoo H. K., Ramette R. W., Culberson C. H. and Bates R. G., 1977 Determination o
 }
              
 \author{
-Heloise Lavigne and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Heloise Lavigne and Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \seealso{

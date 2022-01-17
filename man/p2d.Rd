@@ -21,7 +21,7 @@ Saunders P. M., 1981. Practical conversion of pressure to depth. \emph{J. Phys. 
 }
              
 \author{
-Heloise Lavigne and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Heloise Lavigne and Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \seealso{

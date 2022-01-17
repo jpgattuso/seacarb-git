@@ -26,7 +26,7 @@ Takahashi T., Olafsson J., Goddard J. G., Chipman D. W. and Sutherland S. C., 19
 }
              
 \author{
-Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \seealso{
