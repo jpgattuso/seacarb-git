@@ -1,3 +1,7 @@
+version 3.3.1 2022-06-13
+-----------------------------------
+- Update: minor revision of the help of function derivnum to satisfy CRAN requirement
+
 version 3.3.0 2021-10-15
 -----------------------------------
 - Update: Implementation of the efﬁcient approach of the Solver Suite for Alkalinity-PH Equations (SolveSAPHE) (Munhoven, 2013, 2021). It determines the carbonate system speciation by calculating pH from total alkalinity (ALK) and dissolved inorganic carbon (DIC).

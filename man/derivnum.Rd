@@ -135,7 +135,7 @@ not returned.
 Units of derivative dy/dx is unit(y)/unit(x) where unit(x) are as follows:
  \item{degree C}{when x is Temperature}
  \item{psu}{when x is Salinity}
- \item{\eqn{\mu}atm}{when x is pCO2}
+ \item{uatm}{when x is pCO2}
  \item{mol/kg}{for all other cases}
 }
 
