@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 ^data-raw$
 ^notebooks$
+^CITATION\.cff$
+^\.github$
