@@ -14,6 +14,7 @@
 carb<-
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", warn="y", eos="eos80", long=1.e20, lat=1.e20){
 
-    RES <- calculate_carb(flag, var1, var2, S, T, Patm, P, Pt, Sit, NH4t=0, HSt=0, k1k2, kf, ks, pHscale, b, gas, badd=0, warn, eos, long, lat, fullresult=FALSE)
+   # Pass to calculate_carb() all received parameters plus enclosing environment of carb function
+    RES <- calculate_carb(flag, var1, var2, S, T, Patm, P, Pt, Sit, NH4t=0, HSt=0, k1k2, kf, ks, pHscale, b, gas, badd=0, warn, eos, long, lat, fullresult=FALSE, environment(carb))
     return(RES)
 }

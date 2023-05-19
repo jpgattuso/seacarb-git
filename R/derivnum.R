@@ -411,10 +411,11 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     }
     else if (varid == 'BOR')
     {
-        bor <- function(S=35,...)
+       #Create a new function "bor" that will replace  "seacarb::bor" at call time
+        bor <- function(S=35,b="u74")
         {
             # Call original bor function
-            out <- seacarb::bor(S)
+            out <- seacarb::bor(S,b)
             # perturb value of bor
             out = out + sign_factor * perturbation  # sign_factor is +1 or -1
             return (out)
@@ -433,8 +434,9 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
         environment(carb) <- environment(NULL)
         # Note :  environment(NULL) is the environment created when the function derivnum() is executed
         #         It then contains all locally defined functions, like K0, K1, K2, ...
-        #         Then, when carb() is executed and looks for a name (variable or function) that is not a local variable,
-        #         it will look into evironment(NULL), which has been attached to it, 
+        #         Then, when calculate_carb() is executed (called by carb() below)
+        #         and looks for a name (variable or function) that is not a local variable,
+        #         it will look into evironment(NULL), which has been attached to carb(), 
         #         before looking into global or seacarb module environment.
         
         # Point 1: (one dissociation constant is somewhat smaller)
