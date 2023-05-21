@@ -238,7 +238,7 @@ Zeebe R. E. and Wolf-Gladrow D. A., 2001 \emph{CO2 in seawater: equilibrium, kin
 }
 \author{
  Kimberlee Baldry, Lennart Bach and Jean-Pierre Gattuso, 
-\email{gattuso@obs-vlfr.fr}
+\email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \examples{

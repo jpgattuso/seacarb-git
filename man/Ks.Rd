@@ -40,7 +40,7 @@ Dickson A. G., Sabine C. L. and Christian J. R., 2007 Guide to best practices fo
 Khoo H. K., Ramette R. W., Culberson C. H. and Bates R. G., 1977 Determination of Hydrogen ion concentration in seawater from 5 to 40oC: standard potentials at salinities from 20 to 45. \emph{Analytical Chemistry} \bold{49}, 29-34. }
 
 \author{
-Heloise Lavigne, Aurelien Proye and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Heloise Lavigne, Aurelien Proye and Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \examples{

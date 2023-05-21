@@ -174,7 +174,7 @@ Uppstrom L.R., 1974 The boron/chlorinity ratio of the deep-sea water from the Pa
 }
 
 \author{
-Heloise Lavigne, Aurelien Proye and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Heloise Lavigne, Aurelien Proye and Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \examples{

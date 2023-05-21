@@ -41,7 +41,7 @@ Rivest, E.B., O'Brien, M., Kapsenberg, L., Gotschalk, C.C., Blanchette, C.A., Ho
 }
 
 \author{
-Samir Alliouane, Lydia Kapsenberg, Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Samir Alliouane, Lydia Kapsenberg, Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \seealso{

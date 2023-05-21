@@ -35,7 +35,7 @@ For pressure corrections: the pressure correction term of Weiss (1974) is used.
 \references{Weiss R. F., 1974 Carbon dioxide in water and seawater: the solubility of a non-ideal gas. \emph{Marine Chemistry} \bold{2}, 203-215.}
 
 \author{
-Jean-Marie Epitalon, Aurelien Proye, and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Jean-Marie Epitalon, Aurelien Proye, and Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 

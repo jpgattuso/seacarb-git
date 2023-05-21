@@ -38,7 +38,7 @@ Millero F. J., 1995 Thermodynamics of the carbon dioxide system in the oceans. \
 }
 
 \author{
-Heloise Lavigne, Aurelien Proye and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Heloise Lavigne, Aurelien Proye and Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \examples{

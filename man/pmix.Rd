@@ -175,7 +175,7 @@ Waters, J., Millero, F. J., and Woosley, R. J., 2014. Corrigendum to ``The free 
 }
 
 \author{
-Jean-Pierre Gattuso and Heloise Lavigne\email{gattuso@obs-vlfr.fr}
+Jean-Pierre Gattuso and Heloise Lavigne\email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \examples{

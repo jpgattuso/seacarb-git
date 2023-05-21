@@ -182,7 +182,7 @@ a non-ideal gas, \emph{Mar.  Chem.}, \bold{2}, 203-215.
 }
 
 \author{
-Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \examples{

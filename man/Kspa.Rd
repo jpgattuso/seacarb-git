@@ -38,7 +38,7 @@ Mucci A., 1983 The solubility of calcite and aragonite in seawater at various sa
 }
 
 \author{
-Aurelien Proye and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Aurelien Proye and Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \seealso{

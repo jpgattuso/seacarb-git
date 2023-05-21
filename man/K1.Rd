@@ -79,7 +79,7 @@ Waters, J., Millero, F. J., and Woosley, R. J., 2014. Corrigendum to ``The free 
 }
              
 \author{
-Jean-Marie Epitalon and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Jean-Marie Epitalon and Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \seealso{

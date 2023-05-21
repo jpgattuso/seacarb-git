@@ -38,7 +38,7 @@ Mueller, J. D., Bastkowski, F., Sander, B., Seitz, S., Turner, D. R., Dickson, A
 }
 
 \author{
-Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr} and Jens Daniel Mueller \email{jens.mueller@io-warnemuende.de} 
+Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr} and Jens Daniel Mueller \email{jens.mueller@io-warnemuende.de} 
 }
 
 \seealso{

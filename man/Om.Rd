@@ -159,7 +159,7 @@ Thorstenson D.C. and Plummer L.N., 1977. Equilibrium criteria for two component 
 }
 
 \author{
-Heloise Lavigne, Andreas J. Andersson and Jean-Pierre Gattuso \email{gattuso@obs-vlfr.fr}
+Heloise Lavigne, Andreas J. Andersson and Jean-Pierre Gattuso \email{jean-pierre.gattuso@imev-mer.fr}
 }
 
 \examples{
