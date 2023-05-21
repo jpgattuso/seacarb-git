@@ -11,9 +11,15 @@
 #
 #
 #
+# This function is the common implementation of  three public funtions : carb(), carbb() and carbfull()
+# As such, it accepts as input the parameters of all three functions.
+#
+# The last parameter, "envir", is an optional environment. When given, it is the environment of the caller funtion.
+# This environment may contain redefinition of some public seacarb functions such as K0(), K1(), K2(), ....
+
 calculate_carb<-
 function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, NH4t=0, HSt=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", gas="potential", badd=0,
-         warn="y", eos="eos80", long=1.e20, lat=1.e20, fullresult=FALSE){
+         warn="y", eos="eos80", long=1.e20, lat=1.e20, fullresult=FALSE, envir=NULL){
     n <- max(length(var1), length(var2), length(S), length(T), length(P), length(Pt), length(Sit), length(k1k2), length(kf), length(pHscale), length(ks), length(b))
     if(length(flag)!=n){flag <- rep(flag[1],n)}
     if(length(var1)!=n){var1 <- rep(var1[1],n)}
@@ -73,11 +79,43 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, NH4t=0, HSt=0, 
     Cl = SP / 1.80655;             # Cl = chlorinity; S = salinity (per mille)
     ST = 0.14 * Cl/96.062         # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
     FLUO = 6.7e-5 * Cl/18.9984    # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
-    BOR = bor(S=S , b=b) + badd;         # (mol/kg) total boron + boron added
-
+ 
+    # get functions that compute K0, K1, K2, Kb, Kw, Kspa, Kspc and Boron concentration
+    # --------------------------------------------------------------------------------------------------------------------
+    
+    if (! is.null(envir)) 
+    {
+        # These functions may, in certain cases, have a replacement function (when computing derivatives, namely)
+        # We get the original one or, when it exists, the replacement one by accessing them through the "environment" given as input parameter
+        
+        K0_fct <-get("K0", envir=envir)
+        K1_fct <-get("K1", envir=envir)
+        K2_fct <-get("K2", envir=envir)
+        Kw_fct <-get("Kw", envir=envir) 
+        Kb_fct <-get("Kb", envir=envir)
+        Kspa_fct <-get("Kspa", envir=envir)
+        Kspc_fct <-get("Kspc", envir=envir)
+        bor_fct <-get("bor", envir=envir)
+    }
+    else
+    {
+        # Get the original functions from Seacarb
+        K0_fct <-K0
+        K1_fct <-K1
+        K2_fct <-K2
+        Kw_fct <-Kw
+        Kb_fct <-Kb
+        Kspa_fct <-Kspa
+        Kspc_fct <-Kspc
+        bor_fct <-bor
+    }
+   
+    
     #---------------------------------------------------------------------
-    #--------------------- compute K's ----------------------------------
+    #-------------- compute K's and Boron ---------------------
     #---------------------------------------------------------------------
+    
+    BOR = bor_fct(S=S , b=b) + badd;         # (mol/kg) total boron + boron added
     
     # Ks (free pH scale) at zero pressure and given pressure
     Ks_P0 <- Ks(S=SP, T=InsT, P=0, ks=ks, warn=warn)
@@ -98,16 +136,16 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, NH4t=0, HSt=0, 
     kSWS2chosen [pHscale == "T"] <- conv$kSWS2total [pHscale == "T"]
     kSWS2chosen [pHscale == "F"] <- conv$kSWS2free [pHscale == "F"]  
 
-    K1 <- K1(S=SP, T=InsT, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)   
-    K2 <- K2(S=SP, T=InsT, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)
-    Kw <- Kw(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-    Kb <- Kb(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0, warn=warn)
+    K1 <- K1_fct(S=SP, T=InsT, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)   
+    K2 <- K2_fct(S=SP, T=InsT, P=P, pHscale=pHscale, k1k2=k1k2, kSWS2chosen, ktotal2SWS_P0, warn=warn)
+    Kw <- Kw_fct(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+    Kb <- Kb_fct(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0, warn=warn)
     K1p <- K1p(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
     K2p <- K2p(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
     K3p <- K3p(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
     Ksi <- Ksi(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
-    Kspa <- Kspa(S=SP, T=InsT, P=P, warn=warn)
-    Kspc <- Kspc(S=SP, T=InsT, P=P, warn=warn)
+    Kspa <- Kspa_fct(S=SP, T=InsT, P=P, warn=warn)
+    Kspc <- Kspc_fct(S=SP, T=InsT, P=P, warn=warn)
     if (fullresult) {
         Kn <- Kn(S=S, T=T, P=P, pHscale=pHscale)
         Khs <- Khs(S=S, T=T, P=P, pHscale=pHscale)
@@ -121,11 +159,11 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, NH4t=0, HSt=0, 
     rho <- rho(S=SP,T=InsT,P=P)
 
     # Compute "standard" K0 with S, in situ T, and atmospheric pressure
-    K0 <- K0(S=SP, T=InsT, Patm=Patm, P=0, warn=warn)                         
+    K0 <- K0_fct(S=SP, T=InsT, Patm=Patm, P=0, warn=warn)                         
     # Compute potential K0 with S, potential temperature, and atmospheric pressure (usually 1 atm)
-    K0pot <- K0(S=SP, T=theta(S=SP, T=InsT, P=P, Pref=0), Patm=Patm, P=0, warn=warn)
+    K0pot <- K0_fct(S=SP, T=theta(S=SP, T=InsT, P=P, Pref=0), Patm=Patm, P=0, warn=warn)
     # Compute in situ K0 with S, in situ temperature, and total pressure pressure (atmospheric + hydrostatic)
-    K0insitu <- K0(S=SP, T=InsT, Patm=Patm, P=P, warn=warn)
+    K0insitu <- K0_fct(S=SP, T=InsT, Patm=Patm, P=P, warn=warn)
  
     #------------------------------------------------------------------#
     #------------------------------------------------------------------#
