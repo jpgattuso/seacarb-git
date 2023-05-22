@@ -1,3 +1,8 @@
+version 3.3.2 2023-05-21
+-----------------------------------
+- Update: fixed bugs identified by S. Petton on carb, calculate_carb and derivnum (thanks to Jean-Marie Epitalon)
+- Update: updated email address Jean-Pierre Gattuso
+
 version 3.3.1 2022-07-04
 -----------------------------------
 - Update: minor revision of the help of function derivnum to satisfy CRAN requirement
