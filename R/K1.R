@@ -13,7 +13,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
 {
 
     ##---------- check k1k2 parameter
-    k1k2_valid_options <- c("l", "m02", "m06", "m10", "mp2", "p18", "r", "s20", "sb21", "w14", "x")
+    k1k2_valid_options <- c("cw", "l", "m02", "m06", "m10", "mp2", "p18", "r", "s20", "sb21", "w14", "x")
     test_valid <- is.element(k1k2, k1k2_valid_options)
     
     if (! all (test_valid))
@@ -111,6 +111,22 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
     lnK1roy <- tmp1 + tmp2 + tmp3 + tmp4
     K1[is_r] <- exp(lnK1roy)
     pHsc[is_r] <- "T"
+
+
+    # --------------------- K1 ---------------------------------------
+    #   first acidity constant:
+    #   [H^+] [HCO_3^-] / [CO2] = K_1
+    #
+    #   Cai and Wang (1998)
+    #
+    #   pH-scale: 'seawater'. mol/kg-soln  (not true, starts on NBS scale, need to convert to SWS scale)
+    is_cp98 <- k1k2 == "cw"
+    F1 <- 200.1/TK[is_cw] + 0.3220
+    pK1 <- 3404.71/TK[is_cw] + 0.032786*TK[is_cw] - 14.8435 - 0.071692*F1*S[is_cw]^0.5 + 0.0021487*S[is_cw] #*F1
+    K1[is_cw]  <- 10^(-pK1)         # this is on the NBS scale
+    pHsc[is_cw] <- "F"
+    #                 /fH[F])       # convert to SWS scale (uncertain at low Sal due to junction potential);
+    #pHsc[is_cw] <- "SWS"
 
 
     # --------------------- K1 ---------------------------------------
@@ -320,7 +336,9 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
         || any (is_w & is_mp2 & (T<0 | T>45 | S<5 | S>42)) || any (is_w & is_m02 & (T<(-1.6) | T>35 | S<34 | S>37))
         || any (is_w & is_m06 & (T<1 | T>50 | S<0.1 | S>50)) 
         || any (is_w & (is_m10 | is_w14) & (T<0 | T>50 | S<1 | S>50))
-        || any (is_w & is_p18 & (T<(-6) | T>25 | S<33 | S>100)) || any (is_w & is_s20 & (T<(-1.7) | T>31.8 | S<30.7 | S>37.6)) )
+        || any (is_w & is_cw & (T<0.2 | T>30 | S<0.0 | S>40)) 
+        || any (is_w & is_p18 & (T<(-6) | T>25 | S<33 | S>100)) 
+        || any (is_w & is_s20 & (T<(-1.7) | T>31.8 | S<30.7 | S>37.6)) )
         warning("S and/or T is outside the range of validity of the formulation chosen for K1.")
 
     if (any(is_w & (T>50 | S>50))) 
@@ -328,6 +346,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
 
     ##---------------Attributes
     method <- rep(NA, nK)
+    method[is_cw]  <- "Cai and Wang (1998)"
     method[is_mp2] <- "Mojica Prieto et al. (2002)"
     method[is_m02] <- "Millero et al. (2002)"
     method[is_m06] <- "Millero et al. (2006)"
@@ -336,7 +355,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
     method[is_r]   <- "Roy et al. (1993)"
     method[is_p18] <- "Papadimitriou et al. (2018)"
     method[is_s20] <- "Sulpis et al. (2020)"
-    method[! (is_mp2 | is_m02 | is_m06 | is_m10 | is_w14 | is_r | is_p18 | is_s20) ] <- "Luecker et al. (2000)"
+    method[! (is_cw | is_mp2 | is_m02 | is_m06 | is_m10 | is_w14 | is_r | is_p18 | is_s20) ] <- "Luecker et al. (2000)"
 
     attr(K1,"unit") <- "mol/kg-soln"
     attr(K1,"pH scale") <- pHlabel
