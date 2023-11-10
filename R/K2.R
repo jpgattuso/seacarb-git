@@ -144,8 +144,16 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
     F2  <- -129.24/TK[is_cw] + 1.4381
     pK2[is_cw] <- 2902.39/TK[is_cw] - 6.4980 - 0.3191*F2*S[is_cw]^0.5 + 0.0198*S[is_cw]
     K2[is_cw] <- 10.0^(-pK2)         # this is on the NBS scale
-    pHsc[is_cw] <- "F"
-    #        /fH[F])             # convert to SWS scale (uncertain at low Sal due to junction potential);
+    # Convert from NBS to SWS scale using combined activity coefficient fH 
+    # Takahashi (1982, GEOSECS Pacific Expedition, Chap 3, p. 80), who says:
+    # "fH is the total activity coeff., which includes contributions from HSO4- and HF [as well as H+].
+    #  Culberson and Pytkowicz (28) determined fH as a function of temperature and salinity, and
+    #  their results can be approximated by:"
+    fH = (1.2948 - 0.002036*TK[is_cw] + (0.0004607 - 0.000001475*TK[is_cw])*S[is_cw]^2)
+    K2[is_cw] <- K2[is_cw]/fH[is_cw]  # Convert from NBS to SWS scale
+    pHsc[is_cw] <- "SWS"
+    # CO2SYS-MATLAB and PyCO2SYS mention that this NBS -> SWS conversion is uncertain at low S due to junction potential
+    # Culberson, C. H., & Pytkowicz, R. M. (1973). Ionization of water in seawater. Marine Chemistry, 1(4), 309-316.
 
 
     # --------------------- K2 ---------------------------------------
