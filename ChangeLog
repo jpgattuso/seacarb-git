@@ -1,3 +1,7 @@
+version 3.3.3 2024-01-02
+-----------------------------------
+- Update: added K1 and K2 from Cai & Wang (1998) (thanks to James Orr). The conversion of K1 and K2 from the NBS to the SWS scale is done with the "total activity coefficient" fH, exactly as in CO2SYS-MATLAB and PyCO2SYS.
+
 version 3.3.2 2023-05-21
 -----------------------------------
 - Update: fixed bugs identified by S. Petton on carb, calculate_carb and derivnum (thanks to Jean-Marie Epitalon)
