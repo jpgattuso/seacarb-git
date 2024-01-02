@@ -172,7 +172,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
 
 # .errors_ga()
 #
-# This routine esiimates uncertainties in computed carbonate system variables 
+# This routine estimates uncertainties in computed carbonate system variables 
 # by propagating errors (uncertainties) in the six input variables, including 
 #  - the pair of carbonate system variables, 
 #  - the 2 nutrients (total dissolved inorganic silicon and phosphorus concentrations), and
@@ -197,7 +197,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
 #   * epK must be vector of 7 values : errors of pK0, pK1, pK2, pKb, pKw, pKspa and pKspc
 #     these errors are assumed to be the same for all input data.
 #
-# In constrast, evar1, evar2, eS, eT, ePt and eSit, 
+# In contrast, evar1, evar2, eS, eT, ePt and eSit, 
 #   - if vectors, are errors associated with each data point
 #   - if scalars, are one error value associated to all data points
 #
