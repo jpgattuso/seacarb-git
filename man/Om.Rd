@@ -52,7 +52,7 @@ flag = 25     pCO2 and DIC given
 }
 	\item{var1}{Value of the first  variable in mol/kg, except for pH and for pCO2 in \eqn{\mu}atm}
 	\item{var2}{Value of the second  variable in mol/kg, except for pH}
-  \item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "m02" from Millero et al. (2002), "m06" from Millero et al. (2006), "m10" from Millero (2010), "mp2" from Mojica Prieto et al. (2002), "p18" from Papadimitriou et al. (2018), "r" from Roy et al. (1993), "s20" from Sulpis et al. (2020), "sb21" from Shockman & Byrne (2021), and "w14" from Waters et al. (2014),. "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "w14".}
+        \item{k1k2}{"cw" for using K1 and K2 from Cai & Wang (1998), "l" from Lueker et al. (2000), "m02" from Millero et al. (2002), "m06" from Millero et al. (2006), "m10" from Millero (2010), "mp2" from Mojica Prieto et al. (2002), "p18" from Papadimitriou et al. (2018), "r" from Roy et al. (1993), "sb21" from Shockman & Byrne (2021), "s20" from Sulpis et al. (2020), and "w14" from Waters et al. (2014). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "w14".}
 	\item{kf}{"pf" for using Kf from Perez and Fraga (1987) and "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994). "x" is the default flag; the default value is then "pf", except if T is outside the range 9 to 33oC and/or S is outside the range 10 to 40. In these cases, the default is "dg".}
 	\item{ks}{"d" for using Ks from Dickson (1990) and "k" for using Ks from Khoo et al. (1977), default is "d"} 
 	\item{pHscale}{"T" for the total scale, "F" for the free scale and "SWS" for using the seawater scale, default is "T" (total scale)}
@@ -83,6 +83,8 @@ The Lueker et al. (2000) constants for K1 and K2, the Perez and Fraga (1987) con
 
 \emph{For K1 and K2:}
 \itemize{
+
+\item Cai and Wang (1998): S ranging between 0 and 40 and T ranging between 0.2 and 30oC.
 
 \item Lueker et al. (2000): S ranging between 19 and 43 and T ranging between 2 and 35oC.
 

@@ -14,7 +14,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
 {
 
     ##---------- check k1k2 parameter
-    k1k2_valid_options <- c("l", "m02", "m06", "m10", "mp2", "p18", "r", "s20", "sb21", "w14", "x")
+    k1k2_valid_options <- c("cw", "l", "m02", "m06", "m10", "mp2", "p18", "r", "s20", "sb21", "w14", "x")
     test_valid <- is.element(k1k2, k1k2_valid_options)
     
     if (! all (test_valid))
@@ -124,7 +124,6 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
     #
     #   (Roy et al., 1993 in Dickson and Goyet, 1994, Chapter 5, p. 15)
     #   pH-scale: 'total'. mol/kg-soln
-    
     is_r <- k1k2 == "r"	
     tmp1 = -9.226508 - 3351.6106 / TK[is_r] - 0.2005743 * log(TK[is_r]);
     tmp2 = (-0.106901773 - 23.9722 / TK[is_r]) * sqrt(S[is_r]);
@@ -132,6 +131,29 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
     lnK2roy = tmp1 + tmp2 + tmp3;
     K2[is_r] <- exp(lnK2roy)
     pHsc[is_r] <- "T"
+
+
+    # --------------------- K2 Cai & Wang, 1998----------------------------------------
+    #
+    #   second acidity constant:
+    #   [H^+] [CO_3^--] / [HCO_3^-] = K_2
+    #
+    #   Cai and Wang (1998)
+    #   pH-scale: 'total'. mol/kg-soln
+    is_cw <- k1k2 == "cw"	
+    F2  <- -129.24/TK[is_cw] + 1.4381
+    pK2[is_cw] <- 2902.39/TK[is_cw] - 6.4980 - 0.3191*F2*S[is_cw]^0.5 + 0.0198*S[is_cw]
+    K2[is_cw] <- 10.0^(-pK2)         # this is on the NBS scale
+    # Convert from NBS to SWS scale using combined activity coefficient fH 
+    # Takahashi (1982, GEOSECS Pacific Expedition, Chap 3, p. 80), who says:
+    # "fH is the total activity coeff., which includes contributions from HSO4- and HF [as well as H+].
+    #  Culberson and Pytkowicz (28) determined fH as a function of temperature and salinity, and
+    #  their results can be approximated by:"
+    fH = (1.2948 - 0.002036*TK[is_cw] + (0.0004607 - 0.000001475*TK[is_cw])*S[is_cw]^2)
+    K2[is_cw] <- K2[is_cw]/fH[is_cw]  # Convert from NBS to SWS scale
+    pHsc[is_cw] <- "SWS"
+    # CO2SYS-MATLAB and PyCO2SYS mention that this NBS -> SWS conversion is uncertain at low S due to junction potential
+    # Culberson, C. H., & Pytkowicz, R. M. (1973). Ionization of water in seawater. Marine Chemistry, 1(4), 309-316.
 
 
     # --------------------- K2 ---------------------------------------
@@ -339,6 +361,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
         || any (is_w & is_m02 & (T<(-1.6) | T>35 | S<34 | S>37))
         || any (is_w & is_m06 & (T<1 | T>50 | S<0.1 | S>50)) 
         || any (is_w & (is_m10 | is_w14) & (T<0 | T>50 | S<1 | S>50))
+        || any (is_w & is_cw & (T<0.2 | T>30 | S<0.0 | S>40)) 
         || any (is_w & is_p18 & (T<(-6) | T>25 | S<33 | S>100)) 
         || any (is_w & is_s20 & (T<(-1.7) | T>31.8 | S<30.7 | S>37.6)) 
         || any (is_w & is_sb21 & (T<15 | T>35 | S<19.6 | S>41)) )
@@ -349,6 +372,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
 
     ##---------------Attributes
     method <- rep(NA, nK)
+    method[is_cw]   <- "Cai and Wang (1998)"
     method[is_mp2]  <- "Mojica Prieto et al. (2002)"
     method[is_m02]  <- "Millero et al. (2002)"
     method[is_m06]  <- "Millero et al. (2006)"
@@ -358,7 +382,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
     method[is_p18]  <- "Papadimitriou et al. (2018)"
     method[is_s20]  <- "Sulpis et al. (2020)"
     method[is_sb21] <- "Shockman & Byrne (2021)"
-    method[! (is_mp2 | is_m02 | is_m06 | is_m10 | is_w14 | is_r | is_p18 | is_s20 | is_sb21) ] <- "Luecker et al. (2000)"
+    method[! (is_cw | is_mp2 | is_m02 | is_m06 | is_m10 | is_w14 | is_r | is_p18 | is_s20 | is_sb21) ] <- "Luecker et al. (2000)"
     
     attr(K2,"unit")     = "mol/kg-soln"
     attr(K2,"pH scale") = pHlabel

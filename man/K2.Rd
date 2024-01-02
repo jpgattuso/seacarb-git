@@ -13,7 +13,7 @@ K2(S=35, T=25, P=0, k1k2="x", pHscale="T", kSWS2scale="x", ktotal2SWS_P0="x", wa
   \item{S}{Salinity, default is 35}
   \item{T}{Temperature in degrees Celsius, default is 25oC}
   \item{P}{Hydrostatic pressure in bar (surface = 0), default is 0}
-  \item{k1k2}{"l" for using K1 and K2 from Lueker et al. (2000), "m02" from Millero et al. (2002), "m06" from Millero et al. (2006), "m10" from Millero (2010), "mp2" from Mojica Prieto et al. (2002), "p18" from Papadimitriou et al. (2018), "r" from Roy et al. (1993), "sb21" from Shockman & Byrne (2021), "s20" from Sulpis et al. (2020), and "w14" from Waters et al. (2014). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "w14".}
+  \item{k1k2}{"cw" for using K1 and K2 from Cai & Wang (1998), "l" from Lueker et al. (2000), "m02" from Millero et al. (2002), "m06" from Millero et al. (2006), "m10" from Millero (2010), "mp2" from Mojica Prieto et al. (2002), "p18" from Papadimitriou et al. (2018), "r" from Roy et al. (1993), "sb21" from Shockman & Byrne (2021), "s20" from Sulpis et al. (2020), and "w14" from Waters et al. (2014). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "w14".}
   \item{pHscale}{choice of pH scale: "T" for using the total scale, "F" for using the free scale and "SWS" for using the seawater scale, default is total scale}
   \item{kSWS2scale}{Conversion factor from the seawater scale (SWS) to the pH scale selected at the hydrostatic pressure value indicated. It is not required for all formulations of K1 and K2, nor when the hydrostatic pressure is 0. It is advised to use default value "x", in which case it is computed when required.}
   \item{ktotal2SWS_P0}{Conversion factor from the total scale to the SWS at an hydrostatic pressure of 0. It is not required for all formulations of K1 and K2. It is advised to use default value "x", in which case it is computed when required.}
@@ -23,6 +23,8 @@ K2(S=35, T=25, P=0, k1k2="x", pHscale="T", kSWS2scale="x", ktotal2SWS_P0="x", wa
 \details{The Lueker et al. (2000) constant is recommended by Guide to Best Practices for Ocean CO2 Measurements (2007). It is, however, critical to consider that each formulation is only valid for specific ranges of temperature and salinity:
 
 \itemize{
+
+\item Cai and Wang (1998): S ranging between 0 and 40 and T ranging between 0.2 and 30oC.
 
 \item Lueker et al. (2000): S ranging between 19 and 43 and T ranging between 2 and 35oC.
 
@@ -56,7 +58,9 @@ The pressure correction was applied on the seawater scale. Hence, if needed, val
   \item{K2}{Second dissociation constant of carbonic acid (mol/kg)}
 
 }
-\references{The Lueker et al. (2000) constant is recommended by Guide to Best Practices for Ocean CO2 Measurements (2007). The Roy et al. (1993) constants is recommended by DOE (1994).
+\references{The Lueker et al. (2000) constant is recommended by Guide to Best Practices for Ocean CO2 Measurements (2007). The Roy et al. (1993) constant is recommended by DOE (1994).
+
+Cai W. J., and Wang Y., 1998. The chemistry, fluxes, and sources of carbon dioxide in the estuarine waters of the Satilla and Altamaha Rivers, Georgia. \emph{Limnology and Oceanography} \bold{43}, 657-668.
 
 Dickson A. G., Sabine C. L. and Christian J. R., 2007 Guide to best practices for ocean CO2 measurements. \emph{PICES Special Publication} \bold{3}, 1-191.
 
