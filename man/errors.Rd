@@ -180,8 +180,8 @@ Computation time also depends on the chosen pair of input variables. For example
  \item{H} {combined standard uncertainty in [H+] concentration (mol/kg)}
  \item{pH} {combined standard uncertainty in pH}
  \item{CO2} {combined standard uncertainty in CO2 concentration (mol/kg)}
- \item{pCO2}{combined standard uncertainty in "standard" pCO2, CO2 partial pressure computed at in situ temperature and atmospheric pressure (\eqn{\mu}atm)}
- \item{fCO2}{combined standard uncertainty in "standard" fCO2, CO2 fugacity computed at in situ temperature and atmospheric pressure (\eqn{\mu}atm)}
+ \item{pCO2}{combined standard uncertainty in "standard" pCO2, CO2 partial pressure computed at in situ temperature and atmospheric pressure (uatm)}
+ \item{fCO2}{combined standard uncertainty in "standard" fCO2, CO2 fugacity computed at in situ temperature and atmospheric pressure (uatm)}
  \item{HCO3}{combined standard uncertainty in HCO3 concentration (mol/kg)}
  \item{CO3}{combined standard uncertainty in CO3 concentration (mol/kg)}
  \item{DIC}{combined standard uncertainty in DIC concentration (mol/kg)}
