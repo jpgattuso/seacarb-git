@@ -200,11 +200,11 @@ Heloise Lavigne, James Orr and Jean-Pierre Gattuso \email{jean-pierre.gattuso@im
 
 \examples{
 
-## With a couple of variables
+## 1. With a couple of variables
 carb(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,
 	pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
 
-## Using vectors as arguments
+## 2. Using vectors as arguments
 flag <- c(8, 2, 8)
 var1 <- c(8.2, 7.477544e-06, 8.2)
 var2 <- c(0.002343955, 0.001649802, 2400e-6)
@@ -218,9 +218,35 @@ k1k2 <- c("l", "l", "l")
 pHscale <- c("T", "T", "T")
 b <- c("l10", "l10", "l10")
 carb(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P,
-  Pt=Pt, Sit=Sit, kf=kf, k1k2=k1k2, pHscale=pHscale, b=b)
+	Pt=Pt, Sit=Sit, kf=kf, k1k2=k1k2, pHscale=pHscale, b=b)
 
-## Test with all flags 
+## 3. Special case: when pH for input is on NBS scale (not a standard option in seacarb) 
+##    -> example for pH-Alk input pair (flag 8) and Cai & Wang (1998) K1,K2 
+pHNBS <- c(8.2, 8.1, 8.0)
+talk <- c(2300, 2350, 2400) * 1e-6
+S <- c(35, 32.5, 30)
+T <- c(25, 15, 10)
+
+## 3a. use seacarb function, fH, which computes the total activity coefficient
+ah    <- 10^(-phNBS)      
+hSWS  <- ah / fH(S=S, T=T)
+phSWS <- -log10(hSWS) 
+carb(flag=8, var1=phSWS, var2=talk, S=S, T=T, P=0, Patm=1.0, Pt=0, Sit=0,
+	pHscale="SWS", kf="pf", k1k2="cw", ks="d", b="u74")
+
+## 3b. same as 3a but fewer lines: use seacarb function, pHnbs2sws, which converts pHNBS to pHSWS (using fH)
+pHSWS <- pHnbs2sws(pHNBS, S=S, T=T)
+carb(flag=8, var1=phSWS, var2=talk, S=S, T=T, P=0, Patm=1.0, Pt=0, Sit=0,
+	pHscale="SWS", kf="pf", k1k2="cw", ks="d", b="u74")
+
+## 3c. conversely for input pairs without pH,  convert computed pH on SWS scale to NBS scale, with function pHsws2nbs
+##    -> example for Alk-DIC input pair (flag 15) and Cai & Wang (1998) K1,K2 
+dic <- c(2000., 2030., 2060) * 1e-6
+output = carb(flag=15, var1=talk, var2=dic, S=S, T=T, P=0, Patm=1.0, Pt=0, Sit=0,
+	pHscale="SWS", kf="pf", k1k2="cw", ks="d", b="u74")
+pHNBS  = pHsws2nbs(output$pH, S=S, T=T)
+
+## 4. Test with all flags 
 flag <- c((1:15), (21:25))
 var1 <- c(8.200000, 7.308171e-06, 7.308171e-06, 7.308171e-06, 7.308171e-06, 
 	8.2, 8.2, 8.2, 8.2, 0.001646857, 0.001646857, 0.001646857, 0.0002822957, 
@@ -231,15 +257,15 @@ var2 <- c(7.308171e-06, 0.001646857, 0.0002822957, 0.00234, 0.001936461,
 	0.001646857, 0.0002822957, 0.00234, 0.001936461)
 carb(flag=flag, var1=var1, var2=var2)
 
-## Test using a data frame 
+## 5. Test using a data frame 
 data(seacarb_test_P0)	#test data set for P=0 (surface)
 tab <- seacarb_test_P0[14:19,]
 
-## method 1 using the column numbers
+## 5a. method 1 using the column numbers
 carb(flag=tab[[1]], var1=tab[[2]], var2=tab[[3]], S=tab[[4]], T=tab[[5]], 
 P=tab[[6]], Sit=tab[[8]], Pt=tab[[7]])
 
-## method 2 using the column names
+## 5b. method 2 using the column names
 carb(flag=tab$flag, var1=tab$var1, var2=tab$var2, S=tab$S, T=tab$T, 
 P=tab$P, Sit=tab$Sit, Pt=tab$Pt)
 
