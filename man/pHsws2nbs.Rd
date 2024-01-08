@@ -26,7 +26,7 @@ relying on the following basic chemistry equation: \eqn{ ah = fH * hsws},
 where  \eqn{ah}  is the activity of hydrogen ion,
 \eqn{fH}  is the total activity coefficient, and
 \eqn{hsws = [H+] + [HSO4-] + [HF]}. In other words, 
-\eqn{hsws} is the total hydrogen ion conccentration on the seawater scale.
+\eqn{hsws} is the hydrogen ion concentration on the seawater scale.
 
 The two pH scales are defined as \eqn{pHNBS = -log10(ah)} and 
 \eqn{pHSWS = -log10(hsws)}.  
@@ -56,10 +56,10 @@ James Orr \email{james.orr@lsce.ipsl.fr}
 
 \examples{
 ## Convert pHSWS to pHNBS
-   pHSWS = 8.0                          # pH on the SWS scale
-   pHNBS = pHnbs2sws(pHNBS, T=25, S=35) # pH on the NBS scale
+   pHSWS = 7.853336                     # pH on the SWS scale
+   pHNBS = pHsws2nbs(pHSWS, T=25, S=35) # pH on the NBS scale
    print(pHNBS)
-## The result is (give check value here)
+## Check value: the result should be 8.0
 }
 
 \keyword{utilities}

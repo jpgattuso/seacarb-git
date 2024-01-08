@@ -3,12 +3,14 @@
 \alias{fH}
 \title{Total activity coefficient for H+}
 \description{Compute total hydrogen ion activity coefficient.
-The activity coefficient (fH) is used to convert from H+ conccentration on SWS scale 
-to H+ activity (ah), as used for NBS scale and vice versa. Here, fH is taken from Takahashi 
-et al (1982, GEOSECS Pacific Expedition, Chap 3, p. 80) who say:
-fH is the total activity coeff., which includes contributions from HSO4- and HF [as well as H+].
+The activity coefficient (fH) is used to convert from H+ concentration on SWS scale 
+to H+ activity (ah), as used for NBS scale; likewise fH is used to make the conversion 
+in the opposite direction, from the NBS scale to the SWS scale. Here, fH is taken from 
+Takahashi et al (1982, GEOSECS Pacific Expedition, Chap 3, p. 80) who say:
+fH is the total activity coeff., which includes contributions from HSO4- 
+and HF [as well as H+].
 
-Takahashi et al. (1982) computed a relationship for fH based on experimental data
+Takahashi et al. (1982) computed a relationship for fH based on the experimental data
 from Culberson & Pytkowicz (1973), who determined it experimentally as a function
 of temperature and salinity.  The approach is old and full of uncertainty.
 Newer approaches are more complicated (Pitzer equations) 
@@ -64,7 +66,7 @@ James Orr \email{james.orr@lsce.ipsl.fr}
 ## Compute fH
    f = fH(T=25, S=35)
    print(f)
-## The result is (give check value here)
+## Check value: The result is 0.7134043
 }
 
 \keyword{utilities}

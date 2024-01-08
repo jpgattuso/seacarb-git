@@ -26,7 +26,11 @@ fH <- function(S=35, T=25){
     #  Culberson & Pytkowicz (28) determined fH as a function of temperature and salinity, and
     #  their results can be approximated by:"
 
-    f = (1.2948 - 0.002036*T + (0.0004607 - 0.000001475*T)*S^2)
+    tk <- 273.15;           # [K] (for conversion [deg C] <-> [K])
+    TK <- T + tk;           # T [C]; T [K]
+ 
+    #f = (1.2948 - 0.002036*TK + (0.0004607 - 0.000001475*TK)*S^2)       #CO2SYS.m code
+    f  =  1.2948 - 0.002036*TK + 4.607e-4 * S^2  - 1.475e-6 * S^2 * TK   #eqn just as in Takahashi et al.
 
     # The approach used to compute fH is old. Its use to convert between the NBS and SWS scales is
     # full of uncertainty.  Newer approaches are more complicated (Pitzer equations) but big uncertainties
