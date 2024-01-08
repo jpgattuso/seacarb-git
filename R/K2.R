@@ -142,7 +142,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
     #   pH-scale: 'total'. mol/kg-soln
     is_cw <- k1k2 == "cw"	
     F2  <- -129.24/TK[is_cw] + 1.4381
-    pK2[is_cw] <- 2902.39/TK[is_cw] - 6.4980 - 0.3191*F2*S[is_cw]^0.5 + 0.0198*S[is_cw]
+    pK2[is_cw] <- 2902.39/TK[is_cw] + 0.02379*TK(is_cw) - 6.4980 - 0.3191*F2*S[is_cw]^0.5 + 0.0198*S[is_cw]
     K2[is_cw] <- 10.0^(-pK2)         # this is on the NBS scale
     # Convert from NBS to SWS scale using combined activity coefficient fH 
     # Takahashi (1982, GEOSECS Pacific Expedition, Chap 3, p. 80), who say:
