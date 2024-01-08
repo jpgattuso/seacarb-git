@@ -125,7 +125,7 @@ function(S=35,T=25,P=0,k1k2='x',pHscale="T",kSWS2scale="x",ktotal2SWS_P0="x",war
     pK1 <- 3404.71/TK[is_cw] + 0.032786*TK[is_cw] - 14.8435 - 0.071692*F1*S[is_cw]^0.5 + 0.0021487*S[is_cw] #*F1
     K1[is_cw]  <- 10^(-pK1)         # this is on the NBS scale
     # Convert from NBS to SWS scale using combined activity coefficient fH 
-    # Takahashi (1982, GEOSECS Pacific Expedition, Chap 3, p. 80), who says:
+    # Takahashi (1982, GEOSECS Pacific Expedition, Chap 3, p. 80), who say:
     # "fH is the total activity coeff., which includes contributions from HSO4- and HF [as well as H+].
     #  Culberson and Pytkowicz (28) determined fH as a function of temperature and salinity, and
     #  their results can be approximated by:"
