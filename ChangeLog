@@ -1,6 +1,10 @@
-version 3.3.3 2024-01-02
+version 3.3.3 2024-02-14
 -----------------------------------
-- Update: added K1 and K2 from Cai & Wang (1998) (thanks to James Orr). The conversion of K1 and K2 from the NBS to the SWS scale is done with the "total activity coefficient" fH, exactly as in CO2SYS-MATLAB and PyCO2SYS.
+- Update: added K1 and K2 from Cai & Wang (1998) (thanks to James Orr)
+- New: function pHnbs2sws to convert pHNBS to pHSWS using the total hydrogen ion activity coefficient, which depends on T and S (thanks to James Orr)
+- New: function pHsws2nbs to convert pHSWS to pHNBS using the total hydrogen ion activity coefficient, which depends on T and S (thanks to James Orr)
+- New: function fH to compute the total hydrogen ion activity coefficient (thanks to James Orr)
+
 
 version 3.3.2 2023-05-21
 -----------------------------------

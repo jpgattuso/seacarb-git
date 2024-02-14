@@ -220,26 +220,20 @@ b <- c("l10", "l10", "l10")
 carb(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P,
 	Pt=Pt, Sit=Sit, kf=kf, k1k2=k1k2, pHscale=pHscale, b=b)
 
-## 3. Special case: when pH for input is on NBS scale (not a standard option in seacarb) 
+## 3. Special case: when input pH is on NBS scale (not a standard option in seacarb) 
 ##    -> example for pH-Alk input pair (flag 8) and Cai & Wang (1998) K1,K2 
 pHNBS <- c(8.2, 8.1, 8.0)
 talk <- c(2300, 2350, 2400) * 1e-6
 S <- c(35, 32.5, 30)
 T <- c(25, 15, 10)
 
-## 3a. use seacarb function, fH, which computes the total activity coefficient
-ah    <- 10^(-phNBS)      
-hSWS  <- ah / fH(S=S, T=T)
-phSWS <- -log10(hSWS) 
-carb(flag=8, var1=phSWS, var2=talk, S=S, T=T, P=0, Patm=1.0, Pt=0, Sit=0,
-	pHscale="SWS", kf="pf", k1k2="cw", ks="d", b="u74")
-
-## 3b. same as 3a but fewer lines: use seacarb function, pHnbs2sws, which converts pHNBS to pHSWS (using fH)
+## 3a. convert pHNBS to pHSWS (using total activity coeff. fH), then use carb with pHscale="SWS"
 pHSWS <- pHnbs2sws(pHNBS, S=S, T=T)
-carb(flag=8, var1=phSWS, var2=talk, S=S, T=T, P=0, Patm=1.0, Pt=0, Sit=0,
+carb(flag=8, var1=pHSWS, var2=talk, S=S, T=T, P=0, Patm=1.0, Pt=0, Sit=0,
 	pHscale="SWS", kf="pf", k1k2="cw", ks="d", b="u74")
 
-## 3c. conversely for input pairs without pH,  convert computed pH on SWS scale to NBS scale, with function pHsws2nbs
+## 3b. conversely for input pairs without pH,  convert computed pH on SWS scale to NBS scale, 
+##     with function pHsws2nbs
 ##    -> example for Alk-DIC input pair (flag 15) and Cai & Wang (1998) K1,K2 
 dic <- c(2000., 2030., 2060) * 1e-6
 output = carb(flag=15, var1=talk, var2=dic, S=S, T=T, P=0, Patm=1.0, Pt=0, Sit=0,

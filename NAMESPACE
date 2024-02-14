@@ -7,6 +7,7 @@ export(pCO2insi, Pcoeffs, Pcorrect, pgas, pHconv, pHinsi, pH, pHslope, pHspec, p
 export(rho, sa2sp_chem, sa2sp_geo, sf_calc, sf_calib)
 export(sir_b, sir_full, sir, sp2sa_chem, sp2sa_geo, speciation, teos2eos_chem, teos2eos_geo)
 export(theta, tris, vapress, x2pCO2)
+export(fH, pHnbs2sws, pHsws2nbs)
 
 importFrom(utils, data)
 importFrom("graphics", "arrows", "contour", "matlines", "matplot",
