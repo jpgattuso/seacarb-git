@@ -176,7 +176,6 @@ Computation time also depends on the chosen pair of input variables. For example
 }
 
 \value{The function returns a 2-dimensional dataframe, with the following columns:
- \itemize{
  \item{H}{combined standard uncertainty in [H+] concentration (mol/kg)}
  \item{pH}{combined standard uncertainty in pH}
  \item{CO2}{combined standard uncertainty in CO2 concentration (mol/kg)}
@@ -188,7 +187,6 @@ Computation time also depends on the chosen pair of input variables. For example
  \item{ALK}{combined standard uncertainty in ALK, total alkalinity (mol/kg)}
  \item{OmegaAragonite}{combined standard uncertainty in Omega aragonite (aragonite saturation state)}
  \item{OmegaCalcite}{combined standard uncertainty in Omega calcite   (calcite saturation state)}
-}
  
 If all input data have the same 'flag' value, the returned data frame does not show combined standard uncertainties on input pair of carbonate system variables. For example, if all input flags are 15, the input pair is DIC and ALK; hence, errors on DIC and ALK are not returned.
 }
