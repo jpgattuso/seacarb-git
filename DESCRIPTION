@@ -1,10 +1,11 @@
 Package: seacarb
 Title: Seawater Carbonate Chemistry
 Version: 3.3.4
-Date: 2025-11-14
+Date: 2026-04-16
 LazyData: true
-Authors@R: c(person("James", "Orr", role = c("aut", "cre", "cph"), email = "james.orr@lsce.ipsl.fr"),
-  person("Jean-Pierre", "Gattuso", role = c("aut"), email = "jean-pierre.gattuso@imev-mer.fr"),
+Authors@R: c(
+  person("Jean-Pierre", "Gattuso", role = c("aut", "cph", "cre"), email = "jean-pierre.gattuso@imev-mer.fr"),
+  person("James", "Orr", role = c("aut", "cph"), email = "james.orr@lsce.ipsl.fr"),
   person("Jean-Marie", "Epitalon", role = "aut", email = "jean-marie.epitalon@orange.fr"),
   person("Heloise", "Lavigne", role = "aut", email = "lavigne@obs-vlfr.fr"),
   person("Bernard", "Gentili", role = "ctb"),
@@ -15,8 +16,9 @@ Authors@R: c(person("James", "Orr", role = c("aut", "cre", "cph"), email = "jame
   person("James", "Rae", role = "ctb"),
   person("Karline", "Soetaert", role = "ctb")
   )
+Maintainer: James Orr <james.orr@lsce.ipsl.fr>
 Depends: R (>= 3.5.0), oce, gsw, SolveSAPHE
-Description: Calculates parameters of the seawater carbonate system and assists the design of ocean acidification perturbation experiments.
+Description: Calculates parameters of the seawater carbonate system and assists in design of ocean acidification perturbation experiments.
 Encoding: UTF-8
 URL: https://CRAN.R-project.org/package=seacarb
 License: GPL (>= 2)
