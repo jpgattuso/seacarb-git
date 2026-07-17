@@ -15,7 +15,7 @@ sir(flag, var1, var2, S = 35, T = 25, Patm = 1, P = 0,
 }
 
 \arguments{
-  	\item{flag}{select the couple of variables available. The flags which can be used are: 
+  	\item{flag}{select the pair of variables available. The flags which can be used are: 
 
 flag = 1      pH and CO2 given
 
@@ -174,7 +174,9 @@ The function returns a data frame containing the following columns:
 
 }
 
-\note{\bold{Warning:} pCO2 estimates below 100 m are subject to considerable uncertainty. See Weiss (1974) and Orr et al. (2015)}
+\note{\bold{Warning:} pCO2 estimates below 100 m are subject to considerable uncertainty. See Weiss (1974) and Orr and Epitalon (2015)
+
+Because \code{sir()} calls \code{carb()} rather than \code{carbfull()}, it inherits \code{carb()}'s treatment of silicic acid as monoprotic (the second dissociation constant \code{K2si} is internally set to zero) and does not include ammonia or hydrogen sulfide alkalinity at all. See \code{carb.Rd}. Use \code{sir_full()} for the complete treatment of all these systems.}
 
 \references{
 
@@ -200,7 +202,7 @@ Millero F. J., 2010. Carbonate constant for estuarine waters. \emph{Marine and F
 
 Millero F. J., Graham T. B., Huang F., Bustos-Serrano H. and Pierrot D., 2006. Dissociation constants of carbonic acid in seawater as a function of salinity and temperature.  \emph{Marine Chemistry} \bold{100}, 80-84.
 
-Orr J. C., Epitalon J.-M. and Gattuso J.-P., 2015. Comparison of seven packages that compute ocean carbonate chemistry. \emph{Biogeosciences} \bold{12}, 1483-1510.
+Orr J. C. and Epitalon J.-M., 2015. Improved routines to model the ocean carbonate system: mocsy 2.0, \emph{Geosci. Model Dev.} \bold{8}, 485-499, \doi{10.5194/gmd-8-485-2015}.
 
 Perez F. F. and Fraga F., 1987 Association constant of fluoride and hydrogen ions in seawater. \emph{Marine Chemistry} \bold{21}, 161-168.
 
@@ -224,7 +226,7 @@ Zeebe R. E. and Wolf-Gladrow D. A., 2001 \emph{CO2 in seawater: equilibrium, kin
 \email{jean-pierre.gattuso@imev-mer.fr}
 }
 \examples{
-## With a couple of variables
+## With a pair of variables
 sir(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,
 	pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
 

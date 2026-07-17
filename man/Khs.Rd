@@ -4,7 +4,7 @@
 \title{Dissociation constant of hydrogen sulfide (mol/kg)}
 \description{Dissociation constant of hydrogen sulfide (mol/kg)}
 \usage{
-Khs(S=35, T=25, P=0, pHscale="T", warn="y")
+Khs(S=35, T=25, P=0, pHscale="T", kSWS2scale="x", ktotal2SWS_P0="x", warn="y")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -12,7 +12,9 @@ Khs(S=35, T=25, P=0, pHscale="T", warn="y")
   \item{T}{Temperature in degrees Celsius, default is 25oC}
   \item{P}{Hydrostatic pressure in bar (surface = 0), default is 0}
   \item{pHscale}{choice of pH scale: "T" for using the total scale, "F" for using the free scale and "SWS" for using the seawater scale, default is total scale}
-  \item{warn}{"y" to show warnings when T or S go beyond the valid range for Khs; "n" to supress warnings. The default is "y".}
+  \item{kSWS2scale}{Optional conversion factor from the seawater pH scale to the chosen pH scale. Supply the value already computed for the other constants in the same calculation (as \code{calculate_carb} does for \code{Kw}, \code{Ksi}, \code{K1p}, \code{K2p} and \code{K3p}), so that every constant is placed on the same pH scale by the same route. If omitted, the factor is recomputed here with \code{\link{kconv}} using its default \code{kf="x"}; a caller who requested \code{kf="dg"} would then silently receive a constant built on a different \code{Kf}, an inconsistency of up to 0.9 percent.}
+\item{ktotal2SWS_P0}{Optional conversion factor from the total pH scale to the seawater pH scale at atmospheric pressure. \code{Khs} is native to the total pH scale, so like \code{\link{Kb}} it requires both conversion factors. Same rationale as \code{kSWS2scale}.}
+\item{warn}{"y" to show warnings when T or S go beyond the valid range for Khs; "n" to supress warnings. The default is "y".}
 }
 
 \details{

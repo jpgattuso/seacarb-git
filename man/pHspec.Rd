@@ -31,7 +31,7 @@ Note that the arguments can be given as a unique number or as vectors. If the le
 
 }
 \references{
-Mueller, J. D. and Rehder, G., 2018 Metrology for pH Measurements in Brackish Waters - Part 2: Experimental Characterization of Purified meta-Cresol Purple for Spectrophotometric pHT Measurements. \emph{Frontiers in Marine Science} \bold{5:177}, 1-9. https://doi.org/10.3389/fmars.2018.00177
+Mueller, J. D. and Rehder, G., 2018 Metrology for pH Measurements in Brackish Waters - Part 2: Experimental Characterization of Purified meta-Cresol Purple for Spectrophotometric pHT Measurements. \emph{Frontiers in Marine Science} \bold{5:177}, 1-9.\doi{10.3389/fmars.2018.00177}
 
 
 }

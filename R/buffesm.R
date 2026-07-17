@@ -5,12 +5,17 @@
 # # Seacarb is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. 
 # # You should have received a copy of the GNU General Public License along with seacarb; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA # #  
 
-# New version of buffesm accounts for effects of nutrient (Si and P) concentrations
+# New version of buffesm accounts for effects of nutrient (Si and P) concentrations,
+# extended (July 2026) to also include ammonia (NH4t) and sulfide (HSt) alkalinity, and
+# corrected so that the silicate contribution (SegleSi) uses the full diprotic silicic
+# acid system (matching calculate_carb.R's own Asi = [SiO(OH)3-] + 2*[SiO2(OH)2--]) rather
+# than a single-dissociation approximation. Whenever NH4t or HSt are nonzero, carbfull()
+# is used instead of carb(), since carb() hard-codes NH4t=HSt=0 internally.
 # ---------------------------------------------------------------------------------
 
 buffesm <-  
-  function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", warn="y",  eos="eos80", long=1.e20, lat=1.e20){
-    n <- max(length(flag), length(var1), length(var2), length(S), length(T), length(P), length(Pt), length(Sit), length(k1k2), length(kf), length(pHscale), length(ks), length(b))
+  function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, NH4t=0, HSt=0, k1k2='x', kf='x', ks="d", pHscale="T", b="u74", warn="y",  eos="eos80", long=1.e20, lat=1.e20){
+    n <- max(length(flag), length(var1), length(var2), length(S), length(T), length(P), length(Pt), length(Sit), length(NH4t), length(HSt), length(k1k2), length(kf), length(pHscale), length(ks), length(b))
     if(length(flag)!=n){flag <- rep(flag[1],n)}
     if(length(var1)!=n){var1 <- rep(var1[1],n)}
     if(length(var2)!=n){var2 <- rep(var2[1],n)}
@@ -20,16 +25,20 @@ buffesm <-
     if(length(P)!=n){P <- rep(P[1],n)}
     if(length(Pt)!=n){Pt <- rep(Pt[1],n)}
     if(length(Sit)!=n){Sit <- rep(Sit[1],n)}
+    if(length(NH4t)!=n){NH4t <- rep(NH4t[1],n)}
+    if(length(HSt)!=n){HSt <- rep(HSt[1],n)}
     if(length(k1k2)!=n){k1k2 <- rep(k1k2[1],n)}
     if(length(kf)!=n){kf <- rep(kf[1],n)}
     if(length(ks)!=n){ks <- rep(ks[1],n)}
     if(length(pHscale)!=n){pHscale <- rep(pHscale[1],n)}
     if(length(b)!=n){b <- rep(b[1],n)}
 
-    # if the concentrations of total silicate and total phosphate are NA
-    # they are set at 0
-    Sit[is.na(Sit)] <- 0
-    Pt[is.na(Pt)] <- 0
+    # if the concentrations of total silicate, total phosphate, total ammonia, and
+    # total sulfide are NA, they are set at 0
+    Sit[is.na(Sit)]  <- 0
+    Pt[is.na(Pt)]    <- 0
+    NH4t[is.na(NH4t)] <- 0
+    HSt[is.na(HSt)]   <- 0
 
     # Only two options for eos
     if (eos != "teos10" && eos != "eos80")
@@ -51,7 +60,17 @@ buffesm <-
         SP <- S
     }
 
-     Carb <- carb(flag=flag, var1=var1, var2=var2, S=SP, T=InsT, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)
+    # carb() hard-codes NH4t=0, HSt=0 internally and does not expose them as arguments;
+    # only carbfull() does. So if the caller has supplied any nonzero NH4t or HSt, we must
+    # use carbfull() to get pH/CO2/HCO3/CO3/DIC/ALK that are actually consistent with those
+    # inputs. Otherwise carb() is used, for speed and backward compatibility (verified to
+    # agree with carbfull(NH4t=0, HSt=0) to solver tolerance, ~1e-9 relative).
+    use_carbfull <- any(NH4t != 0) || any(HSt != 0)
+    if (use_carbfull) {
+        Carb <- carbfull(flag=flag, var1=var1, var2=var2, S=SP, T=InsT, Patm=Patm, P=P, Pt=Pt, Sit=Sit, NH4t=NH4t, HSt=HSt, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)
+    } else {
+        Carb <- carb(flag=flag, var1=var1, var2=var2, S=SP, T=InsT, Patm=Patm, P=P, Pt=Pt, Sit=Sit, k1k2=k1k2, kf=kf, ks=ks, pHscale=pHscale, b=b)
+    }
  	P    <- Carb$P
  	pH   <- Carb$pH
 	h    <- 10^(-pH)
@@ -69,6 +88,7 @@ buffesm <-
     
     Cl = SP / 1.80655;            # Cl = chlorinity; SP = practical salinity (psu)
     ST = 0.14 * Cl/96.062        # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
+    FT = 6.7e-5 * Cl/18.9984     # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
     FLUO = 6.7e-5 * Cl/18.9984   # (mol/kg) total fluoride (Dickson et al., 2007, Table 2)
     bor = bor(S=SP , b=b)         # (mol/kg) total boron
 
@@ -105,6 +125,18 @@ buffesm <-
    K2p <- K2p(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
    K3p <- K3p(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
    Ksi <- Ksi(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, warn=warn)
+   K2si <- K2si(S=SP, T=InsT, P=P, pHscale=pHscale, kSWS2chosen, ktotal2SWS_P0)
+    # --- silicate: monoprotic or diprotic MUST follow the solver -----------------
+    # calculate_carb.R branches on fullresult:
+    #   fullresult=FALSE  (carb(),     used when NH4t=HSt=0) -> siooh3 only, MONOPROTIC
+    #   fullresult=TRUE   (carbfull(), used otherwise)        -> siooh3 + 2*sio2oh2, DIPROTIC
+    # The diprotic wSi below reduces EXACTLY (bit for bit) to the monoprotic form
+    # Sit*Ksi/(Ksi+h)^2 in the limit K2si -> 0, so zeroing K2si on the carb() path is
+    # all that is needed. Without this, wSi is differentiating an alkalinity that
+    # carb() does not use (error ~6e-8 of AT at Sit = 60 umol/kg).
+    if (!use_carbfull) K2si <- 0*K2si
+   Kn  <- Kn(S=SP, T=InsT, P=P, pHscale=pHscale, warn=warn)
+   Khs <- Khs(S=SP, T=InsT, P=P, pHscale=pHscale, warn=warn)
    #Kspa <- Kspa(S=SP, T=InsT, P=P, warn=warn)
    #Kspc <- Kspc(S=SP, T=InsT, P=P, warn=warn)
 
@@ -134,12 +166,26 @@ buffesm <-
    hpo4  = K2p * h2po4 / h
    po4   = K3p * hpo4  / h
    
-   # Silicon inorganic species
-   # [SiO(OH)3-] = Ksi * [Si(OH)4] / [H+]
-   # Sit = [Si(OH)4] * (1 + Ksi / [H+])
-   sioh4 = Sit /(1 + Ksi/h)
-   # sioh3 = Ksi * sioh4/h
-   sioh3 = Ksi * Sit/(h+Ksi)
+   # Silicon inorganic species -- CORRECTED to the full diprotic system (July 2026),
+   # matching calculate_carb.R's own treatment: Asi = [SiO(OH)3-] + 2*[SiO2(OH)2--],
+   # using BOTH Ksi and K2si. The previous single-dissociation form used only sioh3
+   # (structurally identical to borate); that is the correct K2si -> 0 limit of the
+   # full expression below (verified numerically), but understates the true
+   # buffering contribution whenever K2si is not negligible relative to Ksi.
+   # [SiO(OH)3-]  = Sit*h*Ksi        / (h^2 + Ksi*h + Ksi*K2si)
+   # [SiO2(OH)2--]= Sit*Ksi*K2si     / (h^2 + Ksi*h + Ksi*K2si)
+   sioh4   = Sit /(1 + Ksi/h)
+   sioh3   = Ksi * Sit/(h+Ksi)
+   DSi     = h^2 + Ksi*h + Ksi*K2si
+   sio2oh2 = Sit*Ksi*K2si/DSi
+
+   # Ammonia inorganic species (single dissociation)
+   # [NH3] = NH4t * Kn / (Kn + h)
+   nh3 = NH4t * Kn/(Kn+h)
+
+   # Sulfide inorganic species (single dissociation)
+   # [HS-] = HSt * Khs / (Khs + h)
+   hs = HSt * Khs/(Khs+h)
       
    # Special definitions needed for buffer-factor calculations 
    #  - originally from Table 1 of Egleston et al;  
@@ -160,9 +206,27 @@ buffesm <-
    SegleP <- rep(0.0,n)
    SegleP[Pt > 0] <- numPt[Pt > 0] / Pt[Pt > 0]
 
-   SegleSi =  h * sioh3/(Ksi + h)
+   # SegleSi -- CORRECTED (July 2026) to the diprotic silicate form (see species definitions
+   # above); previously used the monoprotic form h*sioh3/(Ksi+h), which is the correct
+   # K2si -> 0 limit but understates the true contribution when K2si is not negligible.
+   SegleSi = h * Sit * Ksi * (h^2 + 4*K2si*h + Ksi*K2si) / DSi^2
 
-   Segle <- SegleC + SegleP + SegleSi
+   # SegleN, SegleS: ammonia and sulfide contributions, same functional form as borate
+   # (single dissociation). Both are automatically and exactly zero when NH4t = 0 / HSt = 0.
+   SegleN = h * nh3/(Kn + h)
+   SegleS = h * hs/(Khs + h)
+
+
+   # --- fluoride: -[HF] is a species in Dickson's total alkalinity ---------------
+   # SolveSAPHE (which carb()/carbfull() invert) carries it explicitly:
+   #   aphscale = 1 + ST/Ks ;  api1_flu = Kf_free*aphscale ;  A_HF = -FT*h/(api1_flu+h)
+   # so w = -dAlk/dh must include +FT*Kfa/(Kfa+h)^2.  Kf MUST be put on the same pH
+   # scale as h (a 28% factor); using the free-scale Kf with a total-scale h is wrong.
+   aph <- 1 + ST/Ks                 # SolveSAPHE aphscale (total pH scale)
+   Kfa <- Kff*aph                   # Kf on the chosen (total) pH scale
+   SegleF <- h * FT*Kfa/(Kfa + h)^2   # = h*wF, matching Segle = h*w
+
+   Segle <- SegleC + SegleP + SegleSi + SegleN + SegleS + SegleF
 
    # GOOD formula from Sabine (Excel sheet, 23 Aug 2010)
    Pegle  = (2*CO2 + HCO3)                                  

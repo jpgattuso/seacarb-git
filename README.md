@@ -28,5 +28,5 @@ Briefly, after installing R and if you have an Internet connection, here is the 
 
 The seacarb package can be downloaded from the Comprehensive R Archive Network (CRAN; see link below). The documentation is included in the package and is accessible using standard R commands. Please give due credit to the publications mentioned above and cite seacarb as follows:
 
-Gattuso J.-P., Epitalon J.-M., Lavigne H. & Orr J., 2021. seacarb: seawater carbonate chemistry. R package version 3.3.5. http://CRAN.R-project.org/package=seacarb
+Orr J., Gattuso J.-P., Epitalon J.-M. & Lavigne H., 2026. seacarb: seawater carbonate chemistry. R package version 3.4.0. https://CRAN.R-project.org/package=seacarb
 

@@ -5,3 +5,9 @@
 .Rproj
 seacarb-git.Rproj
 .DS_Store
+*.tar.gz
+*.Rcheck/
+\#*\#
+.ipynb_checkpoints/
+CLAUDE.local.md
+

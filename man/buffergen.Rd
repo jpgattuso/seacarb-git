@@ -15,7 +15,7 @@
                  ks="d", pHscale="T", b="u74", gas="potential", NH4t=0, HSt=0)}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-	\item{flag}{select the couple of variables available. The flags which can be used are: 
+	\item{flag}{select the pair of variables available. The flags which can be used are: 
 
 flag = 1      pH and CO2 given
 
@@ -162,11 +162,11 @@ Mathilde Hagens \email{m.hagens@uu.nl}
 
 \examples{
 
-## With a couple of variables
+## With a pair of variables
 buffergen(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,
 	pHscale="T", kf="pf", k1k2="l", ks="d", b="u74", gas="potential", NH4t=0, HSt=0)
 
-## With a couple of variables and non-zero nutrient concentrations
+## With a pair of variables and non-zero nutrient concentrations
 buffergen(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=5e-6, Sit=2e-6,
 	pHscale="T", kf="pf", k1k2="l", ks="d", b="u74", gas="potential", NH4t=10e-6, HSt=0.1e-6)
 

@@ -11,7 +11,7 @@ ppH(flag, sys, var1, var2, pCO2a, vol, N, S=35, T=20, P=0, Pt=0,
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-	\item{flag}{Select the couple of variables available. The flags which can be used are: 
+	\item{flag}{Select the pair of variables available. The flags which can be used are: 
 
 flag = 1      pH and CO2 given
 

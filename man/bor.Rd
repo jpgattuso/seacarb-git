@@ -29,7 +29,7 @@ The latter formulation is used here.
 \references{
 DOE 1994 \emph{Handbook of methods for the analysis of the various parameters of the carbon dioxide system in sea water}. ORNL/CDIAC-74. Oak Ridge,Tenn.: Carbon Dioxide Information Analysis Center, Oak Ridge National Laboratory.
 
-Kulinski K., Szymczycha B., Koziorowska K., Hammer K. & Schneider B., 2018. Anomaly of total boron concentration in the brackish waters of the Baltic Sea and its consequence for the CO2 system calculations. \emph{Marine Chemistry}. doi:s10.1016/j.marchem.2018.05.007.
+Kulinski K., Szymczycha B., Koziorowska K., Hammer K. & Schneider B., 2018. Anomaly of total boron concentration in the brackish waters of the Baltic Sea and its consequence for the CO2 system calculations. \emph{Marine Chemistry}. \doi{10.1016/j.marchem.2018.05.007}.
 
 Lee K., Tae-Wook K., Byrne R.H., Millero F.J., Feely R.A. and Liu Y-M, 2010 The universal ratio of the boron to chlorinity for the North Pacific and North Atlantic oceans. \emph{Geochimica et Cosmochimica Acta} \bold{74} 1801-1811.
 

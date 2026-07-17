@@ -10,7 +10,7 @@
         NH4t=0, HSt=0)}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-	\item{flag}{select the couple of variables available. The flags which can be used are: 
+	\item{flag}{select the pair of variables available. The flags which can be used are: 
 
 flag = 1      pH and CO2 given
 
@@ -175,7 +175,9 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
   \item{ST}{Calculated total sulfate concentration (mol/kg-soln)} 
 }
 
-\note{\bold{Warning:} pCO2 estimates below 100 m are subject to considerable uncertainty. See Weiss (1974) and Orr et al. (2014)}
+\note{\bold{Warning:} pCO2 estimates below 100 m are subject to considerable uncertainty. See Weiss (1974) and Orr and Epitalon (2015)
+
+\bold{Silicate is treated as diprotic here:} unlike \code{carb()}, which internally sets the second dissociation constant of Si(OH)4 (\code{K2si}) to zero, \code{carbfull()} uses the true, nonzero \code{K2si}. \code{carbfull()} is also the only one of the two functions that accepts \code{NH4t} and \code{HSt}. See \code{carb.Rd} for further discussion of this difference and its (negligible in practice) numerical consequence.}
 
 \references{
 Cai W. J., and Wang Y., 1998. The chemistry, fluxes, and sources of carbon dioxide in the estuarine waters of the Satilla and Altamaha Rivers, Georgia. \emph{Limnology and Oceanography} \bold{43}, 657-668.
@@ -186,7 +188,7 @@ Dickson A. G., 1990 Standard potential of the reaction: AgCI(s) + 1/2H2(g) = Ag(
 
 Dickson A. G., Sabine C. L. and Christian J. R., 2007 Guide to best practices for ocean CO2 measurements. \emph{PICES Special Publication} \bold{3}, 1-191.
 
-Khoo H. K., Ramette R. W., Culberson C. H. and Bates R. G., 1977 Determination of Hydrogen Ion Concentration in Seawater from 5 to 40oC: Standard Potentials at Salinities from 20 to 45. \emph{Analytical Chemistry} \bold{22}, vol49 29-34. 
+Khoo H. K., Ramette R. W., Culberson C. H. and Bates R. G., 1977 Determination of hydrogen ion concentration in seawater from 5 to 40oC: standard potentials at salinities from 20 to 45. \emph{Analytical Chemistry} \bold{49}, 29-34.
 
 Lee K., Tae-Wook K., Byrne R.H., Millero F.J., Feely R.A. and Liu Y-M, 2010 The universal ratio of the boron to chlorinity for the North Pacific and North Atlantoc oceans. \emph{Geochimica et Cosmochimica Acta} \bold{74} 1801-1811.
 
@@ -198,7 +200,7 @@ Millero F. J., 2010. Carbonate constant for estuarine waters. \emph{Marine and F
 
 Millero F. J., Graham T. B., Huang F., Bustos-Serrano H. and Pierrot D., 2006. Dissociation constants of carbonic acid in seawater as a function of salinity and temperature.  \emph{Marine Chemistry} \bold{100}, 80-84.
 
-Orr J. C., Epitalon J.-M. and Gattuso J.-P., 2014. Comparison of seven packages that compute ocean carbonate chemistry. \emph{Biogeosciences Discussions} \bold{11}, 5327-5397.
+Orr J. C. and Epitalon J.-M., 2015. Improved routines to model the ocean carbonate system: mocsy 2.0, Geosci. Model Dev., 8, 485-499, \doi{10.5194/gmd-8-485-2015}.
 
 Perez F. F. and Fraga F., 1987 Association constant of fluoride and hydrogen ions in seawater. \emph{Marine Chemistry} \bold{21}, 161-168.
 
@@ -223,11 +225,11 @@ Heloise Lavigne, James Orr, Mathilde Hagens and Jean-Pierre Gattuso \email{jean-
 
 \examples{
 
-## With a couple of variables
+## With a pair of variables
 carbfull(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,
 	pHscale="T", kf="pf", k1k2="l", ks="d", b="u74", gas="potential", NH4t=0, HSt=0)
 
-## With a couple of variables and non-zero nutrient concentrations
+## With a pair of variables and non-zero nutrient concentrations
 carbfull(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=5e-6, Sit=2e-6,
 	pHscale="T", kf="pf", k1k2="l", ks="d", b="u74", gas="potential", NH4t=10e-6, HSt=0.1e-6)
 

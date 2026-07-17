@@ -9,7 +9,7 @@
         warn="y", eos="eos80", long=1.e20, lat=1.e20)}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-	\item{flag}{select the couple of variables available. The flags which can be used are: 
+	\item{flag}{select the pair of variables available. The flags which can be used are: 
 
 flag = 1      pH and CO2 given
 
@@ -152,7 +152,9 @@ long and lat are used as conversion parameters from absolute to practical salini
   \item{OmegaCalcite}{Omega calcite, calcite saturation state}
 }
 
-\note{\bold{Warning:} pCO2 estimates below 100 m are subject to considerable uncertainty. See Weiss (1974) and Orr et al. (2015)}
+\note{\bold{Warning:} pCO2 estimates below 100 m are subject to considerable uncertainty. See Weiss (1974) and Orr and Epitalon (2015)
+
+\bold{Silicate is treated as monoprotic here:} unlike \code{carbfull()}, \code{carb()} internally sets the second dissociation constant of Si(OH)4 (\code{K2si}) to zero, regardless of the value of \code{Sit} supplied. This is a deliberate simplification (not a bug) that keeps \code{carb()} from requiring \code{K2si} at all. Because \code{K2si} is several orders of magnitude smaller than \code{Ksi} under typical seawater conditions, the resulting effect on pH, DIC, and other outputs is negligible in practice (of order 1e-6 relative). Use \code{carbfull()} if a fully self-consistent diprotic treatment of silicate is required, e.g. when feeding its output into a buffer-factor calculation that itself uses the diprotic form of silicate alkalinity (see \code{buffzwg}, \code{buffesm}, \code{buffer}).}
 
 \references{
 Cai W. J., and Wang Y., 1998. The chemistry, fluxes, and sources of carbon dioxide in the estuarine waters of the Satilla and Altamaha Rivers, Georgia. \emph{Limnology and Oceanography} \bold{43}, 657-668.
@@ -163,7 +165,7 @@ Dickson A. G., 1990 Standard potential of the reaction: AgCI(s) + 1/2H2(g) = Ag(
 
 Dickson A. G., Sabine C. L. and Christian J. R., 2007 Guide to best practices for ocean CO2 measurements. \emph{PICES Special Publication} \bold{3}, 1-191.
 
-Khoo H. K., Ramette R. W., Culberson C. H. and Bates R. G., 1977 Determination of Hydrogen ion concentration in seawater from 5 to 40oC: standard potentials at salinities from 20 to 45. \emph{Analytical Chemistry} \bold{49}, 29-34.
+Khoo H. K., Ramette R. W., Culberson C. H. and Bates R. G., 1977 Determination of hydrogen ion concentration in seawater from 5 to 40oC: standard potentials at salinities from 20 to 45. \emph{Analytical Chemistry} \bold{49}, 29-34.
 
 Lee K., Tae-Wook K., Byrne R.H., Millero F.J., Feely R.A. and Liu Y-M, 2010 The universal ratio of the boron to chlorinity for the North Pacific and North Atlantoc oceans. \emph{Geochimica et Cosmochimica Acta} \bold{74} 1801-1811.
 
@@ -175,9 +177,9 @@ Millero F. J., 2010. Carbonate constant for estuarine waters. \emph{Marine and F
 
 Millero F. J., Graham T. B., Huang F., Bustos-Serrano H. and Pierrot D., 2006. Dissociation constants of carbonic acid in seawater as a function of salinity and temperature.  \emph{Marine Chemistry} \bold{100}, 80-84.
 
-Orr J. C., Epitalon J.-M. and Gattuso J.-P., 2015. Comparison of seven packages that compute ocean carbonate chemistry. \emph{Biogeosciences} \bold{12}, 1483-1510.
+Orr J. C. and Epitalon J.-M., 2015. Improved routines to model the ocean carbonate system: mocsy 2.0, \emph{Geosci. Model Dev.} \bold{8}, 485-499, \doi{10.5194/gmd-8-485-2015}.
 
-Perez F. F. and Fraga F., 1987 Association constant of fluoride and hydrogen ions in seawater. \emph{Marine Chemistry} \bold{21}, 161-168.
+Perez F. F. and Fraga F., 1987. Association constant of fluoride and hydrogen ions in seawater. \emph{Marine Chemistry} \bold{21}, 161-168.
 
 Roy R. N., Roy L. N., Vogel K. M., Porter-Moore C., Pearson T., Good C. E., Millero F. J. and Campbell D. M., 1993. The dissociation constants of carbonic acid in seawater at salinities 5 to 45 and temperatures 0 to 45oC. \emph{Marine Chemistry} \bold{44}, 249-267.
 
@@ -185,11 +187,11 @@ Schockman, K.M., Byrne, R.H., 2021. Spectrophotometric determination of the bica
 
 Uppstrom L.R., 1974 The boron/chlorinity ratio of the deep-sea water from the Pacific Ocean. \emph{Deep-Sea Research I} \bold{21}, 161-162.
 
-Waters, J., Millero, F. J., and Woosley, R. J., 2014. Corrigendum to ``The free proton concentration scale for seawater pH'', [MARCHE: 149 (2013) 8-22], Marine Chemistry \bold{165}, 66-67.
+Waters, J., Millero, F. J., and Woosley, R. J., 2014. Corrigendum to ``The free proton concentration scale for seawater pH'', [MARCHE: 149 (2013) 8-22], Mar. Chem. \bold{165}, 66-67.
 
 Weiss, R. F., 1974. Carbon dioxide in water and seawater: the solubility of a non-ideal gas, \emph{Mar.  Chem.}, \bold{2}, 203-215.
 
-Weiss, R. F. and Price, B. A., 1980. Nitrous oxide solubility in water and seawater, \emph{Marine Chemistry}, \bold{8}, 347-359.
+Weiss, R. F. and Price, B. A., 1980. Nitrous oxide solubility in water and seawater, \emph{Mar. Chem.}, \bold{8}, 347-359.
 
 Zeebe R. E. and Wolf-Gladrow D. A., 2001 \emph{CO2 in seawater: equilibrium, kinetics, isotopes}. Amsterdam: Elsevier, 346 pp.
 }
@@ -200,7 +202,7 @@ Heloise Lavigne, James Orr and Jean-Pierre Gattuso \email{jean-pierre.gattuso@im
 
 \examples{
 
-## 1. With a couple of variables
+## 1. With a pair of variables
 carb(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,
 	pHscale="T", kf="pf", k1k2="l", ks="d", b="u74")
 
