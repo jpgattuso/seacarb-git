@@ -28,6 +28,8 @@ The pressure correction is applied on the seawater scale. Hence, values are firs
 Note that the arguments can be given as a unique number or as vectors. If the lengths of the vectors are different, the longer vector is retained and only the first value of the other vectors is used. It can therefore be critical to use vectors of the same length.
 } 
 
+\note{Si(OH)4 is a diprotic acid: it has both a first dissociation constant (\code{Ksi}, this function) and a second (\code{K2si}). seacarb's \code{carb()} function, however, internally sets \code{K2si} to zero (treating silicate as if it were monoprotic), regardless of the value of \code{Sit} supplied; only \code{carbfull()} uses the true, nonzero \code{K2si}. See \code{carb.Rd}, \code{carbfull.Rd}, and \code{K2si.Rd}.}
+
 \value{
 	\item{Ksi}{Dissociation constant of Si(OH)4 (mol/kg)}
 }

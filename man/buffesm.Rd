@@ -3,15 +3,15 @@
 \alias{buffesm}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Buffer capacities of the seawater carbonate system from Egleston et al. (2010), corrected and enhanced}
-\description{Returns the six buffer factors of the seawater carbonate system as defined by Egleston, Sabine and Morel (2010), denoted here as ESM. Also returns the classic Revelle factor (relative change in pCO2 over that for DIC). In ESM, there are errors in the equations in Table 1 for \eqn{S}, \eqn{\Omega_{DIC}}, and \eqn{\Omega_{Alk}}. These errors have been corrected here.  The results of this routine have been validated: when input concentrations of Pt and Sit are set to zero, they produce results that are identical to those shown in ESM's Fig. 2. But when Pt and Sit are nonzero, contributions from phosphoric and silicic acid systems are taken into account, an improvement to the Egleston et al. (2010) approach. This routine was inspired and adapted from seacarb's ``buffer'' function. Its input arguments are indentical to those in the ``buffer'' and ``carb'' functions of seacarb.}
+\description{Returns the six buffer factors of the seawater carbonate system as defined by Egleston, Sabine and Morel (2010), denoted here as ESM. Also returns the classic Revelle factor (relative change in pCO2 over that for DIC). In ESM, there are errors in the equations in Table 1 for \eqn{S}, \eqn{\Omega_{DIC}}, and \eqn{\Omega_{Alk}}. These errors have been corrected here.  The results of this routine have been validated: when input concentrations of Pt and Sit are set to zero, they produce results that are identical to those shown in ESM's Fig. 2. But when Pt and Sit are nonzero, contributions from phosphoric and silicic acid systems are taken into account as well as NH3 and H2S acid-base systems when NH4t and HSt are nonzero, an improvement to the Egleston et al. (2010) approach. This routine was inspired and adapted from seacarb's ``buffer'' function. Its input arguments are indentical to those in the ``buffer'' and ``carb'' functions of seacarb.}
 \usage{
 buffesm(flag, var1, var2, S = 35, T = 25, Patm = 1, P = 0, Pt = 0, Sit = 0, 
-  k1k2 = "x", kf = "x", ks = "d", pHscale = "T", b = "u74", warn = "y", 
+  NH4t = 0, HSt = 0, k1k2 = "x", kf = "x", ks = "d", pHscale = "T", b = "u74", warn = "y", 
   eos = "eos80", long = 1e+20, lat = 1e+20)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-	\item{flag}{select the couple of variables available. The flags which can be used are: 
+	\item{flag}{select the pair of variables available. The flags which can be used are: 
 
 flag = 1      pH and CO2 given
 
@@ -61,6 +61,8 @@ flag = 25     pCO2 and DIC given
   \item{P}{Hydrostatic pressure in bar (surface = 0)}
   \item{Pt}{Concentration of total phosphate in mol/kg; set to 0 if NA; when nonzero, account for phosphoric acid system, unlike in Egleston et al. (2010).}
   \item{Sit}{Concentration of total silicate in mol/kg; set to 0 if NA; when nonzero, account for silicic acid system, unlike in Egleston et al. (2010).}
+  \item{NH4t}{Concentration of total ammonium in mol/kg; set to 0 if NA; when nonzero (or when \code{HSt} is nonzero), accounts for ammonia alkalinity and \code{carbfull()} is used internally instead of \code{carb()}}
+  \item{HSt}{Concentration of total hydrogen sulfide in mol/kg; set to 0 if NA; when nonzero (or when \code{NH4t} is nonzero), accounts for sulfide alkalinity and \code{carbfull()} is used internally instead of \code{carb()}}
   \item{k1k2}{"cw" for using K1 and K2 from Cai & Wang (1998), "l" from Lueker et al. (2000), "m02" from Millero et al. (2002), "m06" from Millero et al. (2006), "m10" from Millero (2010), "mp2" from Mojica Prieto et al. (2002), "p18" from Papadimitriou et al. (2018), "r" from Roy et al. (1993), "sb21" from Shockman & Byrne (2021), "s20" from Sulpis et al. (2020), and "w14" from Waters et al. (2014). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "w14".}
   \item{kf}{"pf" for using Kf from Perez and Fraga (1987) and "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994). "x" is the default flag; the default value is then "pf", except if T is outside the range 9 to 33oC and/or S is outside the range 10 to 40. In these cases, the default is "dg".}
 	\item{ks}{"d" for using Ks from Dickon (1990), "k" for using Ks from Khoo et al. (1977), default is "d"} 
@@ -100,7 +102,7 @@ flag = 25     pCO2 and DIC given
 \item Waters et al.(2014): S ranging between 1 and 50 and T ranging between 0 and 50oC. Waters (2014) provides a K1 and K2 formulation for the seawater, total and free pH scales. Therefore, when this method is used and if P=0, K1 and K2 are computed with the formulation corresponding to the pH scale given in the flag "pHscale".
 }
 
-\emph{For K0:}
+\emph{For Kf:}
 \itemize{
 \item Perez and Fraga (1987): S ranging between 10 and 40 and T ranging between 9 and 33oC.
 
@@ -115,6 +117,14 @@ flag = 25     pCO2 and DIC given
 }
 
 The arguments can be given as a unique number or as vectors. If the lengths of the vectors are different, the longer vector is retained and only the first value of the other vectors is used. It is recommended to use either vectors with the same dimension or one vector for one argument and numbers for the other arguments.
+
+\emph{On the non-carbonate buffering term Segle:}
+
+Writing \eqn{h := [H^+]}, \eqn{b := [HCO_3^-]}, and \eqn{c := [CO_3^{2-}]}, the six buffer factors are built from \code{Segle}, Egleston et al.'s (2010) \eqn{S} (their Table 1, corrected here as noted above), which is constructed additively, one acid-base system at a time (the same construction used in \code{buffzwg} and \code{buffer}, there called \eqn{w} and \code{DD} respectively):
+
+\eqn{Segle = b + 4c + h \, w}{Segle = b + 4*c + h*w}, with \eqn{w = w_{bw} + w_{Si} + w_P + w_N + w_S}
+
+where \eqn{w_{bw} = 1 + K_w/h^2 + B_T K_B/(K_B+h)^2} (borate and water), \eqn{w_{Si} = Si_T K_{Si}(h^2+4K_{2Si}h+K_{Si}K_{2Si})/(h^2+K_{Si}h+K_{Si}K_{2Si})^2} (silicic acid, treated as the full diprotic system, using both \eqn{K_{Si}} and \eqn{K_{2Si}}), \eqn{w_P} the analogous contribution from the three-step phosphoric acid system, \eqn{w_N = NH_{4t} K_N/(K_N+h)^2} (ammonia), and \eqn{w_S = HS_t K_{HS}/(K_{HS}+h)^2} (hydrogen sulfide). \eqn{w_N} and \eqn{w_S} (correspondingly, \code{SegleN} and \code{SegleS}) are automatically and exactly zero unless \code{NH4t} or \code{HSt}, respectively, are nonzero.
 
 \emph{Pressure corrections and pH scale:}
 
@@ -143,6 +153,8 @@ long and lat are used as conversion parameters from absolute to practical salini
   \item{R}{Revelle factor, relative change in \eqn{[CO_2]} or \eqn{pCO_2} over the relative change in DIC \eqn{(\partial ln[CO_2]/\partial ln DIC)^{-1}}  (unitless)}
 }
 
+\note{When \code{Sit > 0} and \code{NH4t = HSt = 0}, this function's diprotic treatment of silicate alkalinity (using both \code{Ksi} and \code{K2si}) is very slightly inconsistent with the underlying carbonate system state, because that state comes from \code{carb()}, which internally treats silicate as monoprotic (\code{K2si = 0}) regardless of \code{Sit} (see \code{carb.Rd}). \code{carbfull()} is only invoked here when \code{NH4t} or \code{HSt} are nonzero, so this inconsistency is not corrected for when only \code{Pt}/\code{Sit} are supplied; it is expected to affect results at only the ~1e-6 relative level. See \code{carb.Rd} and \code{carbfull.Rd} for further discussion.}
+
 \references{
 Cai W. J., and Wang Y., 1998. The chemistry, fluxes, and sources of carbon dioxide in the estuarine waters of the Satilla and Altamaha Rivers, Georgia. \emph{Limnology and Oceanography} \bold{43}, 657-668.
 
@@ -150,7 +162,7 @@ Dickson A. G., 1990 Standard potential of the reaction: AgCI(s) + 1/2H2(g) = Ag(
 
 Dickson A. G., Sabine C. L. and Christian J. R., 2007 Guide to best practices for ocean CO2 measurements. \emph{PICES Special Publication} \bold{3}, 1-191.
 
-Egleston, E. S., Sabine, C. L. and Morel, F. M. M.,  2010 Revelle revisited: Buffer factors that quantify the response of ocean chemistry to changes in DIC and alkalinity, Global Biogeochem. Cycles \bold{24}, GB1002, doi:10.1029/2008GB003407. 
+Egleston, E. S., Sabine, C. L. and Morel, F. M. M.,  2010 Revelle revisited: Buffer factors that quantify the response of ocean chemistry to changes in DIC and alkalinity, Global Biogeochem. Cycles \bold{24}, GB1002, \doi{10.1029/2008GB003407}. 
 
 Khoo H. K., Ramette R. W., Culberson C. H. and Bates R. G., 1977 Determination of hydrogen ion concentration in seawater from 5 to 40oC: standard potentials at salinities from 20 to 45. \emph{Analytical Chemistry} \bold{49}, 29-34. 
 
@@ -179,7 +191,7 @@ James Orr \email{James.Orr@lsce.ipsl.fr}
 
 \examples{
 
-## Computation with a couple of variables
+## Computation with a pair of variables
 buffesm(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Pt=0, 
 	Sit=0, pHscale="T", kf="pf", k1k2="l", b="u74")
 
@@ -199,7 +211,10 @@ b <- c("l10", "l10", "l10")
 buffesm(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P, Pt=Pt, 
 	Sit=Sit, kf=kf, k1k2=k1k2, pHscale=pHscale, b=b)
 
-## Test for all flags 
+## Test for all flags; all rows describe the SAME equilibrium seawater
+## state expressed 20 different ways, so results should be (almost)
+## identical across rows -- tiny differences reflect solver precision,
+## not a real difference in the underlying state.
 flag <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 21, 22, 23, 24, 25)
 
 var1 <- c(8.200000, 7.477544e-06, 7.477544e-06, 7.477544e-06, 7.477544e-06, 8.2, 
@@ -209,15 +224,20 @@ var2 <- c(7.477544e-06, 0.001685024, 0.0002888382, 0.002391252, 0.001981340,
 	0.001685024, 0.0002888382, 0.002391252, 0.001981340, 0.0002888382, 0.002391252,
 	0.001981340,  0.002391252, 0.001981340, 0.001981340, 8.2, 0.001685024, 
 	0.0002888382, 0.002391252, 0.001981340)
-buffesm(flag=flag, var1=var1, var2=var2)
+be <- buffesm(flag=flag, var1=var1, var2=var2)
+be
 
-## Compute 2 additional factors of interest (ratios of relative changes)
-be <- buffesm(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P, Pt=Pt, 
-	Sit=Sit, kf=kf, k1k2=k1k2, pHscale=pHscale, b=b)
+## Compute 2 additional factors of interest (ratios of relative changes),
+## reusing the same 'be' computed just above (same state, 20 flag encodings)
 #     Ratio of gammaDIC/betaDIC = d ln [H+] / d ln pCO2
       Hfac <- (be$gammaDIC/be$betaDIC)                         #H+ factor
 #     Ratio of gammaDIC/omegaDIC = d ln [CO32-] / d ln pCO2
       Satfac <- (be$gammaDIC/be$omegaDIC)                      #Saturation factor
+
+## Effect of adding ammonia and hydrogen sulfide alkalinity (NH4t, HSt);
+## when either is nonzero, carbfull() is used internally instead of carb()
+buffesm(flag=8, var1=8.2, var2=0.00234, S=35, T=25, Pt=0, Sit=0, NH4t=0, HSt=0)
+buffesm(flag=8, var1=8.2, var2=0.00234, S=35, T=25, Pt=0, Sit=0, NH4t=10e-6, HSt=1e-6)
 
 }
 \keyword{utilities}

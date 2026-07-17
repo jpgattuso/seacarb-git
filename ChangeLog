@@ -1,3 +1,33 @@
+version 3.4.0 2026-07-17
+-----------------------------------
+Major revision of the buffer-factor calculations, and a new unified equation for the
+Revelle factor Rf, and the closely related Bolin sensitivity Be (the partial derivative dDIC/d[CO2*]), in the
+form given by Sundquist et al. (1979, Science). Three errors in the existing buffer factors
+are corrected, the largest reaching 1.5 percent in nutrient-rich waters. Analytic partial
+derivatives of the Bolin sensitivity are added, together with a regression test suite.
+
+NEW FUNCTIONS
+- New: buffsun, which computes the Revelle factor Rf (and the closely related Bolin sensitivity Be = dDIC/d[CO2*]) from the Rf equation of Sundquist et al. [1979]. All later formulations of Rf (from Frankignoulle (1994), Zeebe and Wolf-Gladrow (2001) and Egleston et al. (2010) all reduce to the same form of the equation, differing only in which acid-base systems are collected into the non-carbonate term.
+- New: buffzwg, which computes Be and Rf following Zeebe and Wolf-Gladrow (2001), with the typo in their Eq. 1.5.88 corrected.
+- New: buffderiv, which computes the four analytic partial derivatives of the Bolin sensitivity, dBe/dT, dBe/dS, dBe/dDIC and dBe/dALK, in closed form via the implicit function theorem. Validated against finite differences through carb() (agreement to 1e-6 %, the double-precision noise floor) and against an independent automatic-differentiation implementation (agreement to 1e-11 %).
+- New: dlnK, an internal (unexported) helper providing the analytic dlnK/dT and dlnK/dS of every equilibrium constant used by buffderiv.
+
+BUG FIXES
+- Fix: the non-carbonate alkalinity used by the buffer factors is now complete. buffer previously included only borate, water and (in DD) the carbonate slope; buffesm added silicate and phosphate. Both now include all of borate, water, silicate, phosphate, ammonium, hydrogen sulfide and fluoride. The two new functions (buffsun, buffzwg) use the same complete set. The last in the list, fluoride, is a very small effect, but was absent from every routine; it is part of Dickson's total alkalinity and is carried explicitly by the solver, so leaving it out meant the buffer factors were computed from an alkalinity that carb() does not solve.
+- Fix: silicate is now treated consistently with the solver in these buffer calculation functions. While carb() (via calculate_carb with fullresult=FALSE) treats it as monoprotic, carbfull() is diprotic. Use of K2si is now tied to the solver actually used.
+- Fix: in buffer, the terms DB and DC included only the borate and water contributions to the slope of the non-carbonate alkalinity, while DD included every system. PhiB and BetaB were therefore in error by up to 0.16 %, and PhiC and BetaC by up to 1.5 %, in waters rich in phosphate and silicate. PhiD and BetaD were unaffected. Verified against finite differences through carb().
+
+UPDATED FUNCTIONS
+- Update: Kn now accepts the argument kSWS2scale, and Khs now accepts kSWS2scale and ktotal2SWS_P0, as K1, K2, Kb, Kw, Ksi, K1p, K2p and K3p already did. Without these, both fell back to kconv() with its default kf="x", so a caller who requested kf="dg" silently received constants built on a different Kf, an inconsistency of up to 0.9 % for Kn. Defaults are unchanged, so existing results are bit-for-bit identical.
+
+DOCUMENTATION
+- Update: the documentation of buffer was wrong in three places although the code was right. PhiH and PiH are per mole of strong acid added, not per mole of alkalinity, and are therefore negative; the Beta and Pi factors are computed from fCO2, not pCO2 (a 0.34 % difference at 20 degrees C); and the Pi factors are returned per umol/kg, not per mol/kg. A new Details section gives the perturbation convention for all eleven factors.
+- Update: in buffesm.Rd, buffzwg.Rd and pTA.Rd, a block listing the Kf formulations (Perez and Fraga, Dickson and Riley) was headed "For K0:". Corrected to "For Kf:".
+- New: buffsun.Rd and buffderiv.Rd.
+
+TESTING
+- New: a package test suite under tests/testthat, run by R CMD check and, via .github/workflows, by GitHub Actions on every push. It cross-checks buffderiv's hand-derived derivatives against an independent forward-mode automatic-differentiation implementation, so that a future change to any equilibrium-constant formulation cannot silently invalidate the hand-coded derivatives. The tests are marked skip_on_cran() so they do not consume CRAN resources, but they are shipped with the package.
+
 version 3.3.4 2026-04-16
 -----------------------------------
 - Change in maintainer: James Orr takes over from Jean-Pierre Gattuso

@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "seacarb: seawater carbonate chemistry"
+version: 3.4.0
+date-released: "2026-07-13"
+url: "https://CRAN.R-project.org/package=seacarb"
+license: GPL-2.0-or-later
+type: software
+authors:
+  - family-names: Orr
+    given-names: James
+    email: james.orr@lsce.ipsl.fr
+  - family-names: Gattuso
+    given-names: Jean-Pierre
+    email: jean-pierre.gattuso@imev-mer.fr
+  - family-names: Epitalon
+    given-names: Jean-Marie
+    email: jean-marie.epitalon@orange.fr
+  - family-names: Lavigne
+    given-names: Héloïse
+    email: lavigne@obs-vlfr.fr

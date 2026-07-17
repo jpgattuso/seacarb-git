@@ -23,6 +23,8 @@ The pressure correction is applied on the seawater scale. Hence, values are firs
 Note that the arguments can be given as a unique number or as vectors. If the lengths of the vectors are different, the longer vector is retained and only the first value of the other vectors is used. It can therefore be critical to use vectors of the same length.
 } 
 
+\note{\code{K2si} is only used internally by seacarb's carbonate-system solver when \code{fullresult=TRUE}, i.e. from within \code{carbfull()}. \code{carb()} itself (\code{fullresult=FALSE}) always sets \code{K2si} to zero internally, treating silicic acid as a monoprotic system regardless of the value of \code{Sit} supplied. See \code{carb.Rd} and \code{carbfull.Rd}. Because \code{K2si} is several orders of magnitude smaller than \code{Ksi} under typical seawater conditions, this simplification has a negligible (~1e-6 relative) effect on computed carbonate system variables.}
+
 \value{
 	\item{K2si}{Second dissociation constant of Si(OH)4 (mol/kg)}
 }

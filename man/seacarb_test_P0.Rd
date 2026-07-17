@@ -6,7 +6,7 @@
 The variables are:
 
 \itemize{
-	\item Flag indicating which couple of variables is used
+	\item Flag indicating which pair of variables is used
 	\item Value of the first variable in mol/kg, except for pH and for pCO2 in \eqn{\mu}atm
 	\item Value of the second variable in mol/kg, except for pH
 	\item Salinity

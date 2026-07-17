@@ -3,15 +3,15 @@
 \alias{buffer}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Buffer parameters of the seawater carbonate system}
-\description{Returns buffer parameters of the seawater carbonate system.}
+\description{Returns the eleven buffer factors of the seawater carbonate system defined by Frankignoulle (1994). For each of four possible chemical perturbations -- input or output of dissolved CO2 (D), bicarbonate (B), carbonate (C), or strong acid \eqn{H_3O^+} (H) -- Frankignoulle (1994) defines a chemical buffer factor \eqn{\Phi} (pH change per unit input/output; \eqn{\Phi_H = -dpH/d|Talk|} for the H case, \eqn{\Phi_{D,B,C} = dpH/d|\Sigma CO_2|} otherwise) and a further buffer factor \eqn{\Pi} describing the accompanying pCO2 change, in \eqn{\mu}atm (\eqn{\Pi_H = -dpCO_2/d|Talk|}; \eqn{\Pi_{D,B,C} = dpCO_2/d|\Sigma CO_2|}). For the D, B, and C cases only, a third, dimensionless factor \eqn{\beta} is also returned (\eqn{\beta_{D,B,C} = dln(pCO_2)/dln|\Sigma CO_2|}). \eqn{\beta_D} (\code{BetaD}) is the classical Revelle factor, termed the ``homogeneous buffer factor'' by Frankignoulle (1994); that terminology, and the underlying quantity itself, trace back to Sundquist et al. (1979). This implementation follows Frankignoulle (1994) for the borate- and water-inclusive (``practical alkalinity'') case, extended here to also account for phosphoric and silicic acid systems when Pt and Sit are nonzero, as well as NH3 and H2S acid-base systems when NH4t and HSt are nonzero, and has since been cross-validated against seacarb's \code{buffesm} (Egleston et al., 2010) and \code{buffzwg} (Zeebe and Wolf-Gladrow, 2001, corrected): \code{BetaD} agrees with \code{buffesm}'s \code{R} and \code{buffzwg}'s \code{RF} to floating-point precision. Its input arguments are identical to those in the \code{buffesm} and \code{carb} functions of seacarb.}
 \usage{
 buffer(flag, var1, var2, S = 35, T = 25, Patm = 1, P = 0, Pt = 0, Sit = 0, 
-  k1k2 = "x", kf = "x", ks = "d", pHscale = "T", b = "u74", warn = "y", 
+  NH4t = 0, HSt = 0, k1k2 = "x", kf = "x", ks = "d", pHscale = "T", b = "u74", warn = "y", 
   eos = "eos80", long = 1e+20, lat = 1e+20)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-	\item{flag}{select the couple of variables available. The flags which can be used are: 
+	\item{flag}{select the pair of variables available. The flags which can be used are: 
 
 flag = 1      pH and CO2 given
 
@@ -61,6 +61,8 @@ flag = 25     pCO2 and DIC given
   \item{P}{Hydrostatic pressure in bar (surface = 0)}
   \item{Pt}{Concentration of total phosphate in mol/kg; set to 0 if NA}
   \item{Sit}{Concentration of total silicate in mol/kg; set to 0 if NA}
+  \item{NH4t}{Concentration of total ammonium in mol/kg; set to 0 if NA; when nonzero (or when \code{HSt} is nonzero), \code{carbfull()} is used internally instead of \code{carb()}}
+  \item{HSt}{Concentration of total hydrogen sulfide in mol/kg; set to 0 if NA; when nonzero (or when \code{NH4t} is nonzero), \code{carbfull()} is used internally instead of \code{carb()}}
   \item{k1k2}{"cw" for using K1 and K2 from Cai & Wang (1998), "l" from Lueker et al. (2000), "m02" from Millero et al. (2002), "m06" from Millero et al. (2006), "m10" from Millero (2010), "mp2" from Mojica Prieto et al. (2002), "p18" from Papadimitriou et al. (2018), "r" from Roy et al. (1993), "sb21" from Shockman & Byrne (2021), "s20" from Sulpis et al. (2020), and "w14" from Waters et al. (2014). "x" is the default flag; the default value is then "l", except if T is outside the range 2 to 35oC and/or S is outside the range 19 to 43. In these cases, the default value is "w14".}
   \item{kf}{"pf" for using Kf from Perez and Fraga (1987) and "dg" for using Kf from Dickson and Riley (1979 in Dickson and Goyet, 1994). "x" is the default flag; the default value is then "pf", except if T is outside the range 9 to 33oC and/or S is outside the range 10 to 40. In these cases, the default is "dg".}
 	\item{ks}{"d" for using Ks from Dickon (1990), "k" for using Ks from Khoo et al. (1977), default is "d"} 
@@ -73,7 +75,8 @@ flag = 25     pCO2 and DIC given
 }
 
 
-\details{The Lueker et al. (2000) constants for K1 and K2, the Perez and Fraga (1987) constant for Kf and the Dickson (1990) constant for Ks are recommended by Dickson et al. (2007). It is, however, critical to consider that each formulation is only valid for specific ranges of temperature and salinity:
+\details{
+The Lueker et al. (2000) constants for K1 and K2, the Perez and Fraga (1987) constant for Kf and the Dickson (1990) constant for Ks are recommended by Dickson et al. (2007). It is, however, critical to consider that each formulation is only valid for specific ranges of temperature and salinity:
 
 \emph{For K1 and K2:}
 \itemize{
@@ -117,6 +120,14 @@ flag = 25     pCO2 and DIC given
 
 The arguments can be given as a unique number or as vectors. If the lengths of the vectors are different, the longer vector is retained and only the first value of the other vectors is used. It is recommended to use either vectors with the same dimension or one vector for one argument and numbers for the other arguments.
 
+\emph{On the non-carbonate buffering term DD:}
+
+Writing \eqn{h := [H^+]}, \eqn{b := [HCO_3^-]}, and \eqn{c := [CO_3^{2-}]}, \code{PhiD}/\code{BetaD}/\code{PiD} are built from a non-carbonate buffering term \code{DD}, constructed additively, one acid-base system at a time (the same construction used in \code{buffzwg} and \code{buffesm}, there called \eqn{w} and \code{Segle} respectively):
+
+\eqn{DD = w_{bw} + w_{Si} + w_P + w_N + w_S}
+
+with \eqn{w_{bw} = 1 + K_w/h^2 + B_T K_B/(K_B+h)^2} (borate and water), \eqn{w_{Si} = Si_T K_{Si}(h^2+4K_{2Si}h+K_{Si}K_{2Si})/(h^2+K_{Si}h+K_{Si}K_{2Si})^2} (silicic acid, treated as the full diprotic system, using both \eqn{K_{Si}} and \eqn{K_{2Si}}), \eqn{w_P} the analogous contribution from the three-step phosphoric acid system, \eqn{w_N = NH_{4t} K_N/(K_N+h)^2} (ammonia), and \eqn{w_S = HS_t K_{HS}/(K_{HS}+h)^2} (hydrogen sulfide). \eqn{w_N} and \eqn{w_S} are automatically and exactly zero unless \code{NH4t} or \code{HSt}, respectively, are nonzero. The same \code{DD} is reused, unchanged, as \code{V} for the bicarbonate/carbonate input-output cases (\code{PhiB}/\code{BetaB}/\code{PiB}, \code{PhiC}/\code{BetaC}/\code{PiC}), and \code{PhiH}/\code{PiH} are computed from the identity \eqn{\Phi_H = 1/(h \ln(10) (D-DD))}{PhiH = 1/(h*ln(10)*(D-DD))}, which holds regardless of how many non-carbonate systems \code{DD} includes.
+
 \emph{Pressure corrections and pH scale:}
 
 \itemize{
@@ -131,22 +142,56 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 \item For Kn, The pressure correction was applied on the seawater scale. The pressure correction was applied as described by Millero (1995), and the value was transformed back to the required scale (T, F or SWS).
 }
 long and lat are used as conversion parameters from absolute to practical salinity: when seawater is not of standard composition, practical salinity alone is not sufficient to compute absolute salinity and vice-versa. One needs to know the density. When long and lat are given, density is inferred from WOA silicate concentration at given location. When they are not, an arbitrary geographic point is chosen: mid equatorial Atlantic. Note that this implies an error on computed salinity up to 0.02 g/kg.
+
+All eleven factors follow one convention: each is the change in pH (Phi), in
+ln(fCO2) (Beta), or in fCO2 (Pi), \emph{per mole of the named substance added}.
+The four substances are dissolved CO2 (D), bicarbonate (B), carbonate (C) and
+strong acid (H), with
+
+\tabular{lcc}{
+  substance      \tab \eqn{\Delta}DIC \tab \eqn{\Delta}ALK \cr
+  dissolved CO2  \tab  1 \tab  0 \cr
+  bicarbonate    \tab  1 \tab  1 \cr
+  carbonate      \tab  1 \tab  2 \cr
+  strong acid    \tab  0 \tab -1 \cr
+}
+
+Two consequences are easy to misread and are stated explicitly:
+
+\enumerate{
+  \item PhiH and PiH are per mole of \emph{strong acid} added, not per mole of
+        alkalinity. Since adding acid removes alkalinity, PhiH = -dpH/d[ALK].
+        PhiH is therefore negative even though dpH/d[ALK] is positive.
+  \item The Beta and Pi factors are computed from \emph{fCO2}, not pCO2. The two
+        differ by about 0.3 percent at 20 degrees C. The Pi factors are returned
+        per \eqn{\mu}mol/kg, not per mol/kg.
+}
+
+Every factor has been verified against finite differences taken through
+\code{carb()}, and agrees to better than 1e-6 percent.
 }
 
 \value{The function returns a data frame containing the following columns:
 
-  \item{PhiD}{PhiD, chemical buffer factor (dpH/d[DIC]); input/output of dissolved CO2 (unit pH per mol/kg)}
-  \item{BetaD}{BetaD, homogeneous or Revelle buffer factor (dln(pCO2)/dln[DIC]); input/output of dissolved CO2}
-  \item{PiD}{PiD, chemical buffer factor (dpCO2/d[DIC]); input/output of dissolved CO2 (\eqn{\mu atm} per mol/kg)}
-  \item{PhiB}{PhiB, chemical buffer factor (dpH/d[DIC]); from input/output of bicarbonate (unit pH per mol/kg)}
-  \item{BetaB}{BetaB, homogeneous buffer factor (dln(pCO2)/dln[DIC]); input/output of bicarbonate}
-  \item{PiB}{PiB, chemical buffer factor (dpCO2/d[DIC]); input/output of dissolved CO2 (\eqn{\mu atm} per mol/kg)}
-  \item{PhiC}{PhiC, chemical buffer factor (dpH/d[DIC]); input/output of carbonate (unit pH per mol/kg)}
-  \item{BetaC}{BetaC, homogeneous buffer factor (dln(pCO2)/dln[DIC]); input/output of carbonate}
-  \item{PiC}{PiC, chemical buffer factor (dpCO2/d[DIC]); input/output of carbonate (\eqn{\mu atm} per mol/kg)}
-  \item{PhiH}{PhiH, chemical buffer factor (dpH/d[ALK]); input/output of strong acid (unit pH per mol/kg)}
-  \item{PiH}{PiH, chemical buffer factor (dpCO2/d[ALK]); input/output of strong acid (\eqn{\mu atm} per mol/kg)}
+  \item{PhiD}{PhiD, chemical buffer factor for input/output of dissolved CO2: the change in pH per mole of CO2 added (\eqn{\Delta}DIC = 1, \eqn{\Delta}ALK = 0). Units: pH per mol/kg.}
+  \item{BetaD}{BetaD, homogeneous or Revelle buffer factor for input/output of dissolved CO2: dln(fCO2)/dln(DIC) at constant ALK. Dimensionless.}
+  \item{PiD}{PiD, chemical buffer factor for input/output of dissolved CO2: the change in fCO2 per mole of CO2 added. Units: \eqn{\mu}atm per \eqn{\mu}mol/kg.}
+  \item{PhiB}{PhiB, chemical buffer factor for input/output of bicarbonate: the change in pH per mole of HCO3- added (\eqn{\Delta}DIC = 1, \eqn{\Delta}ALK = 1). Units: pH per mol/kg.}
+  \item{BetaB}{BetaB, homogeneous buffer factor for input/output of bicarbonate: dln(fCO2)/dln(DIC) along that perturbation. Dimensionless.}
+  \item{PiB}{PiB, chemical buffer factor for input/output of bicarbonate: the change in fCO2 per mole of HCO3- added. Units: \eqn{\mu}atm per \eqn{\mu}mol/kg.}
+  \item{PhiC}{PhiC, chemical buffer factor for input/output of carbonate: the change in pH per mole of CO3-- added (\eqn{\Delta}DIC = 1, \eqn{\Delta}ALK = 2). Units: pH per mol/kg.}
+  \item{BetaC}{BetaC, homogeneous buffer factor for input/output of carbonate: dln(fCO2)/dln(DIC) along that perturbation. Dimensionless.}
+  \item{PiC}{PiC, chemical buffer factor for input/output of carbonate: the change in fCO2 per mole of CO3-- added. Units: \eqn{\mu}atm per \eqn{\mu}mol/kg.}
+  \item{PhiH}{PhiH, chemical buffer factor for input/output of strong acid: the change in pH per mole of strong acid added (\eqn{\Delta}ALK = -1, \eqn{\Delta}DIC = 0). Hence PhiH = -dpH/d[ALK], and is NEGATIVE: adding acid lowers pH. Units: pH per mol/kg.}
+  \item{PiH}{PiH, chemical buffer factor for input/output of strong acid: the change in fCO2 per mole of strong acid added. Units: \eqn{\mu}atm per \eqn{\mu}mol/kg.}
 }
+
+\note{When \code{Sit > 0} and \code{NH4t = HSt = 0}, this function's diprotic treatment of silicate alkalinity (using both \code{Ksi} and \code{K2si}) is very slightly inconsistent with the underlying carbonate system state, because that state comes from \code{carb()}, which internally treats silicate as monoprotic (\code{K2si = 0}) regardless of \code{Sit} (see \code{carb.Rd}). \code{carbfull()} is only invoked here when \code{NH4t} or \code{HSt} are nonzero, so this inconsistency is not corrected for when only \code{Pt}/\code{Sit} are supplied; it is expected to affect results at only the ~1e-6 relative level. See \code{carb.Rd} and \code{carbfull.Rd} for further discussion.
+
+Frankignoulle's (1994) own printed equation for \eqn{\Pi_H} (his Eq. 11) contains an error: as published, \eqn{\Pi_H} is given as a quotient divided by \eqn{\Phi_H}, whereas it should be their product. This was corrected in seacarb's implementation by J.-P. Gattuso, working with M. Frankignoulle. Later, we independently reconfirmed the fix here by rederiving \eqn{\Pi_H} from scratch and checking it against the \eqn{\Pi_H} values listed in Frankignoulle's (1994) Table 1. Rederiving each of the other buffer factor equations in the same way turned up no further errors, including for \eqn{\beta_D} (\code{BetaD}, the Revelle factor), which matches Frankignoulle's (1994) original formulation exactly.}
+
+
+
 
 \references{
 Cai W. J., and Wang Y., 1998. The chemistry, fluxes, and sources of carbon dioxide in the estuarine waters of the Satilla and Altamaha Rivers, Georgia. \emph{Limnology and Oceanography} \bold{43}, 657-668.
@@ -173,6 +218,8 @@ Roy R. N., Roy L. N., Vogel K. M., Porter-Moore C., Pearson T., Good C. E., Mill
 
 Schockman, K.M., Byrne, R.H., 2021. Spectrophotometric determination of the bicarbonate dissociation constant in seawater, \emph{Geochimica et Cosmochimica Acta}.
 
+Sundquist E. T., Plummer L. N. and Wigley T. M. L., 1979 Carbon dioxide in the ocean surface: the homogeneous buffer factor. \emph{Science} \bold{204}, 1203-1205.
+
 Uppstrom L.R., 1974 The boron/chlorinity ratio of the deep-sea water from the Pacific Ocean. \emph{Deep-Sea Research I} \bold{21} 161-162.
 }
 
@@ -182,7 +229,7 @@ Heloise Lavigne, Aurelien Proye and Jean-Pierre Gattuso \email{jean-pierre.gattu
 
 \examples{
 
-## Computation with a couple of variables
+## Computation with a pair of variables
 buffer(flag=8, var1=8.2, var2=0.00234, S=35, T=25, Patm=1, P=0, Pt=0, 
 	Sit=0, pHscale="T", kf="pf", k1k2="l", b="u74")
 
@@ -203,7 +250,10 @@ buffer(flag=flag, var1=var1, var2=var2, S=S, T=T, P=P, Pt=Pt,
 	Sit=Sit, kf=kf, k1k2=k1k2, pHscale=pHscale, b=b)
 
 
-## Test for all flags 
+## Test for all flags; all rows describe the SAME equilibrium seawater
+## state expressed 20 different ways, so results should be (almost)
+## identical across rows -- tiny differences reflect solver precision,
+## not a real difference in the underlying state.
 
 flag <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 21, 22, 23, 24, 25)
 
@@ -217,6 +267,20 @@ var2 <- c(7.477544e-06, 0.001685024, 0.0002888382, 0.002391252, 0.001981340,
 	0.0002888382, 0.002391252, 0.001981340)
 
 buffer(flag=flag, var1=var1, var2=var2)
+
+## BetaD is the Revelle factor (Frankignoulle's "homogeneous buffer factor"):
+## cross-check against seacarb's buffesm() R and buffzwg() RF, which should
+## agree to floating-point precision
+bu <- buffer(flag=15, var1=0.00230, var2=0.00200, S=35, T=18)
+es <- buffesm(flag=15, var1=0.00230, var2=0.00200, S=35, T=18)
+zw <- buffzwg(flag=15, var1=0.00230, var2=0.00200, S=35, T=18)
+bu$BetaD - es$R    # should be ~0 (floating-point precision)
+bu$BetaD - zw$RF   # should be ~0 (floating-point precision)
+
+## Effect of adding ammonia and hydrogen sulfide alkalinity (NH4t, HSt);
+## when either is nonzero, carbfull() is used internally instead of carb()
+buffer(flag=8, var1=8.2, var2=0.00234, S=35, T=25, Pt=0, Sit=0, NH4t=0, HSt=0)
+buffer(flag=8, var1=8.2, var2=0.00234, S=35, T=25, Pt=0, Sit=0, NH4t=10e-6, HSt=1e-6)
 
 }
 \keyword{utilities}

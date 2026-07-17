@@ -10,7 +10,7 @@ psi(flag, var1, var2, S=35, T=20, Patm, P=0, Pt=0, Sit=0, pHscale="T",
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-	\item{flag}{select the couple of variables available. The flags which can be used are: 
+	\item{flag}{select the pair of variables available. The flags which can be used are: 
 
 flag = 1      pH and CO2 given
 

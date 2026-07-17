@@ -11,7 +11,7 @@ pTA(flag, sys=0, var1, var2, pCO2a, co3, hco3, S=35, T=20, P=0,
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-	\item{flag}{select the couple of variables available. The flags which can be used are: 
+	\item{flag}{select the pair of variables available. The flags which can be used are: 
 
 flag = 1      pH and CO2 given
 
@@ -102,7 +102,7 @@ flag = 25     pCO2 and DIC given
 \item Waters et al.(2014): S ranging between 1 and 50 and T ranging between 0 and 50oC. Waters (2014) provides a K1 and K2 formulation for the seawater, total and free pH scales. Therefore, when this method is used and if P=0, K1 and K2 are computed with the formulation corresponding to the pH scale given in the flag "pHscale".
 }
 
-\emph{For K0:}
+\emph{For Kf:}
 \itemize{
 \item Perez and Fraga (1987): S ranging between 10 and 40 and T ranging between 9 and 33oC.
 

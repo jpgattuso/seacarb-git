@@ -9,7 +9,7 @@
 	b="u74", eos = "eos80", long = 1e+20, lat = 1e+20)}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-	\item{flag}{select the couple of variables available to describe the initial seawater. The flags which can be used are: 
+	\item{flag}{select the pair of variables available to describe the initial seawater. The flags which can be used are: 
 
 flag = 1      pH and CO2 given
 
@@ -71,7 +71,7 @@ flag = 25     pCO2 and DIC given
   \item{lat}{latitude of data point, used when eos parameter is "teos10".}
 }
 
-\details{The Lueker et al. (2000) constants for K1 and K2, the Perez and Fraga (1987) constant for Kf and the Dickson (1990) constant for Ks are recommended by Dickson et al. (2007). It is, however, critical to consider that each formulation is only valid for specific ranges of temperature and salinity:
+\details{The Lueker et al. (2000) constants for K1 and K2, the Perez and Fraga (1987) constant for Kf and the Dickson (1990) constant for Ks are recommended by Dickson et al. (2007). Beware that each formulation for a constant is only valid for specific ranges of temperature and salinity:
 
 \emph{For K1 and K2:}
 \itemize{
@@ -135,9 +135,9 @@ The arguments can be given as a unique number or as vectors. If the lengths of t
 \itemize{
 \item It is recommended to use concentrated solutions of acid or base in order to add small volumes.
 
-\item The addition of strong acid does not simulate well natural ocean acidification (higher concentration of dissolved inorganic carbon at constant total alkalinity) since it generates a decrease in total alkalinity while dissolved inorganic carbon is kept constant.
+\item The addition of strong acid does not mimic natural ocean acidification, which increases dissolved inorganic carbon and does not change total alkalinity; rather, acid addition reduces total alkalinity while not changing dissolved inorganic carbon.
 
-\item Other important advice is provided in Gattuso and Lavigne (2009), Schulz et al. (2009) and in the \dQuote{Guide for Best Practices on Ocean Acidification Research and Data Reporting} (\url{https://www.iaea.org/sites/default/files/18/06/oa-guide-to-best-practices.pdf})
+\item Other important advice is provided in Gattuso and Lavigne (2009), Schulz et al. (2009) and in the \dQuote{Guide for Best Practices on Ocean Acidification Research and Data Reporting} (Riebesell et al, 2010).
 }
 long and lat are used as conversion parameters from absolute to practical salinity: when seawater is not of standard composition, practical salinity alone is not sufficient to compute absolute salinity and vice-versa. One needs to know the density. When long and lat are given, density is inferred from WOA silicate concentration at given location. When they are not, an arbitrary geographic point is chosen: mid equatorial Atlantic. Note that this implies an error on computed salinity up to 0.02 g/kg.
 }
@@ -184,9 +184,11 @@ Millero F. J., Graham T. B., Huang F., Bustos-Serrano H. and Pierrot D., 2006. D
 
 Perez F. F. and Fraga F., 1987 Association constant of fluoride and hydrogen ions in seawater. \emph{Marine Chemistry} \bold{21}, 161-168.
 
+Riebesell, U., Fabry, V. J., Hansson, L., and Gattuso, J.-P., 2010. \emph{Guide for best practices for ocean acidification research and data processing}, Publications Office of the European Union, Luxembourg, 258 pp., \doi{10.2777/66906}.
+
 Roy R. N., Roy L. N., Vogel K. M., Porter-Moore C., Pearson T., Good C. E., Millero F. J. and Campbell D. M., 1993 The dissociation constants of carbonic acid in seawater at salinities 5 to 45 and temperatures 0 to 45oC. \emph{Marine Chemistry} \bold{44}, 249-267.
 
-Schockman, K.M., Byrne, R.H., 2021. Spectrophotometric determination of the bicarbonate dissociation constant in seawater, \emph{Geochimica et Cosmochimica Acta}.
+Schockman, K.M., Byrne, R.H., 2021. Spectrophotometric determination of the bicarbonate dissociation constant in seawater. Geochimica et Cosmochimica Acta 300, 231-245. \doi{10.1016/j.gca.2021.02.008}
 
 Schulz K. G., Barcelos e Ramos J., Zeebe R. E. and Riebesell U., 2009 CO2 perturbation experiments: similarities and differences between dissolved inorganic carbon and total alkalinity manipulations. \emph{Biogeosciences} \bold{6}, 2145-2153.
 

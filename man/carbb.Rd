@@ -9,7 +9,7 @@
   warn="y", eos = "eos80", long = 1e+20, lat = 1e+20)}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-	\item{flag}{select the couple of variables available. The flags which can be used are: 
+	\item{flag}{select the pair of variables available. The flags which can be used are: 
 
 flag = 1      pH and CO2 given
 
@@ -200,7 +200,7 @@ Heloise Lavigne, James Orr and Jean-Pierre Gattuso \email{jean-pierre.gattuso@im
 
 \examples{
 
-## With a couple of variables
+## With a pair of variables
 carbb(flag=8, var1=8.2, var2=0.00234, S=35, T=25, P=0, Patm=1.0, Pt=0, Sit=0,
 	pHscale="T", kf="pf", k1k2="l", ks="d", b="u74", badd=0)
 

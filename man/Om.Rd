@@ -8,7 +8,7 @@
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 	\item{x}{mole fraction of magnesium ions, note that the function is only valid for x ranging between 0 and 0.25}
-	\item{flag}{select the couple of variables available. The flags which can be used are: 
+	\item{flag}{select the pair of variables available. The flags which can be used are: 
 
 flag = 1      pH and CO2 given
 
