@@ -35,6 +35,25 @@ buffderiv(flag, var1, var2, S = 35, T = 25, Patm = 1, Pt = 0, Sit = 0,
 \details{
 Surface only (P = 0).
 
+\strong{Which variables are held constant.} Two distinct sets are involved, and it is worth
+separating them. \eqn{B_e}{Be} is itself defined as a partial derivative at constant
+\eqn{A_T}{ALK}, \eqn{T} and \eqn{S}; that clause is part of the definition of the quantity,
+and fixes \emph{which} perturbation \eqn{B_e}{Be} measures. Once defined, however,
+\eqn{B_e}{Be} is simply a function of the state, \eqn{B_e(C_T,A_T,T,S)}{Be(DIC,ALK,T,S)},
+and each of the four derivatives returned here is an ordinary partial derivative of that
+function, holding the \emph{other three} state variables constant. So \code{dBe_dT} is taken
+at constant \eqn{C_T}{DIC}, \eqn{A_T}{ALK} and \eqn{S}; \code{dBe_dAT} at constant
+\eqn{C_T}{DIC}, \eqn{T} and \eqn{S}; and so on. This is the usual situation for a
+second-order thermodynamic quantity, and is no different from differentiating the heat
+capacity \eqn{C_p = (\partial H/\partial T)_p}, itself defined at constant pressure, with
+respect to pressure.
+
+The choice of state variables does matter, because \eqn{C_T}{DIC} and \eqn{[CO_2^*]}{[CO2*]}
+are not independent: \eqn{\partial B_e/\partial T} at constant \eqn{C_T}{DIC} is not the same
+number as \eqn{\partial B_e/\partial T} at constant \eqn{[CO_2^*]}{[CO2*]}. This routine uses
+\eqn{(C_T, A_T, T, S)}{(DIC, ALK, T, S)} throughout, these being the variables carried by
+ocean models and reported by \code{\link{carb}}.
+
 \strong{Method.} The proton concentration \eqn{h} is fixed implicitly by the total
 alkalinity constraint
 \deqn{F(h; T,S,C_T,A_T) = A_c(h,C_T) + A_{nc}(h) - A_T = 0}{F(h) = Ac(h,DIC) + Anc(h) - ALK = 0}
@@ -95,10 +114,10 @@ Memorial Volume, Rockefeller Institute Press, 130-142.
 
 Munhoven, G., 2013 Mathematics of the total alkalinity-pH equation - pathway to robust and
 universal solution algorithms: the SolveSAPHE package v1.0.1. \emph{Geoscientific Model
-Development} \bold{6}, 1367-1388.
+Development} \bold{6}, 1367-1388, \doi{10.5194/gmd-6-1367-2013}.
 
 Orr, J. C., Epitalon, J.-M. and Gattuso, J.-P., 2015 Comparison of ten packages that compute
-ocean carbonate chemistry. \emph{Biogeosciences} \bold{12}, 1483-1510.
+ocean carbonate chemistry. \emph{Biogeosciences} \bold{12}, 1483-1510, \doi{10.5194/bg-12-1483-2015}.
 }
 \seealso{
 \code{\link{buffsun}}, \code{\link{buffer}}, \code{\link{buffesm}}, \code{\link{buffzwg}},

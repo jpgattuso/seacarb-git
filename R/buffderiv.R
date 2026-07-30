@@ -121,7 +121,7 @@ buffderiv <- function(flag, var1, var2, S=35, T=25, Patm=1, Pt=0, Sit=0,
     Ks_P0 <- Ks(S=S, T=T, P=0, ks=ks, warn=warn)
 
     # Kf on free pH scale
-    Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks_P0, warn=warn)
+    Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, warn=warn)
 
     # Conversion factor from total to SWS pH scale at zero pressure
     ktotal2SWS_P0 <- kconv(S=S, T=T, P=0, kf=kf, Ks=Ks_P0, Kff=Kff_P0)$ktotal2SWS

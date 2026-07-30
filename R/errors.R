@@ -382,10 +382,10 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
         Ks    <- Ks(S=SP, T=InsT, P=P, ks=ks, warn=warn)
 
         # Kf on free pH scale
-        Kff_P0 <- Kf(S=SP, T=InsT, P=0, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
-        Kff <- Kf(S=SP, T=InsT, P=P, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
+        Kff_P0 <- Kf(S=SP, T=InsT, P=0, pHscale="F", kf=kf, Ks, warn=warn)
+        Kff <- Kf(S=SP, T=InsT, P=P, pHscale="F", kf=kf, Ks, warn=warn)
         # Kf on given pH scale
-        Kf <- Kf(S=SP, T=InsT, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks, warn=warn)
+        Kf <- Kf(S=SP, T=InsT, P=P, pHscale=pHscale, kf=kf, Ks, warn=warn)
 
         # Conversion factor from total to SWS pH scale at zero pressure
         ktotal2SWS_P0 <- kconv(S=SP,T=InsT,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0,warn=warn)$ktotal2SWS
@@ -537,10 +537,10 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, evar1=0, evar2=
     Ks    <- Ks(S=S, T=T, P=P, ks=ks, warn=warn)
 
     # Kf on free pH scale
-    Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
-    Kff <- Kf(S=S, T=T, P=P, pHscale="F", kf=kf, Ks_P0, Ks, warn=warn)
+    Kff_P0 <- Kf(S=S, T=T, P=0, pHscale="F", kf=kf, Ks, warn=warn)
+    Kff <- Kf(S=S, T=T, P=P, pHscale="F", kf=kf, Ks, warn=warn)
     # Kf on given pH scale
-    Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks, warn=warn)
+    Kf <- Kf(S=S, T=T, P=P, pHscale=pHscale, kf=kf, Ks, warn=warn)
 
     # Conversion factor from total to SWS pH scale at zero pressure
     ktotal2SWS_P0 <- kconv(S=S,T=T,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0,warn=warn)$ktotal2SWS

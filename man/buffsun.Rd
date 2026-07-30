@@ -7,7 +7,7 @@
 
 \description{Returns the Bolin sensitivity \eqn{B_e = \partial DIC/\partial [CO_2^*]} and the classical Revelle factor \eqn{Rf = DIC/([CO_2^*] B_e)} at constant total alkalinity, temperature, and salinity, using the condensed closed-form template first proposed by Sundquist, Plummer and Wigley (1979). The routine is named for that paper.
 
-That template predates the other formulations of the Revelle factor / Bolin sensitivity in common use, and Orr et al. (in prep.) show that three later, independently derived formulations -- Zeebe and Wolf-Gladrow (2001, corrected); Egleston, Sabine and Morel (2010, corrected); and Frankignoulle (1994, as implemented in seacarb's \code{buffer}) -- each reduce, exactly, to the equation of Sundquist et al. (1979). They differ only in which acid-base systems are collected into the single non-carbonate term \eqn{X}: Sundquist et al. (1979) included borate alone; the other three added water. This routine implements that common equation with the most complete \eqn{X} available in seacarb, adding phosphate, silicate, fluoride, and, when nonzero, ammonia and sulfide.
+That template predates the other formulations of the Revelle factor / Bolin sensitivity in common use, and Orr et al. (in prep.) show that four later, independently derived formulations -- Frankignoulle (1994, as implemented in seacarb's \code{buffer}); Zeebe and Wolf-Gladrow (2001, corrected); Egleston, Sabine and Morel (2010, corrected); and Hagens and Middelburg (2016, as implemented in seacarb's \code{buffergen}) -- each reduce, exactly, to the equation of Sundquist et al. (1979). They differ only in which acid-base systems are collected into the single non-carbonate term \eqn{X}: Sundquist et al. (1979) included borate alone; the others added water and, in the case of Hagens and Middelburg (2016), every acid-base system contributing to total alkalinity. This routine implements that common equation with the most complete \eqn{X} available in seacarb, adding phosphate, silicate, fluoride, and, when nonzero, ammonia and sulfide.
 
 Note that this equivalence covers only the Revelle factor / Bolin sensitivity result of each source; Frankignoulle (1994) and Egleston et al. (2010) each define several additional buffer factors (see seacarb's \code{buffer} and \code{buffesm}) that are not part of this unification.
 
@@ -140,7 +140,9 @@ with the Revelle factor \eqn{Rf = DIC/(s B_e)}{Rf = DIC/(s*B_e)}, and \eqn{X = h
 
 with \eqn{w_{bw} = 1 + K_w/h^2 + B_T K_B/(K_B+h)^2} (borate and water), \eqn{w_{Si} = Si_T K_{Si}(h^2+4K_{2Si}h+K_{Si}K_{2Si})/(h^2+K_{Si}h+K_{Si}K_{2Si})^2} (silicic acid; see the note below on monoprotic versus diprotic treatment), \eqn{w_P} the analogous contribution from the three-step phosphoric acid system, \eqn{w_N = NH_{4t} K_N/(K_N+h)^2} (ammonia), and \eqn{w_S = HS_t K_{HS}/(K_{HS}+h)^2} (hydrogen sulfide), and \eqn{w_F = F_T K_F'/(K_F'+h)^2} (hydrogen fluoride, with \eqn{K_F' = K_F (1 + S_T/K_S)}, i.e. Kf placed on the same pH scale as \eqn{h}). \eqn{-[HF]} is a species in Dickson's total alkalinity and is carried explicitly by SolveSAPHE, which \code{carb()} inverts, so it must appear in \eqn{w = -\partial A_{nc}/\partial h} as well; it contributes at the ~2e-6 relative level. \eqn{w_N} and \eqn{w_S} are automatically and exactly zero unless \code{NH4t} or \code{HSt}, respectively, are nonzero.
 
-Four independent derivations of the Revelle factor / Bolin sensitivity -- Sundquist, Plummer and Wigley (1979); Zeebe and Wolf-Gladrow (2001, corrected); Egleston, Sabine and Morel (2010, corrected); and Frankignoulle (1994, as implemented in \code{buffer}) -- were each rearranged algebraically and shown to reduce, exactly, to this same equation, differing only in which terms are included in \eqn{X}: Sundquist et al. (1979) include only borate (\eqn{X = \gamma}); the other three include borate and water (\eqn{X = \gamma+\delta}, using the notation of Orr et al., in prep.). This routine's \eqn{X} is the most complete version of the three, additionally including phosphate, silicate, ammonia, and sulfide.
+Five independent derivations of the Revelle factor / Bolin sensitivity -- Sundquist, Plummer and Wigley (1979); Frankignoulle (1994, as implemented in \code{buffer}); Zeebe and Wolf-Gladrow (2001, corrected); Egleston, Sabine and Morel (2010, corrected); and Hagens and Middelburg (2016, as implemented in \code{buffergen}) -- were each rearranged algebraically and shown to reduce, exactly, to this same equation, differing only in which terms are included in \eqn{X}: Sundquist et al. (1979) include only borate (\eqn{X = \gamma}); the next three include borate and water (\eqn{X = \gamma+\delta}, using the notation of Orr et al., in prep.); and Hagens and Middelburg (2016) include every acid-base system contributing to total alkalinity. This routine's \eqn{X} is the most complete version available in seacarb, including borate, water, phosphate, silicate, fluoride, ammonia, and sulfide.
+
+The Hagens and Middelburg (2016) formulation, \code{buffergen}, agrees with this routine's Revelle factor to within about \eqn{6\times10^{-6}} in relative terms, rising with salinity and temperature to about \eqn{1.4\times10^{-5}} at \eqn{S = 38}, \eqn{T = 30}, and independent of nutrient concentrations. This residual reflects a difference of convention in the treatment of sulfate, not an inconsistency: \code{buffergen} carries the bisulfate/sulfate system as an explicit buffering term in \eqn{\partial A_T/\partial [H^+]}, following Hagens and Middelburg (2016), whereas this routine (like \code{buffer}, \code{buffesm} and \code{buffzwg}) folds sulfate into the total-to-free pH-scale conversion, following the Dickson total-alkalinity convention used by the solver. Zeroing the explicit sulfate term in \code{buffergen}'s sum reduces the difference by nearly an order of magnitude (from 5.9e-6 to 9.5e-7 at S = 35, T = 18; from 1.4e-5 to 1.8e-6 at S = 38, T = 30), identifying sulfate as its dominant source. A residual below 2e-6 remains, reflecting further small differences in where each formulation places the free-proton and pH-scale terms.
 
 Setting \eqn{X = 0} collapses this equation exactly to
 
@@ -179,13 +181,15 @@ Dickson A. G., Sabine C. L. and Christian J. R., 2007 Guide to best practices fo
 
 Egleston, E. S., Sabine, C. L. and Morel, F. M. M.,  2010 Revelle revisited: Buffer factors that quantify the response of ocean chemistry to changes in DIC and alkalinity, Global Biogeochem. Cycles \bold{24}, GB1002, \doi{10.1029/2008GB003407}. 
 
-Frankignoulle M., 1994 A complete set of buffer factors for acid/base CO2 system in seawater. \emph{Journal of Marine Systems} \bold{5}, 111-118.
+Frankignoulle M., 1994 A complete set of buffer factors for acid/base CO2 system in seawater. \emph{Journal of Marine Systems} \bold{5}, 111-118, \doi{10.1016/0924-7963(94)90026-4}.
+
+Hagens M. and Middelburg J. J., 2016 Generalised expressions for the response of pH to changes in ocean chemistry. \emph{Geochimica et Cosmochimica Acta} \bold{187}, 334-349, \doi{10.1016/j.gca.2016.04.012}.
 
 Khoo H. K., Ramette R. W., Culberson C. H. and Bates R. G., 1977 Determination of hydrogen ion concentration in seawater from 5 to 40oC: standard potentials at salinities from 20 to 45. \emph{Analytical Chemistry} \bold{49}, 29-34. 
 
 Lee K., Tae-Wook K., Byrne R.H., Millero F.J., Feely R.A. and Liu Y-M, 2010 The universal ratio of the boron to chlorinity for the North Pacific and North Atlantoc oceans. \emph{Geochimica et Cosmochimica Acta} \bold{74} 1801-1811.
 
-Lueker T. J., Dickson A. G. and Keeling C. D., 2000 Ocean pCO2 calculated from dissolved inorganic carbon, alkalinity, and equations for K1 and K2: validation based on laboratory measurements of CO2 in gas and seawater at equilibrium. \emph{Marine Chemistry} \bold{70} 105-119.
+Lueker T. J., Dickson A. G. and Keeling C. D., 2000 Ocean pCO2 calculated from dissolved inorganic carbon, alkalinity, and equations for K1 and K2: validation based on laboratory measurements of CO2 in gas and seawater at equilibrium. \emph{Marine Chemistry} \bold{70} 105-119, \doi{10.1016/S0304-4203(00)00022-0}.
 
 Millero F. J., 2010 Carbonate constant for estuarine waters. \emph{Marine and Freshwater Research} \bold{61}: 139-142.
 
@@ -197,11 +201,11 @@ Perez F. F. and Fraga F., 1987 Association constant of fluoride and hydrogen ion
 
 Roy R. N., Roy L. N., Vogel K. M., Porter-Moore C., Pearson T., Good C. E., Millero F. J. and Campbell D. M., 1993. The dissociation constants of carbonic acid in seawater at salinities 5 to 45 and temperatures 0 to 45oC. \emph{Marine Chemistry} \bold{44}, 249-267.
 
-Schockman, K.M., Byrne, R.H., 2021. Spectrophotometric determination of the bicarbonate dissociation constant in seawater, \emph{Geochimica et Cosmochimica Acta}.
+Schockman, K.M., Byrne, R.H., 2021. Spectrophotometric determination of the bicarbonate dissociation constant in seawater, \emph{Geochimica et Cosmochimica Acta}, \doi{10.1016/j.gca.2021.02.008}.
 
-Sundquist E. T., Plummer L. N. and Wigley T. M. L., 1979 Carbon dioxide in the ocean surface: the homogeneous buffer factor. \emph{Science} \bold{204}, 1203-1205.
+Sundquist E. T., Plummer L. N. and Wigley T. M. L., 1979 Carbon dioxide in the ocean surface: the homogeneous buffer factor. \emph{Science} \bold{204}, 1203-1205, \doi{10.1126/science.204.4398.1203}.
 
-Uppstrom L.R., 1974 The boron/chlorinity ratio of the deep-sea water from the Pacific Ocean. \emph{Deep-Sea Research I} \bold{21} 161-162.
+Uppstrom L.R., 1974 The boron/chlorinity ratio of the deep-sea water from the Pacific Ocean. \emph{Deep-Sea Research I} \bold{21} 161-162, \doi{10.1016/0011-7471(74)90074-6}.
 
 Zeebe R. E. and Wolf-Gladrow D. A., 2001 CO2 in seawater: equilibrium, kinetics, isotopes. \emph{Elsevier Oceanography Series} \bold{65}, Amsterdam, 346 pp.
 }

@@ -1,3 +1,8 @@
+version 3.4.1 2026-07-30
+-----------------------------------
+- Fix: Kf now treats the original equation from Perez and Fraga (1987) for the hydrogen fluoride dissociation constant (argument kf="pf") as being on the free hydrogen ion scale, which is correct. Perez and Fraga define the association constant beta_HF in terms of free hydrogen, so Kf = 1/beta_HF is on the free scale (confirmed by F. Perez, 2026). Earlier versions of this function (1) treated the formulation kf="pf" as being on the total-scale based on the label in the Best Practices Guide (Dickson et al., 2007, where the tabulated value in that report is nonetheless the unconverted free-scale constant), and (2) applied an unwarranted total-to-free conversion. That conversion has now been removed. The Dickson and Riley (1979) option (kf="dg") is unaffected. This modification changes the value of Kf itself by up to about 34 % (largest at high temperature) when the Perez and Fraga option (the default, kf="pf") is used at the total or seawater pH scale, but the effects downstream on other calculated constants and on carbonate-system results are much smaller: for example, the Revelle factor is typically altered only in its fourth significant figure, and no scientific conclusion is affected.
+- Update: removed the unused Ks_p0 argument from Kf, and updated Kf.Rd accordingly; internal callers of Kf across the package (calculate_carb, buffer, buffesm, buffsun, buffzwg, buffderiv, errors) and the buffderiv AD test were updated to the new signature.
+
 version 3.4.0 2026-07-17
 -----------------------------------
 Major revision of the buffer-factor calculations, and a new unified equation for the

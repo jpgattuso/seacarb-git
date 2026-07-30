@@ -101,10 +101,10 @@ buffesm <-
     Ks    <- Ks(S=SP, T=InsT, P=P, ks=ks, warn=warn)
     
     # Kf on free pH scale
-    Kff_P0 <- Kf(S=SP, T=InsT, P=0, pHscale="F", kf=kf, Ks_P0, Ks)
-    Kff <- Kf(S=SP, T=InsT, P=P, pHscale="F", kf=kf, Ks_P0, Ks)
+    Kff_P0 <- Kf(S=SP, T=InsT, P=0, pHscale="F", kf=kf, Ks)
+    Kff <- Kf(S=SP, T=InsT, P=P, pHscale="F", kf=kf, Ks)
     # Kf on given pH scale
-    Kf <- Kf(S=SP, T=InsT, P=P, pHscale=pHscale, kf=kf, Ks_P0, Ks)
+    Kf <- Kf(S=SP, T=InsT, P=P, pHscale=pHscale, kf=kf, Ks)
     
     # Conversion factor from total to SWS pH scale at zero pressure
     ktotal2SWS_P0 <- kconv(S=SP,T=InsT,P=P,kf=kf,Ks=Ks_P0,Kff=Kff_P0)$ktotal2SWS

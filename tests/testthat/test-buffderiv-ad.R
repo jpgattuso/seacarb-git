@@ -30,7 +30,7 @@ test_that("Kall() reproduces seacarb's own equilibrium constants", {
     T <- ts[1]; S <- ts[2]
 
     Ks_P0 <- Ks(S = S, T = T, P = 0, ks = "d", warn = "n")
-    Kff   <- Kf(S = S, T = T, P = 0, pHscale = "F", kf = "dg", Ks_P0, Ks_P0, warn = "n")
+    Kff   <- Kf(S = S, T = T, P = 0, pHscale = "F", kf = "dg", Ks_P0, warn = "n")
     kc    <- kconv(S = S, T = T, P = 0, kf = "dg", Ks = Ks_P0, Kff = Kff, warn = "n")
     t2s   <- kc$ktotal2SWS
     s2c   <- kc$kSWS2total

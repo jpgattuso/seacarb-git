@@ -11,9 +11,9 @@
 #
 #
 "Kf" <-
-function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0="x",Ks_p="x",warn="y"){
+function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p="x",warn="y"){
 
-    nK <- max(length(S), length(T), length(P), length(kf), length(pHscale), length(Ks_p0), length(Ks_p))
+    nK <- max(length(S), length(T), length(P), length(kf), length(pHscale), length(Ks_p))
 
     ##-------- Creation de vecteur pour toutes les entrees (si vectorielles)
 
@@ -54,34 +54,21 @@ function(S=35,T=25,P=0,kf='x',pHscale="T",Ks_p0="x",Ks_p="x",warn="y"){
     #---------------------- Kf Perez and Fraga ---------------------------
     #  Kf = [H+][F-]/[HF]  
     #
-    #   Perez and Fraga, 1987 in Guide to the Best Practices for Ocean CO2 Measurements
-    #   Dickson, Sabine and Christian, 2007, Chapter 5, p. 14)
-    #  
-    #   pH-scale: 'total'   
+    #   Perez and Fraga, 1987, Mar. Chem. 21:161-168; also given in the
+    #   Guide to Best Practices (Dickson, Sabine and Christian, 2007, Ch. 5, p. 14).
+    #
+    #   pH-scale: 'free'.  Perez and Fraga define beta_HF with the free hydrogen
+    #   ion, so Kf = 1/beta_HF is on the free scale (confirmed by F. Perez, 2026).
+    #   The Best Practices Guide tabulates this value but labels it 'total'; that
+    #   label is incorrect for Kf, so no total-to-free conversion is applied here
+    #   (unlike seacarb <= 3.4.0).
+    #
+    #   The coefficient signs below are opposite to those in Perez and Fraga's
+    #   abstract because they fit the association constant beta_HF, whereas Kf is
+    #   the dissociation constant, its reciprocal: ln Kf = -ln beta_HF.
 
     lnKfpf <- 874/TK - 9.68 + 0.111*S^(1/2)
     Kfpf <- exp(lnKfpf)
-
-    # --------------- Conversion to free scale for pressure corrections
-    
-    # if Ks at zero pressure is not given
-    if (missing(Ks_p0) || Ks_p0[1] == "x")
-        # Ks at zero pressure NOT given --> compute it
-    	Ks = Ks(S=S, T=T, P=rep(0,nK))                 # on free pH scale
-    else
-    {
-    	Ks <- Ks_p0
-    	if (length(Ks)!=nK) Ks <- rep(Ks[1], nK)
-    }
-    
-    Cl = S / 1.80655;             # Cl = chlorinity; S = salinity (per mille)
-    ST = 0.14 * Cl/96.062         # (mol/kg) total sulfate  (Dickson et al., 2007, Table 2)
-    total2free  = 1/(1+ST/Ks)      # Kfree = Ktotal*total2free
-    total2free <- as.numeric(total2free)	
-
-    factor <- total2free
-
-    Kfpf <- Kfpf * factor
 
     #---------------------------------------------------------------------
     # --------------------- Kf Dickson and Goyet -------------------------
