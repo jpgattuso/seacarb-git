@@ -105,6 +105,10 @@ It computes these derivatives (dy/dx) using the method of central differences, i
   \item for dy, it then computes the corresponding induced change in output variables
 }
 
+The size of each perturbation is a relative delta times a fixed reference value, not times the input value. For input pairs the relative delta is 1e-6, as in CO2SYS-MATLAB, and for flag 15 the reference values are 2300 and 2000 \eqn{\mu}mol/kg (perturbations of 2.3 and 2 nmol/kg). For total silicon and total phosphorus the relative delta is 1e-3 and the reference values are 7.5 and 0.5 \eqn{\mu}mol/kg. For temperature and salinity the relative delta is 1e-4 and the reference values are 18 degrees C and 35. For dissociation constants and total boron the perturbation is 0.1 percent of an approximate value of the constant.
+
+The derivatives of fCO2 and CO2 are proportional to each other (K0 does not depend on the carbonate system variables), but the derivative of pCO2 differs slightly because the fugacity coefficient depends on fCO2. For example, the Revelle factor computed as (dpCO2/dDIC) DIC/pCO2 is larger by about 1 ppm (up to about 4 ppm at high CO2) than the one computed from the derivative of CO2 or fCO2, which agrees with the analytic value from \code{\link{buffsun}} to 0.004 ppm or better.
+
 All arguments but the first (varid), can be given as scalers or vectors. If the
 lengths of the vectors differs, only the longest vector is retained and the other
 arguments are set equal to the first value of the other vectors are used. Hence users
@@ -118,7 +122,7 @@ long and lat are used as conversion parameters from absolute to practical salini
  \item{H}{derivative of [H+] concentration  (mol/kg/...)}
  \item{pH}{derivative of pH}
  \item{CO2}{derivative of CO2 concentration (mol/kg/...)}
- \item{pCO2}{"standard" pCO2, CO2 partial pressure computed at in situ temperature and atmospheric pressure (\eqn{\mu}atm/...)}
+ \item{pCO2}{"standard" pCO2, CO2 partial pressure computed at in situ temperature and atmospheric pressure (\eqn{\mu}atm/...). Because its fugacity coefficient depends slightly on the CO2 level, this derivative is not exactly proportional to the one of fCO2 (see Details)}
  \item{fCO2}{"standard" fCO2, CO2 fugacity computed at in situ temperature and atmospheric pressure (\eqn{\mu}atm/...)}
  \item{HCO3}{derivative of HCO3 concentration (mol/kg/...)}
  \item{CO3}{derivative of CO3 concentration (mol/kg/...)}

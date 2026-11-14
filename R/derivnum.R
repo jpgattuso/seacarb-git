@@ -7,10 +7,22 @@
 # - introducing a small perturbation delta (plus or minus) in one input
 # - and computing the induced delta in output variables
 #
-# The ratio between delta and input value is chosen as follows: 
-#    for perturbing input pair :  a constant which depends on the type of input pair of variables.
-#    for perturbing nutrients  :  1.e-6
-#    for perturbing T and S    :  1.e-3
+# The perturbation is a relative delta times a fixed reference value (not times the input value),
+# so for a given variable it is the same absolute amount whatever the input value is:
+#    for perturbing input pair :  relative delta 1.e-6 (for consistency with CO2SYS-MATLAB) times a reference
+#                                 value that depends on the input pair; if flag is 15, the reference values are
+#                                 2300 umol/kg (TAlk) and 2000 umol/kg (DIC), so the perturbations are 2.3 and 2 nmol/kg
+#    for perturbing nutrients  :  relative delta 1.e-3 times 7.5 umol/kg (total silicon) or 0.5 umol/kg (total phosphorus)
+#    for perturbing T and S    :  relative delta 1.e-4 times 18 degrees C or 35
+#    for perturbing dissociation constants and total boron :  0.1 percent of an approximate value of the constant
+#
+# Note on pCO2, fCO2, and CO2:
+#   Output pCO2 is fCO2 divided by a fugacity coefficient that itself depends slightly on the CO2 level.
+#   So the derivative of pCO2 is not exactly proportional to that of fCO2, and the Revelle factor computed
+#   from it is larger by 4*(1-f)*Delta*f/(R*T), about 1 to 4 ppm. Here f is fCO2 in atm, Delta = 57.7 - 0.118*T (cm3/mol),
+#   T is in K, and R = 82.05736 cm3 atm/(mol K). The derivatives of fCO2 and CO2 are proportional to each other
+#   because K0 does not depend on the carbonate system variables. The Revelle factor from either one agrees
+#   with buffsun() to 0.004 ppm or better.
 #
 # Input parameters :
 #   - varid  :  (scalar) identifier of variable with respect to which derivative is requested
@@ -87,37 +99,8 @@ function(varid, flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
     var1name <- varnames[flag,1]
     var2name <- varnames[flag,2]
     
-    # Relative deltas (perturbations) sorted by flag number
-    # default value is 1.e-3
-    const_deltas = rbind (
-        c(1.e-8, 1.e-3),         # flag = 1    
-        c(1.e-3, 1.e-3),         # flag = 2    
-        c(1.e-3, 1.e-3),         # flag = 3    
-        c(1.e-6, 1.e-6),         # flag = 4    
-        c(1.e-5, 1.e-5),         # flag = 5    
-        c(1.e-8, 1.e-3),         # flag = 6    
-        c(1.e-8, 1.e-3),         # flag = 7    
-        c(1.e-1, 1.e-5),         # flag = 8    
-        c(1.e-1, 1.e-1),         # flag = 9    
-        c(1.e-3, 1.e-3),         # flag = 10   
-        c(1.e-3, 1.e-3),         # flag = 11   
-        c(1.e-3, 1.e-3),         # flag = 12   
-        c(1.e-3, 1.e-3),         # flag = 13   
-        c(1.e-3, 1.e-3),         # flag = 14   
-        c(1.e-6, 1.e-6),         # flag = 15   
-        c(0, 0),
-        c(0, 0),
-        c(0, 0),
-        c(0, 0),
-        c(0, 0),
-        c(1.e-3, 1.e-8),         # flag = 21   
-        c(1.e-3, 1.e-3),         # flag = 22   
-        c(1.e-3, 1.e-3),         # flag = 23   
-        c(1.e-6, 1.e-6),         # flag = 24   
-        c(1.e-5, 1.e-5)          # flag = 25   
-    )
-
-    # Replace all values of const_deltas (above) with 1e-6 for consistency with CO2SYS-MATLAB
+    # Relative deltas (perturbations) sorted by flag number: 1e-6 for all input pairs, for consistency with CO2SYS-MATLAB
+    # (The perturbation is this relative delta times the fixed reference value in const_refs, below.)
     const_deltas = rbind (
         c(1.e-6, 1.e-6),         # flag = 1    
         c(1.e-6, 1.e-6),         # flag = 2    
