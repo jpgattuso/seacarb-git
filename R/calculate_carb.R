@@ -335,12 +335,12 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, NH4t=0, HSt=0, 
     htot[i_sc_F]  <- h[i_sc_F] / (1+st[i_sc_F]/ks[i_sc_F]) 
     # Where pHscale=="T", pHscale = total scale
     i_sc_T <- which (sc == "T") 
-    hfree[i_sc_T] <- h[i_sc_T] * (1+st[i_sc_T]/ks[i_sc_T])
+    hfree[i_sc_T] <- h[i_sc_T] / (1+st[i_sc_T]/ks[i_sc_T])
     htot[i_sc_T]  <- h[i_sc_T]
     # Where pHscale=="SWS", pHscale = SW scale
     i_sc_S <- which (sc == "SWS") 
-    hfree[i_sc_S] <- h[i_sc_S] * (1 + st[i_sc_S]/ks[i_sc_S] + fluo[i_sc_S]/kff[i_sc_S])
-    htot[i_sc_S]  <- hfree[i_sc_S] / (1+st[i_sc_S]/ks[i_sc_S])
+    hfree[i_sc_S] <- h[i_sc_S] / (1 + st[i_sc_S]/ks[i_sc_S] + fluo[i_sc_S]/kff[i_sc_S])
+    htot[i_sc_S]  <- hfree[i_sc_S] * (1+st[i_sc_S]/ks[i_sc_S])
 
     # Calculate some invariable components of total alkalinity
     boh4   <- BOR[i_flag_8] / (1+h/Kb[i_flag_8])
@@ -351,7 +351,7 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, NH4t=0, HSt=0, 
     hpo4   <- Pt[i_flag_8]*K1p[i_flag_8]*K2p[i_flag_8]*h / temp
     po4    <- Pt[i_flag_8]*K1p[i_flag_8]*K2p[i_flag_8]*K3p[i_flag_8] / temp
     hso4   <- st/(1+ks/hfree)
-    hf     <- fluo / (1+Kf[i_flag_8]/htot)
+    hf     <- fluo / (1+Kf[i_flag_8]/h)
 
     if (fullresult) {
         # adapted to include second dissociation constant of silicate
@@ -798,15 +798,15 @@ function(flag, var1, var2, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0, NH4t=0, HSt=0, 
     htot[i_sc_F]  <- h[i_sc_F] / (1+st[i_sc_F]/ks[i_sc_F]) 
     # Where pHscale=="T", pHscale = total scale
     i_sc_T <- which (sc == "T") 
-    hfree[i_sc_T] <- h[i_sc_T] * (1+st[i_sc_T]/ks[i_sc_T])
+    hfree[i_sc_T] <- h[i_sc_T] / (1+st[i_sc_T]/ks[i_sc_T])
     htot[i_sc_T]  <- h[i_sc_T]
     # Where pHscale=="SWS", pHscale = SW scale
     i_sc_S <- which (sc == "SWS") 
-    hfree[i_sc_S] <- h[i_sc_S] * (1 + st[i_sc_S]/ks[i_sc_S] + fluo[i_sc_S]/kff[i_sc_S])
-    htot[i_sc_S]  <- hfree[i_sc_S] / (1+st[i_sc_S]/ks[i_sc_S])
+    hfree[i_sc_S] <- h[i_sc_S] / (1 + st[i_sc_S]/ks[i_sc_S] + fluo[i_sc_S]/kff[i_sc_S])
+    htot[i_sc_S]  <- hfree[i_sc_S] * (1+st[i_sc_S]/ks[i_sc_S])
 
     hso4 <- st/(1+ks/hfree)
-    hf   <- fluo/(1+Kf[i_flag]/htot)
+    hf   <- fluo/(1+Kf[i_flag]/h)
 
     if (fullresult) {
         ALK[i_flag]  <- HCO3[i_flag] + 2*CO3[i_flag] + boh4+oh+hpo4+2*po4+siooh3+2*sio2oh2+nh3+hs-hfree-hso4-hf-h3po4
