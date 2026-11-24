@@ -1,16 +1,9 @@
-# v3.4.2
+# v3.4.3
 ## Submission summary
 
-seacarb 3.4.2 is a patch release. It corrects the Revelle factor
-routines buffergen(), buffsun(), buffzwg(), buffesm(), and buffer() on
-the free and seawater pH scales, and the ammonium and sulfide constants
-(Kn and Khs) that were converted to the chosen pH scale with a different
-Kf than all other constants when kf was set explicitly to "dg". Results
-on the total pH scale with the default settings are unchanged. In
-buffergen(), outputs that are not defined on a given pH scale now
-return NA. The Kf help pages (21 files) were corrected to state that
-both Kf formulations are on the free scale. Regression tests were added
-(test-buffergen.R, test-buff-scales.R, test-kn-khs-kf.R).
+This release occurs a few weeks after version 3.4.2 because the update of SolveSAPHE (a dependency of seacarb) to version 2.1.1 was flagged by CRAN as causing a failure in the seacarb test suite. The cause was in seacarb and not in SolveSAPHE. SolveSAPHE 2.1.1 fixes a parsing bug that had silently dropped terms from three analytic derivative branches. The fix shifts the converged pH by up to about 1e-10 pH units, which at one grid point (S = 35, T = -1.5 degC) narrowly exceeded the tolerance of the fluoride and sulfate derivative test in test-buffergen.R. The tolerance was widened from 1e-7 to 1e-6, and no buffergen() code was changed. A step size sweep confirmed that the sensitivity is real and not a discretization artifact.
+
+In addition, seacarb 3.4.3 corrects the alkalinity computed from pH in carb(), carbfull(), and carbb() (flags 1, 2, 3, 5, 6, 7, 9, 10, 12, 14, 21, 22, 23, and 25) and the DIC computed from pH and alkalinity (flag 8). The free proton and bisulfate were on the wrong side of the pH scale conversion, which made the alkalinity off by 1.5 ppm at pH 8.15 and up to 16 ppm at pH 7.1. Flags that take alkalinity as input (4, 11, 13, 15, and 24) were not affected. The help page and header of derivnum() now describe the perturbations correctly (results unchanged) and explain why the pCO2 derivative differs slightly from those of CO2 and fCO2. New regression tests were added (test-derivnum.R, test-carb-flags.R, test-carb-scales.R, and test-buff-flags.R).
 
 ## Test environments
 
@@ -32,55 +25,6 @@ Both notes come from the local environment and not from the package.
 
 ## Reverse dependencies
 
-seacarb has three reverse dependencies on CRAN (ecolMod, marelac,
-respirometry). We checked all three against this version (R 4.3.3,
-Ubuntu 24.04) and found no problems. None of them uses the functions
-changed in this release (the buffer routines, carbfull(), or explicit
-kf settings): marelac uses rho(), respirometry uses carb() with default
-arguments, Kn(), and rho(), and ecolMod only suggests seacarb.
+seacarb has three reverse dependencies on CRAN (ecolMod, marelac, respirometry). All three were checked against this version (R 4.3.3, Ubuntu 24.04), and R CMD check returned OK for each. ecolMod and marelac do not call carb(), carbfull(), or carbb(). respirometry calls carb() with flag 8 (DIC from pH and alkalinity), which this release corrects, so its DIC values shift by the size of the corrected error (the ChangeLog gives 1.5 ppm at pH 8.15 and up to 16 ppm at pH 7.1 for the alkalinity, with the DIC from flag 8 off by a similar amount in the opposite direction). It also uses flags 15 and 24, which are unaffected. The checks of respirometry pass.
 
-
-# v3.4.1
-## Submission summary
-
-seacarb 3.4.1 is a patch release. It corrects the pH scale of the
-Perez and Fraga (1987) hydrogen fluoride dissociation constant (Kf,
-argument kf = "pf"), which was previously treated as total-scale and
-is in fact free-scale (confirmed by F. Perez, 2026). The unwarranted
-total-to-free conversion has been removed, the unused Ks_p0 argument
-has been dropped from Kf(), and the internal callers of Kf() and the
-Kf documentation have been updated accordingly. The Dickson and Riley
-(1979) option (kf = "dg") is unaffected.
-
-## Test environments
-
-* local: Ubuntu 24.04, R 4.4.1
-* GitHub Actions: ubuntu-latest (release, devel), macos-latest
-  (release), windows-latest (release) — all passing
-
-## R CMD check results
-
-Status: 2 NOTEs, 0 errors, 0 warnings.
-
-* checking for future file timestamps ... NOTE
-  unable to verify current time
-
-  This is a network note: the check could not reach a time server to
-  verify timestamps. It is unrelated to the package.
-
-* checking HTML version of manual ... NOTE
-  Skipping checking math rendering: package 'V8' unavailable
-
-  V8 is not installed in the local check environment. This note
-  concerns the check environment, not the package, and does not appear
-  on systems where V8 is available.
-
-## Reverse dependencies
-
-seacarb has three reverse dependencies on CRAN (ecolMod, marelac,
-respirometry). We checked all three against this version and found no
-problems. The kf = "pf" default now returns slightly different Kf
-values (altering downstream carbonate-system results only in the
-fourth significant figure), and none of the three relies on the
-previous values.
 
