@@ -23,9 +23,8 @@
 ## Tolerance
 ##   1e-7 relative. The unfixed code deviates by 1.5e-6 (total scale, pH 8.15) to
 ##   3e-6 (SWS), so 1e-7 fails loudly. The fixed code deviates by at most 6.5e-9 on
-##   this grid. That residual comes from flags 21 to 25 (pCO2 input), where pCO2 and
-##   fCO2 are converted with a fugacity factor evaluated at slightly different
-##   arguments in the two directions (observed, not investigated). Tolerances are not
+##   this grid. That residual comes from flags 21 to 25 (pCO2 input), where the pCO2
+##   given is not returned exactly (observed, not investigated). Tolerances are not
 ##   to be widened to make a failing test pass.
 ##
 ## Notes
