@@ -1,4 +1,4 @@
-version 3.4.3 2026-11-25
+version 3.4.3 2026-11-24
 -----------------------------------
 - Update: derivnum() and derivnum.Rd now describe the perturbations correctly. Each perturbation is a relative delta times a fixed reference value, not times the input value, so it is the same absolute amount whatever the input is (for flag = 15, 2.3 nmol/kg for alkalinity and 2 nmol/kg for DIC). The comments in the code said 1e-6 for nutrients and 1e-3 for temperature and salinity, whereas the code uses 1e-3 and 1e-4, respectively. The first table of relative deltas, which was immediately overwritten by a second table, was removed. Results are unchanged.
 - Update: derivnum.Rd and the header of derivnum() now explain that the derivative of pCO2 is not exactly proportional to the derivatives of fCO2 and CO2, because the fugacity coefficient in pCO2 depends slightly on the CO2 level. The Revelle factor computed from the pCO2 derivative is larger by 4(1-f)Delta f/(RT), about 1 ppm (up to about 4 ppm at high CO2), than the one computed from the derivative of CO2 or fCO2, which is proportional to it and agrees with buffsun() to 0.01 ppm or less.
